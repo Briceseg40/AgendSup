@@ -22,7 +22,7 @@ class CoursDAO
     /** Récupère tous les cours */
     public function findAll(): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM cours ");
+        $stmt = $this->pdo->prepare("SELECT * FROM cours");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -56,17 +56,17 @@ class CoursDAO
     }
 
     /** Récupère tous les cours liés à un agenda */
-    public function findByAgenda(int $id_utilisateur): array
+    public function findByAgenda(int $id_agenda): array
     {
         $sql = "
-            SELECT c.id, c.libelle, a.dte_cours, a.horaire_cours
+            SELECT c.id, c.libelle, a.date_cours, a.horaire
             FROM afficher a
             INNER JOIN cours c ON a.id_cours = c.id
             WHERE a.id_agenda = :id_agenda
         ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id_agenda', $id_utilisateur, PDO::PARAM_INT);
+        $stmt->bindParam(':id_agenda', $id_agenda, PDO::PARAM_INT);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -75,8 +75,8 @@ class CoursDAO
             $cours[] = new Cours(
                 $row['id'],
                 $row['libelle'],
-                $row['dte_cours'],
-                $row['horaire_cours']
+                $row['date_cours'],
+                $row['horaire']
             );
         }
 
