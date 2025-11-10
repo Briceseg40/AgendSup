@@ -26,9 +26,8 @@ class Cours
      *
      * @param int|null $id Identifiant de la catégorie.
      * @param string|null $nom Nom de la catégorie.
-     * @param string|null $image Nom du fichier image associé à la catégorie.
      */
-    public function __construct(?int $id = null, ?string $libelle = null, ?string $dte_cours = null, ?string $horaire_cours = null)
+    public function __construct(?int $id = null, ?string $libelle = null)
     {
         $this->setId($id);
         $this->setLibelle($libelle);
