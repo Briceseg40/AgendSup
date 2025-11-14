@@ -30,7 +30,7 @@ class AgendaDAO
             $agendas[] = new Agenda(
                 $row['id'],
                 $row['mois'],
-                $row['jour']
+                $row['jour'],
             );
         }
 
@@ -48,7 +48,7 @@ class AgendaDAO
             return new Agenda(
                 $row['id'],
                 $row['mois'],
-                $row['jour']
+                $row['jour'],
             );
         }
 
