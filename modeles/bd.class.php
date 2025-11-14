@@ -1,6 +1,5 @@
 <?php
-require_once "config/constantes.php";
-
+// require_once "config/constantes.php";
 
 class Bd
 {

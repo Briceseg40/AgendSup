@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Page d'accueil{% endblock %}
+
+{% block body %}
+    <div id="container">
+        <div class="hero">
+            <h1>AgendSup</h1>
+            <p>Un Agenda Et bien plus que ça</p>
+            <div class="hero-buttons">
+                <img src="/assets/img/agendboyquisait.png" alt="">
+                <form method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="action" value="users/login">
+                
+                    <h3><label for="loginName">Mail de votre université</label></h3>
+                    <input id="loginName" type="text" name="loginName"
+                        value="votrnom@iutbayonne.univ-pau.fr">
+                
+                    <h3><label for="password">Mot de passe</label></h3>
+                    <input id="password" type="password" name="password">
+
+                    <input type="submit" value="Se connecter">
+                </form>
+                
+                <p>Mot de passe oublié ?</p>
+                <button class="btn-all-gray">Créer un compte</button>
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
