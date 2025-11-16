@@ -40,6 +40,10 @@ switch ($action) {
     case 'connect':
         echo $twig->render('connected.html.twig');
         break;
+        
+    case 'agenda':
+        echo $twig->render('agenda.html.twig');
+        break;
 
     // Si l’action n’existe pas → login
     default:

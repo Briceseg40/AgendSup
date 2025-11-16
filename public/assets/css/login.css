@@ -1,64 +1,36 @@
-.hero {
-    background-color: rgba(136, 136, 136, 0.502);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: black;
-    width: 50%;
-    max-width: 750px;
+.bg-gray {
+    background-color: #00000033;
 }
 
-.hero h1 {
-    font-family: 'Love Ya Like A Sister';
-    font-size: 128px;
-    margin-top: 30px;
-    margin-bottom: 0;
-}
-
-#connect-message {
-    font-size: 24px;
-    margin-bottom: 50px;
-}
-
-.hero-buttons {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
+.w-90 {
     width: 90%;
 }
 
-.hero-buttons img {
+.text-btn{
+    font-size: 24px;
+    text-transform: uppercase;
+}
+.titre {
+    font-family: 'Love Ya Like A Sister';
+    font-size: 128px;
+    margin-bottom: 0;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.fs-50 {
+    font-size: 50px;
+}
+
+.p-20 {
+    padding: 20px;
+}
+
+#agendboyquisait {
     position: absolute;
     top: -80px;
     right: -30px;
     height: 109px;
-}
-
-.hero-buttons form {
-    width: 90%;
-    position: relative;
-    margin: 0 auto;
-}
-
-.hero-buttons .form-control {
-    border-radius: 50px;
-    padding: 20px;
-    font-size: 20px;
-}
-
-.hero-buttons .btn {
-    border-radius: 50px;
-    padding: 15px;
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.liens-compte span {
-    font-size: 50px;
-}
-
-.liens-compte {
-    font-size: 20px;
 }
