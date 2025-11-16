@@ -3,28 +3,5 @@
 {% block title %}AgendSup - Page d'accueil{% endblock %}
 
 {% block body %}
-    <div class="container-login">
-        <div class="hero">
-            <h1>AgendSup</h1>
-            <p id="connect-message">VEUILLEZ VOUS CONNECTER</p>
-            <div class="hero-buttons">
-                <img src="/assets/img/agendboyquisait.png" alt="">
-                <form method="post" accept-charset="UTF-8">
-                    <input type="hidden" name="action" value="users/login">
-                
-                    <input id="loginName" type="text" name="loginName"
-                        placeholder="votrnom@iutbayonne.univ-pau.fr">
-                
-                    <input id="password" type="password" name="password" placeholder="votremotdepasse">
 
-                    <button class="btn-all-gray" type="submit" value="Se connecter">Se connecter</button>
-                </form>
-                <div class="liens-compte">
-                <a href="#">Mot de passe oublié ?</a>
-                <span>•</span>
-                <a href="#">Créer un compte</a>
-                
-            </div>
-        </div>
-    </div>
 {% endblock %}

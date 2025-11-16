@@ -3,27 +3,28 @@
 {% block title %}AgendSup - Page de connexion{% endblock %}
 
 {% block body %}
-    <div class="container-login">
-        <div class="hero">
+    <div class="container">
+        <div class="hero text-center rounded-5 shadow p-5">
             <h1>AgendSup</h1>
-            <p id="connect-message">VEUILLEZ VOUS CONNECTER</p>
+            <p id="connect-message">VEUILLELEZ VOUS CONNECTER</p>
             <div class="hero-buttons">
-                <img src="/assets/img/agendboyquisait.png" alt="">
+                {# <img src="/assets/img/agendboyquisait.png" alt=""> #}
                 <form method="post" accept-charset="UTF-8">
                     <input type="hidden" name="action" value="users/login">
                 
-                    <input id="loginName" type="text" name="loginName"
+                    <input id="loginName" type="text" name="loginName" class="form-control border-black mb-3"
                         placeholder="votrnom@iutbayonne.univ-pau.fr">
                 
-                    <input id="password" type="password" name="password" placeholder="votremotdepasse">
+                    <input id="password" type="password" name="password" class="form-control border-black mb-3" placeholder="votremotdepasse">
 
-                    <button class="btn-all-gray" type="submit" value="Se connecter">Se connecter</button>
+                    <a href="?action=connect" class="btn btn-light w-100 rounded-pill border-black">Se connecter</a>
+                    {# <button class="btn btn-light w-100 border-black" type="submit" onclick="BtnConnect()">Se connecter</button> #}
                 </form>
-                <div class="liens-compte">
-                <a href="#">Mot de passe oublié ?</a>
-                <span>•</span>
-                <a href="#">Créer un compte</a>
-                
+                <div class="liens-compte d-flex justify-content-around align-items-center">
+                    <a href="#">Mot de passe oublié ?</a>
+                    <span>•</span>
+                    <a href="?action=register">Créer un compte</a>
+                </div>
             </div>
         </div>
     </div>
