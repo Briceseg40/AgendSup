@@ -44,6 +44,9 @@ switch ($action) {
     case 'agenda':
         echo $twig->render('agenda.html.twig');
         break;
+    case 'join_class':
+        echo $twig->render('joinClass.html.twig');
+        break;
 
     // Si l’action n’existe pas → login
     default:
