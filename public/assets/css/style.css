@@ -8,8 +8,17 @@ body {
     margin: 0;
     /* overflow: hidden; */
 }
+
+
+
+.hero {
+    color: black;
+    width: 50%;
+    max-width: 750px;
+}
 h1 {
     font-family: 'Love Ya Like A Sister', cursive;
+    font-size: 130px;
 }
 #imgBg {
     height: 96vh;
@@ -37,14 +46,10 @@ header {
 header i {
     font-size: 20px;
 }
-.header-right button, .btn-message button {
-    border-radius: 50%;
-    padding: 10px;
-}
+
 .btn-all-gray {
+    width: 50px;
     background-color: white;
-    border-radius: 5px;
-    padding: 5px;
     color: black;
     cursor: pointer;
 }

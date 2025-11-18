@@ -1,30 +1,34 @@
 {% extends "base.html.twig" %}
 
-{% block title %}AgendSup - Page de connexion{% endblock %}
+{% block title %}AgendSup - Page de connexion
+{% endblock %}
 
 {% block body %}
-    <div class="container-login">
-        <div class="hero">
-            <h1>AgendSup</h1>
-            <p id="connect-message">VEUILLEZ VOUS CONNECTER</p>
-            <div class="hero-buttons">
-                <img src="/assets/img/agendboyquisait.png" alt="">
-                <form method="post" accept-charset="UTF-8">
-                    <input type="hidden" name="action" value="users/login">
-                
-                    <input id="loginName" type="text" name="loginName"
-                        placeholder="votrnom@iutbayonne.univ-pau.fr">
-                
-                    <input id="password" type="password" name="password" placeholder="votremotdepasse">
+	<div class="container">
+		<div class="bg-gray position-absolute top-50 start-50 translate-middle hero text-center rounded-5 p-5">
+			<h1 class="titre">AgendSup</h1>
+			<p class="text-btn mb-5" >veuillez vous connecter</p>
+			<div
+				class="hero-buttons position-relative d-flex flex-column gap-3 w-90 mx-auto">
+				{# <img src="public/assets/img/agendboyquisait.png" alt=""> #}
+				<form class="position-relative w-90 mx-auto" method="post" accept-charset="UTF-8">
+					<input type="hidden" name="action" value="users/login">
 
-                    <button class="btn-all-gray" type="submit" value="Se connecter">Se connecter</button>
-                </form>
-                <div class="liens-compte">
-                <a href="#">Mot de passe oublié ?</a>
-                <span>•</span>
-                <a href="#">Créer un compte</a>
-                
-            </div>
-        </div>
-    </div>
+					<input id="loginName" type="text" name="loginName" class="w-100 border-black mb-3 rounded-pill fs-20 p-20" placeholder="votrnom@iutbayonne.univ-pau.fr">
+
+					<input id="password" type="password" name="password" class="w-100 border-black mb-3 rounded-pill fs-20 p-20" placeholder="votremotdepasse">
+
+					<a href="?action=connect" class="btn btn-light w-100 rounded-pill border-black p-3 text-btn">Se connecter
+						<i class="fa-solid fa-right-from-bracket ml-1"></i>
+					</a>
+					{# <button class="btn btn-light w-100 border-black" type="submit" onclick="BtnConnect()">Se connecter</button> #}
+				</form>
+				<div class="liens-compte fs-20 d-flex justify-content-around align-items-center">
+					<a href="#">Mot de passe oublié ?</a>
+					<span class="fs-50">•</span>
+					<a href="?action=register">Créer un compte</a>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
