@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Rejoindre une classe{% endblock %}
+
+{% block body %}
+	<h3 class="mt-5 text-center">Rejoindre une classe</h3>
+	<div class="bg-gray w-100 d-flex justify-content-center border-black border-1  align-items-center border p-5 mt-3">
+		<div class="barre-research btn btn-light">
+		<i class="fa-solid fa-magnifying-glass"></i>
+
+			<input type="search" class="" placeholder="Saissisez votre recherche">
+
+		</div>
+
+
+	</div>
+
+	<div class="btn-class d-flex w-90">
+	<div class="d-flex flex-column align-items-center mt-5">
+		<button class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-5 w-auto">Rejoindre la classe</button>
+		<button class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-5 w-auto">Supprimer</button>
+	</div>
+	<div class="d-flex flex-column align-items-center mt-5">
+		<button class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-5 w-auto">Ajout d'une classe</button>
+		<a class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-5 w-auto">Retour</a>
+		</div>
+	</div>
+	{# <button class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-5 w-auto">Se déconnecter</button> #}
+
+{% endblock %}
+
