@@ -6,10 +6,65 @@ body {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
+.section-class {
+    height: 60vh;
+}
 
+.bg-gray {
+    background-color: #00000033;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-50 {
+    width: 50%;
+}
+.w-90 {
+    width: 90%;
+}
+
+.top-30px {
+    top: 30px;
+}
+
+.text-btn{
+    font-size: 24px;
+    text-transform: uppercase;
+}
+.titre {
+    font-family: 'Love Ya Like A Sister';
+    font-size: 128px;
+    margin-bottom: 0;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.fs-50 {
+    font-size: 50px;
+}
+
+.p-20 {
+    padding: 20px;
+}
+
+.w-110px {
+    width: 110px;
+}
+
+.w-140px {
+    width: 140px;
+}
 
 .hero {
     color: black;
