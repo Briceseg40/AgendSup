@@ -14,7 +14,7 @@ class controllerCours extends Controller
         $cours = $manager->findAll();
 
         //Chargement du template
-        $template = $this->getTwig()->load('index.twig');
+        $template = $this->getTwig()->load('cours.twig');
 
         //Affichage du template et transmission des données
         echo $template->render(array(
@@ -28,7 +28,7 @@ class controllerCours extends Controller
         $cours = $manager->findByAgenda($id_Agenda);
 
         //Chargement du template
-        $template = $this->getTwig()->load('index.twig');
+        $template = $this->getTwig()->load('cours.twig');
 
         //Affichage du template et transmission des données
         echo $template->render(array(
@@ -36,4 +36,34 @@ class controllerCours extends Controller
             'menu' => "category"
         ));
     }
+
+     //Creer
+     public function creer(): void
+     {
+         $template = $this->getTwig()->load('cours/creer.twig');
+ 
+         echo $template->render([
+             "titre" => "Créer un cours"
+         ]);
+     }
+ 
+     //Modifier
+     public function modifier(): void
+     {
+         $template = $this->getTwig()->load('cours/modifier.twig');
+ 
+         echo $template->render([
+             "titre" => "Modifier un cours"
+         ]);
+     }
+ 
+     //Supprimer
+     public function supprimer(): void
+     {
+         $template = $this->getTwig()->load('cours/supprimer.twig');
+ 
+         echo $template->render([
+             "titre" => "Supprimer un cours"
+         ]);
+     }
 }
