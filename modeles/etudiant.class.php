@@ -1,7 +1,7 @@
 <?php
 
 
-class Classe
+class Etudiant
 {
     private int|null $id;
     private string|null $Nom;
@@ -15,13 +15,13 @@ class Classe
     public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?string $DateNaissance = null, ?string $Mail = null, ?string $Mdp = null)
     {
         $this->setId($id);
-        $this->setTd($Nom);
-        $this->setTp($Prenom);
-        $this->setTp($role);
-        $this->setTp($Annee);
-        $this->setTp($DateNaissance);
-        $this->setTp($Mail);
-        $this->setTp($Mdp);
+        $this->setNom($Nom);
+        $this->setPrenom($Prenom);
+        $this->setRole($role);
+        $this->setAnnee($Annee);
+        $this->setDateNaissance($DateNaissance);
+        $this->setMail($Mail);
+        $this->setMdp($Mdp);
     }
 
     public function getId(): ?int

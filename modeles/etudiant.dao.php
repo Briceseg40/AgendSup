@@ -28,7 +28,7 @@ class EtudiantDAO
 
         $etudiant = [];
         foreach ($results as $row) {
-            $etudiant[] = new EtudiantDAO(
+            $etudiant[] = new Etudiant(
                 $row['id'],
                 $row['nom'],
                 $row['prenom'],
@@ -44,7 +44,7 @@ class EtudiantDAO
     }
 
     /** Recherche un etudiant par son ID */
-    public function findById(int $id_etudiant): ?EtudiantDAO
+    public function findById(int $id_etudiant): ?Etudiant
     {
         $stmt = $this->pdo->prepare("SELECT * FROM etudiant WHERE id = :id");
         $stmt->bindParam(':id', $id_etudiant, PDO::PARAM_INT);
@@ -52,7 +52,7 @@ class EtudiantDAO
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            return new EtudiantDAO(
+            return new Etudiant(
                 $row['id'],
                 $row['nom'],
                 $row['prenom'],
