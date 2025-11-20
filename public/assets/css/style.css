@@ -12,7 +12,9 @@ body {
 .section-class {
     height: 60vh;
 }
-
+.border-gray {
+    border-color: #00000033;
+}
 .bg-gray {
     background-color: #00000033;
 }

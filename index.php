@@ -53,7 +53,7 @@ switch ($action) {
         break;
 
     case 'create-class':
-        echo $twig->render('createClass.html.twig');
+        echo $twig->render('createClassAndParam.html.twig');
         break;
 
     // Si l’action n’existe pas → login
