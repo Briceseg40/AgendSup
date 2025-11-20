@@ -53,37 +53,41 @@ class ChatDAO
         return null;
     }
 
-    public function findChatsParUtilisateur(int $id_utilisateur): array
+    public function findChatsOuUtilisateurAParle(array $userIds): array
     {
+        $userIds = array_values(array_unique($userIds));
+        if (empty($userIds)) {
+            return [];
+        }
+
+        $placeholders = [];
+        foreach ($userIds as $i => $id) {
+            $placeholders[] = ":u{$i}";
+        }
+        $inList = implode(',', $placeholders);
+
         $sql = "
-            SELECT ch.id, ch.nom
-            FROM consulter co
-            INNER JOIN chat ch ON co.idChat = ch.id
-            WHERE co.idEtudiant = :id_utilisateur
+            SELECT DISTINCT ch.id, ch.nom
+            FROM chat ch
+            INNER JOIN parler p ON p.idChat = ch.id
+            WHERE p.idEtudiant IN ($inList)
             ORDER BY ch.nom
         ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id_utilisateur', $id_utilisateur, PDO::PARAM_INT);
-
-        try {
-            $stmt->execute();
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log("Erreur SQL : " . $e->getMessage());
-            return [];
+        foreach ($userIds as $i => $id) {
+            $stmt->bindValue(":u{$i}", (int)$id, PDO::PARAM_INT);
         }
 
         $chats = [];
         foreach ($results as $row) {
-            $chats[] = new Chat(
-                $row['id'],
-                $row['nom']
-            );
+            $chats[] = new Chat($row['id'], $row['nom']);
         }
 
         return $chats;
     }
+
+
 
     public function ajouter(Chat $chat): bool
     {
