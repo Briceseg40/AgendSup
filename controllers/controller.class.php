@@ -36,7 +36,8 @@ class Controller
         //teste si la methode existe
         if (!method_exists($this, $methode))
         {
-            throw new Exception("La methode $methode n'existe pas dans la controleur __CLASS__");
+            throw new Exception("La methode $methode n'existe pas dans le controleur " . get_class($this));
+            // throw new Exception("La methode $methode n'existe pas dans le controleur __CLASS__");
         }
 
         return $this->$methode();
