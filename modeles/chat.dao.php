@@ -66,13 +66,11 @@ class ChatDAO
         }
         $inList = implode(',', $placeholders);
 
-        $sql = "
-            SELECT DISTINCT ch.id, ch.nom
-            FROM chat ch
-            INNER JOIN parler p ON p.idChat = ch.id
-            WHERE p.idEtudiant IN ($inList)
-            ORDER BY ch.nom
-        ";
+        $sql = "SELECT DISTINCT ch.id, ch.nom
+                FROM chat ch
+                INNER JOIN parler p ON p.idChat = ch.id
+                WHERE p.idEtudiant IN ($inList)
+                ORDER BY ch.nom";
 
         $stmt = $this->pdo->prepare($sql);
         foreach ($userIds as $i => $id) {
