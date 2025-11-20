@@ -36,7 +36,7 @@ switch ($action) {
         break;
 
     // Page après connexion réussie
-    case 'connect':
+    case 'connected':
         echo $twig->render('connected.html.twig');
         break;
         
@@ -47,9 +47,13 @@ switch ($action) {
     case 'join_class':
         echo $twig->render('joinClass.html.twig');
         break;
-        
-    case 'join_class':
-        echo $twig->render('joinClass.html.twig');
+
+    case 'forget-Pass':
+        echo $twig->render('forgetPasseword.html.twig');
+        break;
+
+    case 'create-class':
+        echo $twig->render('createClass.html.twig');
         break;
 
     // Si l’action n’existe pas → login
