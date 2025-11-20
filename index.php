@@ -1,6 +1,6 @@
 <?php
 
-// require_once 'include.php';
+require_once 'include.php';
 
 // $db = Bd::getInstance();
 // $pdo = $db->getConnection();
@@ -17,7 +17,6 @@
 //     'menu' => "agenda"
 // ));
 
-require_once 'vendor/autoload.php';
 
 $loader = new \Twig\Loader\FilesystemLoader('templates');
 $twig = new \Twig\Environment($loader);
