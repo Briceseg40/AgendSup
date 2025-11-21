@@ -23,9 +23,6 @@ class Bd
     }
 
     // Méthode statique pour obtenir l'instance unique
-    /**
-     * @return Bd 
-     */
     public static function getInstance(): Bd
     {
         if (self::$instance === null)
@@ -34,10 +31,7 @@ class Bd
         }
         return self::$instance;
     }
-
-    /**
-     * @return PDO
-     */
+    // Méthode pour obtenir la connexion PDO
     public function getConnection(): PDO
     {
         return $this->pdo;
