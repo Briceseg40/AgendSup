@@ -97,4 +97,26 @@ class EtudiantDAO
 
         return $etudiant;
     }
+
+    /* Recherche un étudiant par son email */
+     public function findByEmail(string $email): ?Etudiant
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM etudiant WHERE mail = :mail");
+        $stmt->execute([':mail' => $email]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return new Etudiant(
+                $row['id'],
+                $row['Nom'],      
+                $row['Prenom'], 
+                $row['role'],
+                $row['Année'],  
+                $row['date_naissance'],
+                $row['mail'],
+                $row['mdp']
+            );
+        }
+        return null;
+    }
 }

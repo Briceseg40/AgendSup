@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 
 class ControllerFactory
 {
@@ -13,4 +13,3 @@ class ControllerFactory
         return new $controllerName($loader, $twig);
     }
 }
-?> -->

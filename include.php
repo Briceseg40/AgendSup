@@ -2,6 +2,10 @@
 
 require_once 'vendor/autoload.php';
 
+require_once 'modeles/etudiant.dao.php'; 
+
+require_once 'modeles/etudiant.class.php';
+
 require_once 'config/twig.php';
 
 require_once 'config/constantes.php';
