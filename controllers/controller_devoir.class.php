@@ -10,10 +10,14 @@ class ControllerDevoir extends Controller{
     //Afficher
     public function afficher(): void
     {
+        $manager = new DevoirDAO($this->getPdo());
+        $devoir = $manager->findAll();
+        //var_dump($devoir);
         $template = $this->getTwig()->load('devoir/afficher.twig');
 
         echo $template->render([
-            "titre" => "Afficher un devoir"
+            'categories' => $devoir,
+            'menu' => "category" 
         ]);
     }
 

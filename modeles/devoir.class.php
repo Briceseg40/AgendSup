@@ -9,7 +9,7 @@ class Devoir {
     private int $idCours;
 
     //Constructeur
-    public function __construct(?int $id = null, ?string $libelle = null, string $date_a_realiser, string $contenu, int $idCours) {
+    public function __construct(?int $id = null, ?string $libelle = null, ?string $date_a_realiser = null, ?string $contenu = null, ?int $idCours = null) {
         $this->id = $id;
         $this->libelle = $libelle;
         $this->date_a_realiser = $date_a_realiser;

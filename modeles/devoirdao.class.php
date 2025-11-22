@@ -19,6 +19,28 @@ class DevoirDAO {
         $this->pdo = $pdo;
     }
 
+    /** Récupère tous les cours */
+    public function findAll(): array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM devoir");
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $devoir = [];
+        foreach ($results as $row) {
+            $devoir[] = new Devoir(
+                $row['id'],
+                $row['libelle'],
+                $row['date_a_realiser'],
+                $row['contenu'],
+                $row['idCours']
+            );
+        }
+
+        return $devoir;
+    }
+
+
     // Crée un nouveau devoir
     public function create(Devoir $devoir): bool
     {

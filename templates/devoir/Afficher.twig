@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Liste des devoirs{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="public/assets/css/listerDevoir.css">
+{% endblock %}
+
+{% block body %}
+{#  {{dump(categories)}}; #}
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Libellé</th>
+        <th>Date</th>
+        <th>Contenu</th>
+        <th>ID Cours</th>
+    </tr>
+
+    {% for devoirs in categories %}
+        <tr>
+            <td>{{ devoirs.id }}</td>
+            <td>{{ devoirs.libelle }}</td>
+            <td>{{ devoirs.date_a_realiser }}</td>
+            <td>{{ devoirs.contenu }}</td>
+            <td>{{ devoirs.idCours }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
