@@ -1,21 +1,26 @@
 <?php
+session_start();
 
-// Ajout du code commun à toutes les pages
+require_once 'vendor/autoload.php';
 require_once 'include.php';
 
-// Récupération des paramètres GET
-$controllerName = isset($_GET['controleur']) ? $_GET['controleur'] : '';
-$methode = isset($_GET['methode']) ? $_GET['methode'] : '';
+$pdo = Bd::getInstance()->getConnection();
 
-// Page d'accueil par défaut
-if ($controllerName == '' && $methode == '') {
-    $controllerName = 'index';
-    $methode = 'render';
+$loader = new \Twig\Loader\FilesystemLoader('templates');
+$twig = new \Twig\Environment($loader);
+
+$controleurName = $_GET['controleur'] ?? 'connecter';
+$methode = $_GET['methode'] ?? 'connexion';
+
+try {
+    $controller = ControllerFactory::getController($controleurName, $loader, $twig);
+
+    if (method_exists($controller, $methode)) {
+        $controller->$methode();
+    } else {
+        echo "La méthode $methode n'existe pas dans le contrôleur $controleurName";
+    }
+
+} catch (Exception $e) {
+    echo "Erreur : " . $e->getMessage();
 }
-
-// Création du contrôleur
-$controller = ControllerFactory::getController($controllerName, $loader, $twig);
-
-// Appel de la méthode
-$controller->call($methode);
-?>

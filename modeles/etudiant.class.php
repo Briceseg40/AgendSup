@@ -99,7 +99,7 @@ class Etudiant
         return $this->Mdp;
     }
 
-    public function setMdp(?int $Mdp): void
+    public function setMdp(?string $Mdp): void
     {
         $this->Mdp = $Mdp;
     }
