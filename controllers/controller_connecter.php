@@ -40,4 +40,6 @@ class ControllerConnecter extends Controller {
         }
         echo $this->getTwig()->render('connected.html.twig', ['user' => $_SESSION['user']]);
     }
+
+    
 }
