@@ -111,7 +111,7 @@ class EtudiantDAO
                 $row['Nom'],      
                 $row['Prenom'], 
                 $row['role'],
-                $row['Année'],  
+                $row['Annee'],  
                 $row['date_naissance'],
                 $row['mail'],
                 $row['mdp']
