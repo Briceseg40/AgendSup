@@ -24,3 +24,5 @@ try {
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
 }
+
+// http://lakartxela.iutbayonne.univ-pau.fr/~bseguret/SAE3.01/C1-C2/AgendSup/

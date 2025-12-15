@@ -8,6 +8,7 @@ class ControllerRegister extends Controller {
 
     public function createAccount() {
         
+        
     }
 
     public function render() {
