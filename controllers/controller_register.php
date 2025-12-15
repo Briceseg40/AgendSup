@@ -7,25 +7,17 @@ class ControllerRegister extends Controller {
     }
 
     public function register() {
-        // verifier qu'il n'ya pas deja un compte avec cette adresse email
-        // Verifier le mot de passe a au minimum 8 caractere, une majuscule, une minuscule, un chiffre et un caractere special
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
-    // Récupération des données envoyées par le formulaire
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    // Création d'une instance de la classe Utilisateur avec les données du formulaire
     $utilisateur = new Utilisateur($email, $password);
 
     try
     {
-        // Tentative d'inscription
         $utilisateur->inscription();
-
-        // Si l'utilisateur a pu être inscrit en BD, affichage du succès
         echo $this->getTwig()->render('connected.html.twig', ['user' => $_SESSION['user']]);
-
     }
     catch (Exception $e)
     {
