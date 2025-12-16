@@ -110,3 +110,31 @@ header i {
     color: black;
     cursor: pointer;
 }
+
+.volume-bar {
+    background-color: #2c2c2c; /* Couleur sombre du volume */
+    color: white;
+    position: relative;
+}
+.volume-cursor {
+    width: 10px;
+    height: 100%;
+    background-color: white;
+    position: absolute;
+    left: 80%; /* Simule les 80% du volume */
+    top: 0;
+}
+.settings-card {
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+/* Style pour aligner Oui/Non autour du switch */
+.toggle-container {
+    font-family: 'Love Ya Like A Sister', cursive;
+}
+/* Customisation sommaire du switch Bootstrap pour coller au style */
+.form-check-input:checked {
+    background-color: #adb5bd;
+    border-color: #6c757d;
+}
