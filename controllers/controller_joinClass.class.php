@@ -1,14 +1,15 @@
 <?php
-//Il faut hasher le mdp, 
-class ControllerParamClasse extends Controller {
+
+class ControllerJoin extends Controller {
 
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig) {
         parent::__construct($loader, $twig);
     }
 
     public function render() {
-        echo $this->getTwig()->render('createClassAndParam.html.twig');
+       $template = $this->getTwig()->load('joinClass.html.twig');
+       echo $template->render();
     }
-
-    
-}
+} 
+?>
+ 
