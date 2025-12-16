@@ -89,6 +89,7 @@ class EtudiantDAO
                 $row['nom'],
                 $row['prenom'],
                 $row['role'],
+                $row['Annee'],  
                 $row['id_classe'],
                 $row['td'],
                 $row['tp'],
