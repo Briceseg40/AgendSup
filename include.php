@@ -38,7 +38,7 @@ require_once 'controllers/controller_cours.class.php';
 
 require_once 'controllers/controller_classe.class.php';
 
-//require_once 'controllers/controller_joinServer.class.php';
+require_once 'controllers/controller_joinServer.class.php';
 
 require_once 'controllers/controller_devoir.class.php';
 
@@ -46,4 +46,4 @@ require_once 'controllers/controller_factory.php';
 
 require_once 'controllers/controller_register.php';
 
-//require_once 'controllers/controller_forgetpasseword.php';
+require_once 'controllers/controller_forgetpasseword.php';
