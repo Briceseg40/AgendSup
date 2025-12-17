@@ -12,6 +12,6 @@ Le projet est déployé sur les serveurs de l'IUT (Lakartxela).
 
 ## API
 Voici des api à installer : 
-- **Full Calendar : ** npm install fullcalendar
+- **Full Calendar :** npm install fullcalendar
 
 [Accéder à AgendSup](http://lakartxela.iutbayonne.univ-pau.fr/~votre-nom-utilisateur/SAE3.01/C1-C2/AgendSup/)
