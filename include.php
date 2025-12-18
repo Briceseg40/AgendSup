@@ -46,6 +46,6 @@ require_once 'controllers/controller_factory.php';
 
 require_once 'controllers/controller_register.php';
 
-require_once 'controllers/controller_forgetpasseword.php';
+//require_once 'controllers/controller_forgetpasseword.php';
 
 require_once 'controllers/controller_param_classe.class.php';

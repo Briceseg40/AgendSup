@@ -36,7 +36,8 @@ class DevoirDAO {
                 $row['heure_deb'],
                 $row['heure_fin'],
                 $row['contenu'],
-                $row['idCours']
+                $row['idCours'],
+                $row['idClasse']
             );
         }
 
