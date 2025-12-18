@@ -2,9 +2,6 @@
 
 {% block title %}AgendSup - Liste des devoirs{% endblock %}
 
-{% block stylesheets %}
-    {# Tes styles ici #}
-{% endblock %}
 
 {% block body %}
 <script>
@@ -18,6 +15,7 @@
             nowIndicator: true,
             contentHeight: 450,
             locale: 'fr',
+            backgoundColor: '#808080',
             headerToolbar: {
                 left: '',
                 center: 'title prev next today',
@@ -26,8 +24,19 @@
              
             events: 'index.php?controleur=devoir&methode=api_events',
 
-            color : '',
+            eventDidMount: function (info) {
+            const description = info.event.extendedProps.description;
+            if (!description) return;
 
+                new bootstrap.Popover(info.el, {
+                title: info.event.title,
+                content: description,
+                trigger: 'hover focus',
+                placement: 'top',
+                html: true,
+                container: 'body'
+                 });
+            },
 
             eventSourceFailure: function() {
             alert("Erreur : Impossible de charger les données depuis l'API.");
