@@ -26,14 +26,15 @@
              
             events: 'index.php?controleur=devoir&methode=api_events',
 
+            color : '',
+
 
             eventSourceFailure: function() {
             alert("Erreur : Impossible de charger les données depuis l'API.");
             },
-
             // Optionnel : s'assurer que les dates s'affichent même si l'heure est absente
             displayEventTime: true,
-            eventTextColor: 'white'
+            eventTextColor: 'white',
         });
         
         calendar.render();

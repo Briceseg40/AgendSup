@@ -9,11 +9,12 @@ class Devoir {
     private string $heure_deb;
     private string $heure_fin;
     private string $contenu;
+    private string $couleur;
     private int $idCours;
     private int $idClasse;
 
     //Constructeur
-    public function __construct(?int $id = null, ?string $libelle = null, ?string $date_deb = null,?string $date_fin = null,?string $heure_deb = null,?string $heure_fin = null, ?string $contenu = null, ?int $idCours = null, ?int $idClasse = null) {
+    public function __construct(?int $id = null, ?string $libelle = null, ?string $date_deb = null,?string $date_fin = null,?string $heure_deb = null,?string $heure_fin = null, ?string $contenu = null, ?string $couleur = null, ?int $idCours = null, ?int $idClasse = null) {
         $this->id = $id;
         $this->libelle = $libelle;
         $this->date_deb = $date_deb;
@@ -21,6 +22,7 @@ class Devoir {
         $this->heure_deb = $heure_deb;
         $this->heure_fin = $heure_fin;
         $this->contenu = $contenu;  
+        $this->couleur = $couleur;
         $this->idCours = $idCours;
         $this->idClasse = $idClasse;
     }
@@ -71,7 +73,7 @@ class Devoir {
         return $this->heure_deb;
     }
 
-    public function setHeureFin(string $heure_deb): void
+    public function setHeureDeb(string $heure_deb): void
     {
         $this->heure_deb = $heure_deb;
     }
@@ -98,6 +100,18 @@ class Devoir {
         $this->contenu = $contenu;
     }
 
+
+    public function setCouleur(string $couleur): void
+    {
+        $this->couleur = $couleur;
+    }
+
+    public function getCouleur(): string
+    {
+        return $this->couleur;
+    }
+
+  
     public function getIdCours(): int
     {
         return $this->idCours;
@@ -120,6 +134,6 @@ class Devoir {
 
     //Méthode usuelles
     public function __toString(): string {
-        return "Devoir [id={$this->id}, libelle={$this->libelle}, date_deb={$this->date_deb}, date_fin={$this->date_fin},heure_deb={$this->heure_deb},date_fin={$this->date_fin},contenu={$this->contenu}, idCours={$this->idCours}, idClasse={$this->idClasse}]";
+        return "Devoir [id={$this->id}, libelle={$this->libelle}, date_deb={$this->date_deb}, date_fin={$this->date_fin},heure_deb={$this->heure_deb},date_fin={$this->date_fin},contenu={$this->contenu}, couleur={$this->couleur}, idCours={$this->idCours}, idClasse={$this->idClasse}]";
     }
 }

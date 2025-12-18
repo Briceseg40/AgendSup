@@ -36,6 +36,7 @@ class DevoirDAO {
                 $row['heure_deb'],
                 $row['heure_fin'],
                 $row['contenu'],
+                $row['Couleur'],
                 $row['idCours'],
                 $row['idClasse']
             );
@@ -57,7 +58,9 @@ class DevoirDAO {
             ':heure_deb' => $devoir->getHeureDeb(),
             ':heure_fin' => $devoir->getHeureFin(),
             ':contenu' => $devoir->getContenu(),
-            ':idCours' => $devoir->getIdCours()
+            ':couleur' => $devoir->getCouleur(),
+            ':idCours' => $devoir->getIdCours(),
+            ':idClasse' => $devoir->getIdClasse()
         ]);
     }
 
@@ -93,7 +96,9 @@ class DevoirDAO {
             ':heure_deb' => $devoir->getHeureDeb(),
             ':heureFin' => $devoir->getHeureFin(),
             ':contenu' => $devoir->getContenu(),
+            ':couleur' => $devoir->getCouleur(),
             ':idCours' => $devoir->getIdCours(),
+            ':idClasse' => $devoir->getIdClasse(),
             ':id' => $devoir->getId()
         ]);
     }
@@ -122,7 +127,9 @@ class DevoirDAO {
                 $data['heure_deb'],
                 $data['heure_fin'],
                 $data['contenu'],
-                (int)$data['idCours']
+                $data['couleur'],
+                (int)$data['idCours'],
+                (int)$data['idClasse']
             );
         }
         return $result;

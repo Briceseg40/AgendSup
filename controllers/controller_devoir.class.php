@@ -81,7 +81,8 @@ class ControllerDevoir extends Controller{
                 'title' => $d->getLibelle(),
                 'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb() . ':00',
                 'end'   => $d->getDatefin() . 'T' . $d->getHeureFin() . ':00',
-                'description' => $d->getContenu()
+                'description' => $d->getContenu(),
+                'color' => $d->getCouleur()
             ];
             
         }
