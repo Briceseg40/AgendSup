@@ -31,7 +31,10 @@ class DevoirDAO {
             $devoir[] = new Devoir(
                 $row['id'],
                 $row['libelle'],
-                $row['date_a_realiser'],
+                $row['date_deb'],
+                $row['date_fin'],
+                $row['heure_deb'],
+                $row['heure_fin'],
                 $row['contenu'],
                 $row['idCours']
             );
@@ -48,7 +51,10 @@ class DevoirDAO {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':libelle' => $devoir->getLibelle(),
-            ':date_a_realiser' => $devoir->getDateARealiser(),
+            ':date_deb' => $devoir->getDateDeb(),
+            ':date_fin' => $devoir->getDatefin(),
+            ':heure_deb' => $devoir->getHeureDeb(),
+            ':heure_fin' => $devoir->getHeureFin(),
             ':contenu' => $devoir->getContenu(),
             ':idCours' => $devoir->getIdCours()
         ]);
@@ -81,7 +87,10 @@ class DevoirDAO {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':libelle' => $devoir->getLibelle(),
-            ':date_a_realiser' => $devoir->getDateARealiser(),
+            ':date_deb' => $devoir->getDateDeb(),
+            ':date_fin' => $devoir->getDateFin(),
+            ':heure_deb' => $devoir->getHeureDeb(),
+            ':heureFin' => $devoir->getHeureFin(),
             ':contenu' => $devoir->getContenu(),
             ':idCours' => $devoir->getIdCours(),
             ':id' => $devoir->getId()
@@ -107,7 +116,10 @@ class DevoirDAO {
             $result[] = new Devoir(
                 (int)$data['id'],
                 $data['libelle'],
-                $data['date_a_realiser'],
+                $data['date_deb'],
+                $data['date_fin'],
+                $data['heure_deb'],
+                $data['heure_fin'],
                 $data['contenu'],
                 (int)$data['idCours']
             );

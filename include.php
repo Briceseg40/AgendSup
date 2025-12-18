@@ -38,7 +38,7 @@ require_once 'controllers/controller_cours.class.php';
 
 require_once 'controllers/controller_classe.class.php';
 
-//require_once 'controllers/controller_joinClass.class.php';
+//require_once 'controllers/controller_joinServer.class.php';
 
 require_once 'controllers/controller_devoir.class.php';
 
