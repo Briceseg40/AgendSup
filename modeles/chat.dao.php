@@ -1,24 +1,49 @@
 <?php
-
+/**
+ * @file    chat.dao.php
+ * @author  Rémi Montignac
+ * @brief   Définit la classe ChatDAO pour gérer les opérations sur les chtas dans la base de données.
+ * @version 0.1
+ * @date    19/12/2025
+ */
 class ChatDAO
 {
+    /**
+     * @brief Instance de PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * @brief Constructeur de la classe ChatDAO.
+     * @param PDO|null $pdo Instance de PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @brief Obtient l'instance de PDO.
+     * @return PDO|null Instance de PDO.
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
 
+    /**
+     * @brief Définit l'instance de PDO.
+     * @param PDO|null $pdo Instance de PDO.
+     */
     public function setPdo(?PDO $pdo): void
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @brief Récupère tous les chats de la base de données.
+     * @return Chat[] Tableau d'objets Chat.
+     */
     public function findAll(): array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM chat ORDER BY id");
@@ -36,6 +61,11 @@ class ChatDAO
         return $chats;
     }
 
+    /**
+     * @brief Récupère un chat par son identifiant.
+     * @param int $id_chat Identifiant du chat.
+     * @return Chat|null Objet Chat ou null si non trouvé.
+     */
     public function findById(int $id_chat): ?Chat
     {
         $stmt = $this->pdo->prepare("SELECT * FROM chat WHERE id = :id");
@@ -53,6 +83,11 @@ class ChatDAO
         return null;
     }
 
+    /**
+     * @brief Récupère tous les chats où un utilisateur a parlé.
+     * @param int[] $userIds Tableau des identifiants des utilisateurs.
+     * @return Chat[] Tableau d'objets Chat.
+     */
     public function findChatsOuUtilisateurAParle(array $userIds): array
     {
         $userIds = array_values(array_unique($userIds));
@@ -88,7 +123,11 @@ class ChatDAO
     }
 
 
-
+    /*     
+     * @brief Ajoute un nouveau chat à la base de données.
+     * @param Chat $chat Objet Chat à ajouter.
+     * @return bool Vrai si l'ajout a réussi, faux sinon.
+     */
     public function ajouter(Chat $chat): bool
     {
         $sql = "INSERT INTO chat (id, nom) VALUES (:id, :nom)";
@@ -102,6 +141,11 @@ class ChatDAO
         return $stmt->execute();
     }
 
+    /*     
+     * @brief Modifie un chat existant dans la base de données.
+     * @param Chat $chat Objet Chat à modifier.
+     * @return bool Vrai si la modification a réussi, faux sinon.
+     */
     public function modifier(Chat $chat): bool
     {
         $sql = "UPDATE chat SET nom = :nom WHERE id = :id";
@@ -115,6 +159,11 @@ class ChatDAO
         return $stmt->execute();
     }
 
+    /*     
+     * @brief Supprime un chat de la base de données.
+     * @param int $id_chat Identifiant du chat à supprimer.
+     * @return bool Vrai si la suppression a réussi, faux sinon.
+     */
     public function supprimer(int $id_chat): bool
     {
         $sql = "DELETE FROM chat WHERE id = :id";

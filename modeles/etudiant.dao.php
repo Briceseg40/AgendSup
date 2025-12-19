@@ -1,25 +1,47 @@
 <?php
-
+/**
+ * @file    etudiant.dao.php
+ * @author  R
+ * Guénolé Mourzelas
+ * @brief   Définit la classe EtudiantDAO pour gérer les opérations sur les étudiants dans la base de données.
+ * @version 0.1
+ * @date    19/12/2025
+ */
 class EtudiantDAO
 {
+    /**
+     * Instance de PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe EtudiantDAO.
+     * @param PDO|null $pdo Instance de PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Obtient l'instance de PDO.
+     * @return PDO|null Instance de PDO.
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
 
+    /**
+     * Définit l'instance de PDO.
+     * @param PDO|null $pdo Instance de PDO.
+     */
     public function setPdo(?PDO $pdo): void
     {
         $this->pdo = $pdo;
     }
 
-    /** Récupère tous les étudiants */
+
     public function findAll(): array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM etudiant");
@@ -43,7 +65,11 @@ class EtudiantDAO
         return $etudiant;
     }
 
-    /** Recherche un etudiant par son ID */
+    /**
+     * Récupère un étudiant par son identifiant.
+     * @param int $id_etudiant Identifiant de l'étudiant.
+     * @return Etudiant|null Objet Etudiant ou null si non trouvé.
+     */
     public function findById(int $id_etudiant): ?Etudiant
     {
         $stmt = $this->pdo->prepare("SELECT * FROM etudiant WHERE id = :id");
@@ -67,7 +93,11 @@ class EtudiantDAO
         return null;
     }
 
-    /** Récupère tous les étudiants liés à une classe */
+    /**
+     * Récupère les étudiants par classe.
+     * @param int $id_class Identifiant de la classe.
+     * @return EtudiantDAO[] Tableau d'objets EtudiantDAO.
+     */
     public function findByClasse(int $id_class): array
     {
         $sql = "
@@ -99,7 +129,11 @@ class EtudiantDAO
         return $etudiant;
     }
 
-    /* Recherche un étudiant par son email */
+    /**
+     * Récupère les étudiants par mail.
+     * @param string $email email de l'étidiant.
+     * @return EtudiantDAO[] Tableau d'objets EtudiantDAO.
+     */
      public function findByEmail(string $email): ?Etudiant
     {
         $stmt = $this->pdo->prepare("SELECT * FROM etudiant WHERE mail = :mail");

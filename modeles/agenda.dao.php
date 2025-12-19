@@ -1,24 +1,50 @@
 <?php
 
+/**
+ * @file    agenda.dao.php
+ * @author  Rémi Bouillon
+ * @brief   Définit la classe AgendaDAO pour gérer les opérations sur les agendas dans la base de données.
+ * @version 0.1
+ * @date    19/12/2025
+ */
 class AgendaDAO
 {
+    /**
+     * @brief Instance de PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * @brief Constructeur de la classe AgendaDAO.
+     * @param PDO|null $pdo Instance de PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @brief Obtient l'instance de PDO.
+     * @return PDO|null Instance de PDO.
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
 
+    /**
+     * @brief Définit l'instance de PDO.
+     * @param PDO|null $pdo Instance de PDO.
+     */
     public function setPdo(?PDO $pdo): void
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @brief Récupère tous les agendas de la base de données.
+     * @return Agenda[] Tableau d'objets Agenda.
+     */
     public function findAll(): array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM agenda ORDER BY id");
