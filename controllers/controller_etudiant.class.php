@@ -1,6 +1,14 @@
 <?php
 
-
+/**
+* @file    controller_etudiant.class.php
+* @author  Guénolé Mourzelas
+* @brief   Contrôleur gérant les opérations liées aux étudiants.
+* @details Il permet d'afficher, lister, créer, modifier et supprimer
+* des étudiants en s'appuyant sur le moteur de templates Twig.
+* @version 0.1
+* @date    19/12/2025
+ */
 class ControllerEtudiant extends Controller
 {
 public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
