@@ -54,9 +54,9 @@ class ControllerDevoir extends Controller{
     public function supprimer(): void
     {
         $template = $this->getTwig()->load('devoir/supprimer.twig');
-
+        
         echo $template->render([
-            "titre" => "Supprimer un devoir"
+                "titre" => "Supprimer un devoir"
         ]);
     }
 
@@ -73,7 +73,7 @@ class ControllerDevoir extends Controller{
         foreach ($devoirs as $d) {
             $dateDeb = $d->getDateDeb();
             if (!$dateDeb || $dateDeb === '0000-00-00') {
-                continue; // MVC propre : on ignore les données invalides
+                continue;
             }
     
             $events[] = [

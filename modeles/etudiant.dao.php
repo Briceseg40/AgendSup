@@ -34,7 +34,6 @@ class EtudiantDAO
                 $row['prenom'],
                 $row['role'],
                 $row['annee'],
-                $row['dateNaissance'],
                 $row['mail'],
                 $row['mdp'],
             );
@@ -58,7 +57,6 @@ class EtudiantDAO
                 $row['prenom'],
                 $row['role'],
                 $row['annee'],
-                $row['dateNaissance'],
                 $row['mail'],
                 $row['mdp'],
             );
@@ -113,7 +111,6 @@ class EtudiantDAO
                 $row['Prenom'], 
                 $row['role'],
                 $row['Annee'],  
-                $row['date_naissance'],
                 $row['mail'],
                 $row['mdp']
             );

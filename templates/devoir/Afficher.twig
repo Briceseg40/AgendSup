@@ -50,7 +50,20 @@
     });
 </script>
 
+{% if session.user and session.user.role == 'delegue' %}
+    <div class="mb-3 text-end">
+         <a href="index.php?controleur=devoir&methode=creer" class="btn btn-primary">
+            ➕ Ajouter un devoir
+        </a>
+    </div>
+{% endif %}
+
+
 <div class="container mt-4">
     <div id='calendar'></div>
 </div>
+
+
+
+
 {% endblock %}
