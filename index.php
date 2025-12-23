@@ -1,8 +1,12 @@
 <?php
-session_start();
 
 require_once 'vendor/autoload.php';
-require_once 'include.php';
+
+require_once 'modeles/etudiant.class.php';
+
+session_start();
+
+require_once 'include.php'; 
 
 $pdo = Bd::getInstance()->getConnection();
 

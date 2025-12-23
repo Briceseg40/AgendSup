@@ -8,17 +8,23 @@ class ControllerDevoir extends Controller{
 
     //Afficher
     public function afficher(): void
-    {
-        $manager = new DevoirDAO($this->getPdo());
-        $devoir = $manager->findAll();
-        //var_dump($devoir);
-        $template = $this->getTwig()->load('devoir/afficher.twig');
-
-        echo $template->render([
-            'categories' => $devoir,
-            'menu' => "category" 
-        ]);
+{
+    if (!isset($_SESSION['user'])) {
+        header('Location: index.php?controleur=connecter&methode=connexion');
+        exit();
     }
+
+    $user = $_SESSION['user'];
+    $manager = new DevoirDAO($this->getPdo());
+    
+    // On passe l'ID de la classe de l'utilisateur connecté
+    $devoirs = $manager->findByClasse($user->getIdClasse()); 
+
+    echo $this->getTwig()->render('devoir/Afficher.twig', [
+        'devoirs' => $devoirs,
+        'session' => $_SESSION
+    ]);
+}
 
     //Lister
     public function lister(): void
@@ -65,31 +71,44 @@ class ControllerDevoir extends Controller{
     {
         if (ob_get_length()) ob_clean();
     
+        // 1. Vérification de la session
+        if (!isset($_SESSION['user'])) {
+            echo json_encode([]);
+            exit;
+        }
+    
+        $user = $_SESSION['user'];
+        
+        // 2. Récupération sécurisée de l'ID de classe
+        // On utilise l'ID de l'étudiant connecté pour filtrer les devoirs
+        $idClasse = $user->getIdClasse(); 
+    
+        if (!$idClasse) {
+            echo json_encode([]);
+            exit;
+        }
+    
         $manager = new DevoirDAO($this->getPdo());
-        $devoirs = $manager->findAll();
+        
+        // 3. Passage du paramètre au DAO
+        $devoirs = $manager->findByClasse($idClasse); 
     
         $events = [];
-    
         foreach ($devoirs as $d) {
-            $dateDeb = $d->getDateDeb();
-            if (!$dateDeb || $dateDeb === '0000-00-00') {
-                continue;
-            }
-    
             $events[] = [
                 'id'    => $d->getId(),
                 'title' => $d->getLibelle(),
-                'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb() . ':00',
-                'end'   => $d->getDatefin() . 'T' . $d->getHeureFin() . ':00',
-                'description' => $d->getContenu(),
+                'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb(),
+                'end'   => $d->getDatefin() . 'T' . $d->getHeureFin(),
+                'extendedProps' => [
+                    'description' => $d->getContenu()
+                ],
                 'color' => $d->getCouleur()
             ];
-            
         }
     
         header('Content-Type: application/json');
         echo json_encode($events);
         exit;
-    }
-    
+    }    
 }

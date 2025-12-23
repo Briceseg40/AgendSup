@@ -36,6 +36,7 @@ class EtudiantDAO
                 $row['annee'],
                 $row['mail'],
                 $row['mdp'],
+                $row['idClasse']
             );
         }
 
@@ -59,6 +60,7 @@ class EtudiantDAO
                 $row['annee'],
                 $row['mail'],
                 $row['mdp'],
+                $row['idClasse']
             );
         }
 
@@ -88,7 +90,7 @@ class EtudiantDAO
                 $row['prenom'],
                 $row['role'],
                 $row['Annee'],  
-                $row['id_classe'],
+                $row['idClasse'],
                 $row['td'],
                 $row['tp'],
             );
@@ -112,7 +114,8 @@ class EtudiantDAO
                 $row['role'],
                 $row['Annee'],  
                 $row['mail'],
-                $row['mdp']
+                $row['mdp'],
+                $row['idClasse']
             );
         }
         return null;

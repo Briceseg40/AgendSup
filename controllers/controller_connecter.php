@@ -16,7 +16,7 @@ class ControllerConnecter extends Controller {
             $etudiant = $etudiantDAO->findByEmail($email);
 
             if ($etudiant && $password === $etudiant->getMdp()) {
-                $_SESSION['user'] = $etudiant;
+                $_SESSION['user'] = $etudiant; //
                 header('Location: index.php?controleur=connecter&methode=render');
                 exit();
             } else {
@@ -28,18 +28,21 @@ class ControllerConnecter extends Controller {
     }
 
     public function deconnexion() {
-        session_destroy();
+        session_destroy(); //
         header('Location: index.php?controleur=connecter&methode=connexion');
         exit();
     }
 
+    // TA CORRECTION EST ICI :
     public function render() {
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
-        echo $this->getTwig()->render('connected.html.twig', ['user' => $_SESSION['user']]);
-    }
 
-    
+        // L'instruction echo doit impérativement être dans une fonction
+        echo $this->getTwig()->render('connected.html.twig', [
+            'user' => $_SESSION['user']
+        ]);
+    }
 }

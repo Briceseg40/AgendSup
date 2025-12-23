@@ -20,15 +20,19 @@ class DevoirDAO {
     }
 
     /** Récupère tous les cours */
-    public function findAll(): array
+    public function findByClasse(int $idClasse): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM devoir");
-        $stmt->execute();
+        // On prépare la requête avec le marqueur :idClasse
+        $stmt = $this->pdo->prepare("SELECT * FROM devoir WHERE idClasse = :idClasse");
+        
+        // CORRECTION : Il faut passer la valeur dans un tableau au moment du execute()
+        $stmt->execute([':idClasse' => $idClasse]); 
+        
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $devoir = [];
+    
+        $devoirs = [];
         foreach ($results as $row) {
-            $devoir[] = new Devoir(
+            $devoirs[] = new Devoir(
                 $row['id'],
                 $row['libelle'],
                 $row['date_deb'],
@@ -41,8 +45,8 @@ class DevoirDAO {
                 $row['idClasse']
             );
         }
-
-        return $devoir;
+    
+        return $devoirs;
     }
 
 
