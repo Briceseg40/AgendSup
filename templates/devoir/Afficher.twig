@@ -50,10 +50,10 @@
     });
 </script>
 
-{% if session.user and session.user.role == 'delegue' %}
+{% if session.user is defined and session.user.role == 'delegue' %}
     <div class="mb-3 text-end">
-         <a href="index.php?controleur=devoir&methode=creer" class="btn btn-primary">
-            ➕ Ajouter un devoir
+        <a href="index.php?controleur=devoir&methode=creer" class="btn btn-primary">
+            <i class="fas fa-plus"></i> ➕ Ajouter un devoir
         </a>
     </div>
 {% endif %}

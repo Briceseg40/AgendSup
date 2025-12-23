@@ -16,10 +16,6 @@ require_once "modeles/cours.class.php";
 
 require_once "modeles/cours.dao.php";
 
-require_once "modeles/agenda.class.php";
-
-require_once "modeles/agenda.dao.php";
-
 require_once "modeles/classe.class.php";
 
 require_once "modeles/classe.dao.php";
