@@ -20,26 +20,16 @@ class ControllerDevoir extends Controller{
     // On passe l'ID de la classe de l'utilisateur connecté
     $devoirs = $manager->findByClasse($user->getIdClasse()); 
 
-    echo $this->getTwig()->render('devoir/Afficher.twig', [
+    echo $this->getTwig()->render('AfficherDevoir.twig', [
         'devoirs' => $devoirs,
         'session' => $_SESSION
     ]);
 }
 
-    //Lister
-    public function lister(): void
-    {
-        $template = $this->getTwig()->load('devoir/lister.twig');
-
-        echo $template->render([
-            "titre" => "Liste des devoirs"
-        ]);
-    }
-
     //Creer
     public function creer(): void
     {
-        $template = $this->getTwig()->load('devoir/creer.twig');
+        $template = $this->getTwig()->load('creerDevoir.twig');
 
         echo $template->render([
             "titre" => "Créer un devoir"
@@ -49,7 +39,7 @@ class ControllerDevoir extends Controller{
     //Modifier
     public function modifier(): void
     {
-        $template = $this->getTwig()->load('devoir/modifier.twig');
+        $template = $this->getTwig()->load('modifierDevoir.twig');
 
         echo $template->render([
             "titre" => "Modifier un devoir"
@@ -59,7 +49,7 @@ class ControllerDevoir extends Controller{
     //Supprimer
     public function supprimer(): void
     {
-        $template = $this->getTwig()->load('devoir/supprimer.twig');
+        $template = $this->getTwig()->load('supprimerDevoir.twig');
         
         echo $template->render([
                 "titre" => "Supprimer un devoir"
