@@ -30,11 +30,11 @@ class EtudiantDAO
         foreach ($results as $row) {
             $etudiant[] = new Etudiant(
                 $row['id'],
-                $row['nom'],
-                $row['prenom'],
+                $row['Nom'],
+                $row['Prenom'],
                 $row['role'],
-                $row['annee'],
-                $row['dateNaissance'],
+                $row['Annee'],
+                $row['idClasse'],
                 $row['mail'],
                 $row['mdp'],
             );
@@ -54,11 +54,11 @@ class EtudiantDAO
         if ($row) {
             return new Etudiant(
                 $row['id'],
-                $row['nom'],
-                $row['prenom'],
+                $row['Nom'],
+                $row['Prenom'],
                 $row['role'],
-                $row['annee'],
-                $row['dateNaissance'],
+                $row['Annee'],
+                $row['idClasse'],
                 $row['mail'],
                 $row['mdp'],
             );
@@ -113,11 +113,33 @@ class EtudiantDAO
                 $row['Prenom'], 
                 $row['role'],
                 $row['Annee'],  
-                $row['date_naissance'],
+                $row['idClasse'],
                 $row['mail'],
                 $row['mdp']
             );
         }
         return null;
+    }
+
+    /** Insère un nouvel étudiant */
+    public function insert(Etudiant $etudiant): bool
+    {
+        $nom = $etudiant->getNom();
+        $prenom = $etudiant->getPrenom();
+        $role = $etudiant->getRole();
+        $annee = $etudiant->getAnnee();
+        $idClasse = $etudiant->getIdClasse();
+        $mail = $etudiant->getMail();
+        $hashedMdp = password_hash($etudiant->getMdp(), PASSWORD_DEFAULT);
+
+        $stmt = $this->pdo->prepare("INSERT INTO etudiant (Nom, Prenom, role, Annee, idClasse, mail, mdp) VALUES (:nom, :prenom, :role, :annee, :idClasse, :mail, :mdp)");
+        $stmt->bindParam(':nom', $nom);
+        $stmt->bindParam(':prenom', $prenom);
+        $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':annee', $annee);
+        $stmt->bindParam(':idClasse', $idClasse);
+        $stmt->bindParam(':mail', $mail);
+        $stmt->bindParam(':mdp', $hashedMdp);
+        return $stmt->execute();
     }
 }
