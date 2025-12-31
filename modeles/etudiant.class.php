@@ -8,18 +8,19 @@ class Etudiant
     private string|null $Prenom;
     private string|null $role;
     private int|null $Annee;
-    private string|null $DateNaissance;
+    private int|null $idClasse;
     private string|null $Mail;
     private string|null $Mdp;
     private int|null $idClasse;
 
-    public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?string $Mail = null, ?string $Mdp = null, ?int $idClasse = null)
+    public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?int $idClasse = null, ?string $Mail = null, ?string $Mdp = null)
     {
         $this->setId($id);
         $this->setNom($Nom);
         $this->setPrenom($Prenom);
         $this->setRole($role);
         $this->setAnnee($Annee);
+        $this->setIdClasse($idClasse);
         $this->setMail($Mail);
         $this->setMdp($Mdp);
         $this->setIdClasse($idClasse);
@@ -73,6 +74,16 @@ class Etudiant
     public function setAnnee(?int $Annee): void
     {
         $this->Annee = $Annee;
+    }
+
+    public function getIdClasse(): ?int
+    {
+        return $this->idClasse;
+    }
+
+    public function setIdClasse(?int $idClasse): void
+    {
+        $this->idClasse = $idClasse;
     }
     
     public function getMail(): ?string
