@@ -10,8 +10,7 @@ class Etudiant
     private int|null $Annee;
     private int|null $idClasse;
     private string|null $Mail;
-    private string|null $Mdp;
-    private int|null $idClasse;
+    private string|null $Mdp;   
 
     public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?int $idClasse = null, ?string $Mail = null, ?string $Mdp = null)
     {
@@ -56,9 +55,9 @@ class Etudiant
         $this->Prenom = $Prenom;
     }
     
-    public function getRole(): ?array
+    public function getRole(): ?string
     {
-        return [$this->role];
+        return $this->role;
     }
 
     public function setRole(?string $role): void
@@ -74,16 +73,6 @@ class Etudiant
     public function setAnnee(?int $Annee): void
     {
         $this->Annee = $Annee;
-    }
-
-    public function getIdClasse(): ?int
-    {
-        return $this->idClasse;
-    }
-
-    public function setIdClasse(?int $idClasse): void
-    {
-        $this->idClasse = $idClasse;
     }
     
     public function getMail(): ?string
