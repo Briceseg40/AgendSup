@@ -39,8 +39,13 @@ body {
 }
 
 .text-btn{
-    font-size: 24px;
+    font-size: 24px !important;
     text-transform: uppercase;
+    
+}
+
+.mt-40 {
+    margin-top: 40px;
 }
 .titre {
     font-family: 'Love Ya Like A Sister';
@@ -49,7 +54,7 @@ body {
 }
 
 .fs-20 {
-    font-size: 20px;
+    font-size: 20px !important;
 }
 
 .fs-50 {

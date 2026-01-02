@@ -1,6 +1,6 @@
 <?php
 
-
+#[\AllowDynamicProperties]
 class Etudiant
 {
     private int|null $id;

@@ -33,14 +33,12 @@ class ControllerConnecter extends Controller {
         exit();
     }
 
-    // TA CORRECTION EST ICI :
     public function render() {
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
 
-        // L'instruction echo doit impérativement être dans une fonction
         echo $this->getTwig()->render('connected.html.twig', [
             'user' => $_SESSION['user']
         ]);
