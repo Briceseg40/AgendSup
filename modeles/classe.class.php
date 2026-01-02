@@ -6,13 +6,13 @@ class Classe
     private ?string $img;
     private ?string $titre;
     private ?string $description;
-    private ?string $TD;
-    private ?string $TP;
+    private ?int $TD;
+    private ?int $TP;
     private ?int $idEtudiant;
     private ?int $annee;
     private ?string $formation;
 
-    public function __construct(?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?string $TD = null, ?string $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $formation = null)
+    public function __construct(?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?int $TD = null, ?int $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $formation = null)
     {
         $this->setId($id);
         $this->setImage($img);
@@ -63,22 +63,22 @@ class Classe
         $this->description = $description;
     }
 
-    public function getTD(): ?string
+    public function getTD(): ?int
     {
         return $this->TD;
     }
 
-    public function setTD(?string $TD): void
+    public function setTD(?int $TD): void
     {
         $this->TD = $TD;
     }
 
-    public function getTP(): ?string
+    public function getTP(): ?int
     {
         return $this->TP;
     }
 
-    public function setTP(?string $TP): void
+    public function setTP(?int $TP): void
     {
         $this->TP = $TP;
     }
