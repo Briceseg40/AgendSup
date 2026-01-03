@@ -22,7 +22,6 @@ class Etudiant
         $this->setIdClasse($idClasse);
         $this->setMail($Mail);
         $this->setMdp($Mdp);
-        $this->setIdClasse($idClasse);
     }
 
     public function getId(): ?int

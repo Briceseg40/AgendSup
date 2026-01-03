@@ -11,8 +11,9 @@ class Classe
     private ?int $idEtudiant;
     private ?int $annee;
     private ?string $formation;
+    private ?string $code;
 
-    public function __construct(?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?int $TD = null, ?int $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $formation = null)
+    public function __construct(?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?int $TD = null, ?int $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $formation = null, ?string $code = null)
     {
         $this->setId($id);
         $this->setImage($img);
@@ -23,6 +24,7 @@ class Classe
         $this->setIdEtudiant($idEtudiant);
         $this->setAnnee($annee);
         $this->setFormation($formation);
+        $this->setCode($code);
     }
     public function getImage(): ?string
     {
@@ -111,5 +113,15 @@ class Classe
     public function setFormation(?string $formation): void
     {
         $this->formation = $formation;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
     }
 }

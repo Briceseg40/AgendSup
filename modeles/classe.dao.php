@@ -24,7 +24,8 @@ class ClasseDAO {
                 $row['TP'],
                 $row['idEtudiant'],
                 $row['annee'],
-                $row['formation']
+                $row['formation'],
+                $row['code']
             );
         }
 
@@ -48,11 +49,51 @@ class ClasseDAO {
                 $row['TP'],
                 $row['idEtudiant'],
                 $row['annee'],
-                $row['formation']
+                $row['formation'],
+                $row['code']
             );
         }
 
         return $classes;
+    }
+
+     public function findCode(string $code): ?Classe
+{
+    $sql = "SELECT * FROM classe WHERE code = :code";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([':code' => $code]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        return new Classe(
+            $row['id'],
+            $row['img'],
+            $row['titre'],
+            $row['description'],
+            $row['TD'],
+            $row['TP'],
+            $row['idEtudiant'],
+            $row['annee'],
+            $row['formation'],
+            $row['code']
+        );
+    }
+    return null;
+}
+
+
+    public function create(Classe $classe): void {
+        $sql = "INSERT INTO classe (img, titre, description, idEtudiant, annee, formation, code) VALUES (:img, :titre, :description, :idEtudiant, :annee, :formation, :code)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':img' => $classe->getImage(),
+            ':titre' => $classe->getTitre(),
+            ':description' => $classe->getDescription(),
+            ':idEtudiant' => $classe->getIdEtudiant(),
+            ':annee' => $classe->getAnnee(),
+            ':formation' => $classe->getFormation(),
+            ':code' => $classe->getCode()
+        ]);
     }
 }
 ?>

@@ -292,7 +292,7 @@ header i {
 }
 
 .image-option-container.selected img {
-    border: 3px solid black !important;
+    border: 3px solid red !important;
     background-color: #e9ecef;
 }
 
