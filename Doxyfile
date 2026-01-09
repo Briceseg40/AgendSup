@@ -11,7 +11,7 @@ EXTRACT_STATIC         = YES
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 
-INPUT = . ./docs/mainpage.dox
+INPUT = . mainpage.dox
 
 OUTPUT_LANGUAGE = French
 GENERATE_TREEVIEW = YES

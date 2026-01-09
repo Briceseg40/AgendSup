@@ -6,10 +6,9 @@
  * AgendSup est une application web de gestion d'agenda pour le BUT Informatique.
  *
  * ## Fonctionnalités
- *
  * - Consultation des cours
  * - Gestion des devoirs
- * - Gestion des cours de révision
+ * - Gestion des sessions de révision
  * - Communication entre étudiants
  *
  * ## Comment utiliser la doc
