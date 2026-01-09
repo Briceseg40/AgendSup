@@ -4,7 +4,7 @@
  * @file controller_register.php
  * @brief Contrôleur pour la gestion de la page d'inscription.
  *
- * Ce contrôleur permet d'afficher la page d'inscription
+ * @details Ce contrôleur permet d'afficher la page d'inscription
  * et de gérer le processus d'inscription des utilisateurs
  * via un template Twig.
  */ 

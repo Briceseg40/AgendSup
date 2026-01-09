@@ -3,7 +3,7 @@ PROJECT_BRIEF          = "Application web de gestion d'agenda - BUT Informatique
 OUTPUT_DIRECTORY       = docs
 RECURSIVE              = YES
 
-FILE_PATTERNS          = *.php *.twig
+FILE_PATTERNS          = *.php *.twig *.dox
 EXTRACT_ALL            = YES
 EXTRACT_PRIVATE        = YES
 EXTRACT_STATIC         = YES
@@ -11,7 +11,7 @@ EXTRACT_STATIC         = YES
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 
-INPUT                  = .
+INPUT = . ./docs/mainpage.dox
 
 OUTPUT_LANGUAGE = French
 GENERATE_TREEVIEW = YES
