@@ -112,10 +112,13 @@ Fonctions membres publiques</h2></td></tr>
 <tr class="memitem:a19a266b2e72f7243a45a646cf89a9989" id="r_a19a266b2e72f7243a45a646cf89a9989"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19a266b2e72f7243a45a646cf89a9989">lister</a> ()</td></tr>
 <tr class="memdesc:a19a266b2e72f7243a45a646cf89a9989"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche la liste des chats.  <br /></td></tr>
 <tr class="memitem:a8adc5a73315b2bdbc7f3c3410829a236" id="r_a8adc5a73315b2bdbc7f3c3410829a236"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8adc5a73315b2bdbc7f3c3410829a236">listerByUtilisateur</a> (int $id_utilisateur)</td></tr>
+<tr class="memdesc:a8adc5a73315b2bdbc7f3c3410829a236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche la liste des chats où un utilisateur spécifique a parlé.  <br /></td></tr>
 <tr class="memitem:a69520dbdf9b795fef0f5b60ca3647c1c" id="r_a69520dbdf9b795fef0f5b60ca3647c1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69520dbdf9b795fef0f5b60ca3647c1c">listerByUtilisateurs</a> (array $userIds)</td></tr>
+<tr class="memdesc:a69520dbdf9b795fef0f5b60ca3647c1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche la liste des chats où au moins un des utilisateurs spécifiés a parlé.  <br /></td></tr>
 <tr class="memitem:a0689539faf7eb73cdbf778040911dfc3" id="r_a0689539faf7eb73cdbf778040911dfc3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0689539faf7eb73cdbf778040911dfc3">creer</a> ()</td></tr>
 <tr class="memitem:ade71e4334476acb2e74aaa6b2fb82be6" id="r_ade71e4334476acb2e74aaa6b2fb82be6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ade71e4334476acb2e74aaa6b2fb82be6">modifier</a> ()</td></tr>
 <tr class="memitem:ae7dc5b72002210c553606d4e892c632e" id="r_ae7dc5b72002210c553606d4e892c632e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7dc5b72002210c553606d4e892c632e">supprimer</a> ()</td></tr>
+<tr class="memdesc:ae7dc5b72002210c553606d4e892c632e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche le formulaire de suppression d'un chat.  <br /></td></tr>
 <tr class="inherit_header pub_methods_class_controller"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_controller')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Fonctions membres publiques hérités de <a class="el" href="class_controller.html">Controller</a></td></tr>
 <tr class="memitem:a50270e03cca497cedd02825d19e3a29c inherit pub_methods_class_controller" id="r_a50270e03cca497cedd02825d19e3a29c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a50270e03cca497cedd02825d19e3a29c">call</a> (string $methode)</td></tr>
 <tr class="memdesc:a50270e03cca497cedd02825d19e3a29c inherit pub_methods_class_controller"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appelle une méthode du contrôleur.  <br /></td></tr>
@@ -229,6 +232,15 @@ Fonctions membres publiques</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Affiche la liste des chats où un utilisateur spécifique a parlé. </p>
+<p>Récupère les chats via le DAO et les affiche en utilisant un template <a class="el" href="namespace_twig.html">Twig</a>.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">int</td><td class="paramname">$id_utilisateur</td><td>Identifiant de l'utilisateur. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a69520dbdf9b795fef0f5b60ca3647c1c" name="a69520dbdf9b795fef0f5b60ca3647c1c"></a>
@@ -245,6 +257,15 @@ Fonctions membres publiques</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Affiche la liste des chats où au moins un des utilisateurs spécifiés a parlé. </p>
+<p>Récupère les chats via le DAO et les affiche en utilisant un template <a class="el" href="namespace_twig.html">Twig</a>.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">array</td><td class="paramname">$userIds</td><td>Tableau des identifiants des utilisateurs. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -279,6 +300,8 @@ Fonctions membres publiques</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Affiche le formulaire de suppression d'un chat. </p>
 
 </div>
 </div>

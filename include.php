@@ -1,7 +1,12 @@
 <?php
-
+/* @file include.php
+ * @brief Fichier d'inclusion des dépendances et des classes.
+ *
+ * Ce fichier inclut toutes les dépendances nécessaires,
+ * les classes de modèles et les contrôleurs utilisés dans l'application.
+ */
 require_once 'vendor/autoload.php';
-
+/* Inclusion des modèles */
 require_once 'modeles/etudiant.dao.php'; 
 
 require_once 'modeles/etudiant.class.php';

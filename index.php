@@ -1,9 +1,16 @@
 <?php
+/* @file index.php
+ * @brief Point d'entrée principal de l'application.
+ *
+ * Ce fichier initialise la session, charge les dépendances,
+ * configure Twig et route les requêtes vers les contrôleurs appropriés
+ * en fonction des paramètres GET 'controleur' et 'methode'.
+ */
 session_start();
 
 require_once 'vendor/autoload.php';
 require_once 'include.php';
-
+/* Initialisation de la connexion à la base de données */
 $pdo = Bd::getInstance()->getConnection();
 
 $loader = new \Twig\Loader\FilesystemLoader('templates');
