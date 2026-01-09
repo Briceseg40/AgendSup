@@ -2,16 +2,16 @@
 
 class Devoir {
     //Attributs
-    private int $id;
-    private string $libelle;
-    private string $date_deb;
-    private string $date_fin;
-    private string $heure_deb;
-    private string $heure_fin;
-    private string $contenu;
-    private string $couleur;
-    private int $idCours;
-    private int $idClasse;
+    private int|null $id;
+    private string|null $libelle;
+    private string|null $date_deb;
+    private string|null $date_fin;
+    private string|null $heure_deb;
+    private string|null $heure_fin;
+    private string|null $contenu;
+    private string|null $couleur;
+    private int|null $idCours;
+    private int|null $idClasse;
 
     //Constructeur
     public function __construct(?int $id = null, ?string $libelle = null, ?string $date_deb = null,?string $date_fin = null,?string $heure_deb = null,?string $heure_fin = null, ?string $contenu = null, ?string $couleur = null, ?int $idCours = null, ?int $idClasse = null) {
@@ -84,7 +84,7 @@ class Devoir {
         return $this->heure_fin;
     }
 
-    public function setHeureFini(string $heure_fin): void
+    public function setHeureFin(string $heure_fin): void
     {
         $this->heure_fin = $heure_fin;
     }
