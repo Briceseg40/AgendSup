@@ -10,5 +10,5 @@ var searchData=
   ['usetokenparser_7',['UseTokenParser',['../class_twig_1_1_token_parser_1_1_use_token_parser.html',1,'Twig::TokenParser']]],
   ['usetokenparser_2ephp_8',['UseTokenParser.php',['../_use_token_parser_8php.html',1,'']]],
   ['useyield_9',['useYield',['../class_twig_1_1_environment.html#ab37fea39cee7e9d3c3fb35c44ab7df88',1,'Twig::Environment']]],
-  ['utiliser_20la_20doc_10',['Comment utiliser la doc',['../index.html#autotoc_md2',1,'']]]
+  ['utilisation_20de_20la_20documentation_10',['Utilisation de la documentation',['../index.html#usage_sec',1,'']]]
 ];

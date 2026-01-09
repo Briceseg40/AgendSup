@@ -80,10 +80,11 @@ var searchData=
   ['twigfunction_2ephp_77',['TwigFunction.php',['../_twig_function_8php.html',1,'']]],
   ['twigtest_78',['TwigTest',['../class_twig_1_1_twig_test.html',1,'Twig']]],
   ['twigtest_2ephp_79',['TwigTest.php',['../_twig_test_8php.html',1,'']]],
-  ['typesnode_80',['TypesNode',['../class_twig_1_1_node_1_1_types_node.html',1,'Twig::Node']]],
-  ['typesnode_2ephp_81',['TypesNode.php',['../_types_node_8php.html',1,'']]],
-  ['typestokenparser_82',['TypesTokenParser',['../class_twig_1_1_token_parser_1_1_types_token_parser.html',1,'Twig::TokenParser']]],
-  ['typestokenparser_2ephp_83',['TypesTokenParser.php',['../_types_token_parser_8php.html',1,'']]],
-  ['typetoenglish_84',['typeToEnglish',['../class_twig_1_1_token.html#aac7293f0830a6020a11c476f40e539f2',1,'Twig::Token']]],
-  ['typetostring_85',['typeToString',['../class_twig_1_1_token.html#ade68e095899baa0aa256be0ae34c20ec',1,'Twig::Token']]]
+  ['types_80',['Classes et Types',['../index.html#naming_classes',1,'']]],
+  ['typesnode_81',['TypesNode',['../class_twig_1_1_node_1_1_types_node.html',1,'Twig::Node']]],
+  ['typesnode_2ephp_82',['TypesNode.php',['../_types_node_8php.html',1,'']]],
+  ['typestokenparser_83',['TypesTokenParser',['../class_twig_1_1_token_parser_1_1_types_token_parser.html',1,'Twig::TokenParser']]],
+  ['typestokenparser_2ephp_84',['TypesTokenParser.php',['../_types_token_parser_8php.html',1,'']]],
+  ['typetoenglish_85',['typeToEnglish',['../class_twig_1_1_token.html#aac7293f0830a6020a11c476f40e539f2',1,'Twig::Token']]],
+  ['typetostring_86',['typeToString',['../class_twig_1_1_token.html#ade68e095899baa0aa256be0ae34c20ec',1,'Twig::Token']]]
 ];

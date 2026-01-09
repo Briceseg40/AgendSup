@@ -25,10 +25,7 @@
 var NAVTREE =
 [
   [ "AgendSup", "index.html", [
-    [ "Bienvenue dans la documentation d'AgendSup", "index.html#autotoc_md0", [
-      [ "Fonctionnalités", "index.html#autotoc_md1", null ],
-      [ "Comment utiliser la doc", "index.html#autotoc_md2", null ]
-    ] ],
+    [ "AgendSup Documentation", "index.html", "index" ],
     [ "Liste des éléments obsolètes", "deprecated.html", null ],
     [ "Espaces de nommage", "namespaces.html", [
       [ "Liste des espaces de nommage", "namespaces.html", "namespaces_dup" ]
@@ -70,7 +67,7 @@ var NAVTREEINDEX =
 "class_twig_1_1_sandbox_1_1_security_policy.html#aaa4ecd343db7420f6a98e813e10362c6",
 "class_twig_1_1_token_parser_1_1_embed_token_parser.html",
 "constantes_8php.html#a8bb9c4546d91667cfa61879d83127a92",
-"interface_twig_1_1_token_parser_1_1_token_parser_interface.html#a1f73f16ed46a94ce6f5dede9a9de7fe3"
+"interface_twig_1_1_sandbox_1_1_security_policy_interface.html#af102f5090e58aac0e50ed35efad3b931"
 ];
 
 var SYNCONMSG = 'cliquez pour désactiver la synchronisation du panel';

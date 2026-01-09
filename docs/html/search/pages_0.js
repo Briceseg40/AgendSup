@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['agendsup_0',['AgendSup',['../index.html',1,'AgendSup'],['../index.html#autotoc_md0',1,'Bienvenue dans la documentation d&apos;AgendSup']]]
+  ['agendsup_20documentation_0',['AgendSup Documentation',['../index.html',1,'']]]
 ];
