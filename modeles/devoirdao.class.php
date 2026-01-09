@@ -51,20 +51,26 @@ class DevoirDAO {
 
 
     // Crée un nouveau devoir
+    // Crée un nouveau devoir
     public function create(Devoir $devoir): bool
     {
-        $sql = "INSERT INTO devoir (libelle, date_a_realiser, contenu, idCours) VALUES (:libelle, :date_a_realiser, :contenu, :idCours)";
+        // 1. Correction de la requête SQL (Ajout de la virgule entre date_fin et heure_deb, et du : devant heure_fin)
+        $sql = "INSERT INTO devoir (libelle, date_deb, date_fin, heure_deb, heure_fin, contenu, Couleur, idCours, idClasse) 
+                VALUES (:libelle, :date_deb, :date_fin, :heure_deb, :heure_fin, :contenu, :couleur, :idCours, :idClasse)";
+        
         $stmt = $this->pdo->prepare($sql);
+        
+        // 2. Alignement strict du tableau de données
         return $stmt->execute([
-            ':libelle' => $devoir->getLibelle(),
-            ':date_deb' => $devoir->getDateDeb(),
-            ':date_fin' => $devoir->getDatefin(),
+            ':libelle'   => $devoir->getLibelle(),
+            ':date_deb'  => $devoir->getDateDeb(),
+            ':date_fin'  => $devoir->getDatefin(),
             ':heure_deb' => $devoir->getHeureDeb(),
             ':heure_fin' => $devoir->getHeureFin(),
-            ':contenu' => $devoir->getContenu(),
-            ':couleur' => $devoir->getCouleur(),
-            ':idCours' => $devoir->getIdCours(),
-            ':idClasse' => $devoir->getIdClasse()
+            ':contenu'   => $devoir->getContenu(),
+            ':couleur'   => $devoir->getCouleur(),
+            ':idCours'   => $devoir->getIdCours(),
+            ':idClasse'  => $devoir->getIdClasse()
         ]);
     }
 
@@ -98,7 +104,7 @@ class DevoirDAO {
             ':date_deb' => $devoir->getDateDeb(),
             ':date_fin' => $devoir->getDateFin(),
             ':heure_deb' => $devoir->getHeureDeb(),
-            ':heureFin' => $devoir->getHeureFin(),
+            ':heure_fin' => $devoir->getHeureFin(),
             ':contenu' => $devoir->getContenu(),
             ':couleur' => $devoir->getCouleur(),
             ':idCours' => $devoir->getIdCours(),

@@ -34,10 +34,11 @@ class EtudiantDAO
                 $row['Prenom'],
                 $row['role'],
                 $row['Annee'],
-                $row['idClasse'],
                 $row['mail'],
                 $row['mdp'],
+                $row['Parcour'],
                 $row['idClasse']
+                
             );
         }
 
@@ -59,10 +60,11 @@ class EtudiantDAO
                 $row['Prenom'],
                 $row['role'],
                 $row['Annee'],
-                $row['idClasse'],
                 $row['mail'],
                 $row['mdp'],
+                $row['Parcour'],
                 $row['idClasse']
+                
             );
         }
 
@@ -92,9 +94,11 @@ class EtudiantDAO
                 $row['prenom'],
                 $row['role'],
                 $row['Annee'],  
-                $row['idClasse'],
                 $row['td'],
                 $row['tp'],
+                $row['Parcour'],
+                $row['idClasse']
+                
             );
         }
 
@@ -115,10 +119,11 @@ class EtudiantDAO
                 $row['Prenom'], 
                 $row['role'],
                 $row['Annee'],  
-                $row['idClasse'],
                 $row['mail'],
                 $row['mdp'],
+                $row['Parcour'],
                 $row['idClasse']
+                
             );
         }
         return null;
@@ -135,7 +140,7 @@ class EtudiantDAO
         $mail = $etudiant->getMail();
         $hashedMdp = password_hash($etudiant->getMdp(), PASSWORD_DEFAULT);
 
-        $stmt = $this->pdo->prepare("INSERT INTO etudiant (Nom, Prenom, role, Annee, idClasse, mail, mdp) VALUES (:nom, :prenom, :role, :annee, :idClasse, :mail, :mdp)");
+        $stmt = $this->pdo->prepare("INSERT INTO etudiant (Nom, Prenom, role, Annee, idClasse, mail, mdp, Parcour) VALUES (:nom, :prenom, :role, :annee, :idClasse, :mail, :mdp, :Parcour)");
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':role', $role);
@@ -143,6 +148,7 @@ class EtudiantDAO
         $stmt->bindParam(':idClasse', $idClasse);
         $stmt->bindParam(':mail', $mail);
         $stmt->bindParam(':mdp', $hashedMdp);
+        $stmt->bindParam(':Parcour', $etudiant);
         return $stmt->execute();
     }
 }

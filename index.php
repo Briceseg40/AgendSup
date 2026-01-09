@@ -1,17 +1,14 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
 require_once 'modeles/etudiant.class.php';
 
 session_start();
 
+require_once 'vendor/autoload.php';
 require_once 'include.php'; 
 
 $pdo = Bd::getInstance()->getConnection();
 
-$loader = new \Twig\Loader\FilesystemLoader('templates');
-$twig = new \Twig\Environment($loader);
 
 $controleurName = $_GET['controleur'] ?? 'connecter';
 $methode = $_GET['methode'] ?? 'connexion';
@@ -28,5 +25,3 @@ try {
 } catch (Exception $e) {
     echo "Erreur : " . $e->getMessage();
 }
-
-// http://lakartxela.iutbayonne.univ-pau.fr/~bseguret/SAE3.01/C1-C2/AgendSup/

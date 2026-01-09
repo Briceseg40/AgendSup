@@ -27,14 +27,49 @@ class ControllerDevoir extends Controller{
 }
 
     //Creer
+    //Creer
     public function creer(): void
     {
-        $template = $this->getTwig()->load('creerDevoir.twig');
+        // 1. On récupère l'utilisateur en session pour avoir son idClasse
+        $user = $_SESSION['user'];
+        $message = null;
 
-        echo $template->render([
-            "titre" => "Créer un devoir"
+        // 2. Si le formulaire est soumis (méthode POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            // Création de l'objet Devoir avec les données du formulaire et l'idClasse de l'utilisateur
+            $nouveauDevoir = new Devoir(
+                null,                  // ID null car auto-incrémenté en BDD
+                $_POST['libelle'],
+                $_POST['date_deb'],
+                $_POST['date_fin'],
+                $_POST['heure_deb'],
+                $_POST['heure_fin'],
+                $_POST['contenu'],
+                $_POST['Couleur'],     // Correspond au name="Couleur" dans Twig
+                1,                     // idCours par défaut (à adapter si vous gérez les IDs de cours)
+                $user->getIdClasse()   // On utilise l'ID de classe de l'étudiant connecté
+            );
+
+            // Appel au DAO pour l'insertion
+            $devoirDAO = new DevoirDAO($this->getPdo());
+            
+            if ($devoirDAO->create($nouveauDevoir)) {
+                // Redirection après succès pour éviter de renvoyer le formulaire en rafraîchissant
+                header('Location: index.php?controleur=devoir&methode=afficher');
+                exit();
+            } else {
+                $message = "Erreur lors de la création du devoir.";
+            }
+        }
+
+        // 3. Affichage du formulaire (que ce soit le premier chargement ou après une erreur)
+        echo $this->getTwig()->render('creerDevoir.twig', [
+            "titre" => "Créer un devoir",
+            "erreur" => $message
         ]);
     }
+
 
     //Modifier
     public function modifier(): void

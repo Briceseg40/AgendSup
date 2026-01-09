@@ -38,7 +38,7 @@ require_once 'controllers/controller_classe.class.php';
 
 require_once 'controllers/controller_devoir.class.php';
 
-require_once 'controllers/controller_factory.php';
+
 
 require_once 'controllers/controller_register.php';
 
@@ -47,5 +47,7 @@ require_once 'controllers/controller_joinClass.class.php';
 //require_once 'controllers/controller_forgetpasseword.php';
 
 require_once 'controllers/controller_param_classe.class.php';
+
+require_once 'controllers/controller_factory.php';
 
 require_once 'modeles/validator.class.php';
