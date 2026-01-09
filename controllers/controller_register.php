@@ -1,11 +1,32 @@
 <?php
-//Il faut hasher le mdp, 
+//Il faut hasher le mdp
+/**
+ * @file controller_register.php
+ * @brief Contrôleur pour la gestion de la page d'inscription.
+ *
+ * Ce contrôleur permet d'afficher la page d'inscription
+ * et de gérer le processus d'inscription des utilisateurs
+ * via un template Twig.
+ */ 
 class ControllerRegister extends Controller {
-
+    //Constructeur
+    /**
+     * @brief Constructeur du contrôleur d'inscription.
+     *
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de templates Twig.
+     * @param \Twig\Environment $twig Environnement Twig.
+     */
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig) {
         parent::__construct($loader, $twig);
     }
 
+    //Register
+    /**
+     * @brief Gère le processus d'inscription des utilisateurs.
+     *
+     * Récupère les données du formulaire d'inscription,
+     * crée un nouvel utilisateur et gère les erreurs potentielles.
+     */
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
     {
@@ -44,7 +65,10 @@ class ControllerRegister extends Controller {
     }
     }}}
     
-
+    //Render
+    /**
+     * @brief Affiche la page d'inscription.
+     */
     public function render() {
         echo $this->getTwig()->render('register.html.twig');
     }

@@ -1,11 +1,18 @@
 <?phP
+// Inclusion des constantes de configuration de la base de données
 require_once "config/constantes.php";
+
 /**
- * Classe Bd pour la gestion de la connexion à la base de données en utilisant le pattern Singleton.
+ * @class Bd
+ * @brief Classe singleton pour la gestion de la connexion à la base de données.
+ *
+ * Cette classe utilise le pattern Singleton pour garantir qu'une seule
+ * instance de connexion à la base de données est créée et utilisée
+ * tout au long de l'application.
  */
 class Bd
 {
-    // Instance statique unique de la classe Bd
+    // Instance unique de la classe Bd
     private static ?Bd $instance = null;
 
     // Instance de PDO pour la connexion à la base de données

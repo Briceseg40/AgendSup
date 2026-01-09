@@ -1,19 +1,43 @@
 <?php
-
+/**
+ * @file controller_chat.class.php
+ * @brief Contrôleur de gestion des chats.
+ *
+ * Ce contrôleur permet de gérer les actions liées aux chats,
+ * notamment l'affichage de la liste des chats via Twig.
+ */
+/**
+ * @class controllerChat
+ * @brief Contrôleur des chats.
+ *
+ * Hérite de la classe Controller.
+ * Gère les actions liées aux chats (liste, affichage, etc.).
+ */
 class controllerChat extends Controller
 {
+    /**
+     * @brief Constructeur du contrôleur des chats.
+     *
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de templates Twig.
+     * @param \Twig\Environment $twig Environnement Twig.
+     */
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
     {
         parent::__construct($loader, $twig);
     }
 
-    // Lister tous les chats
+    /**
+     * @brief Affiche la liste des chats.
+     *
+     * Récupère toutes les chats via le DAO et les affiche
+     * en utilisant un template Twig.
+     */
     public function lister(): void
     {
         $manager = new ChatDAO($this->getPdo());
         $chats = $manager->findAll();
 
-        // Chargement du template
+        
         $template = $this->getTwig()->load('chat.twig');
 
         // Affichage du template et transmission des données
@@ -21,8 +45,8 @@ class controllerChat extends Controller
             'chats' => $chats,
         ]);
     }
-
-    // Lister les chats où un utilisateur a parlé (utiliser l'id unique)
+    // Lister les chats où un utilisateur a parlé
+    // (utilisé pour afficher les chats d'un utilisateur spécifique)
     public function listerByUtilisateur(int $id_utilisateur): void
     {
         $manager = new ChatDAO($this->getPdo());
@@ -39,6 +63,7 @@ class controllerChat extends Controller
     }
 
     // Lister les chats où au moins un des utilisateurs du tableau a parlé
+    // (utilisé pour afficher les chats d'une liste d'utilisateurs spécifiques)
     public function listerByUtilisateurs(array $userIds): void
     {
         $manager = new ChatDAO($this->getPdo());
@@ -53,6 +78,8 @@ class controllerChat extends Controller
     }
 
     // Creer
+    /*  * @brief Affiche le formulaire de création d'un chat.
+     */
     public function creer(): void
     {
         $template = $this->getTwig()->load('chat/creer.twig');
@@ -63,6 +90,8 @@ class controllerChat extends Controller
     }
 
     // Modifier
+    /*  * @brief Affiche le formulaire de modification d'un chat.
+     */
     public function modifier(): void
     {
         $template = $this->getTwig()->load('chat/modifier.twig');
@@ -73,6 +102,8 @@ class controllerChat extends Controller
     }
 
     // Supprimer
+    /*  * @brief Affiche le formulaire de suppression d'un chat.
+     */
     public function supprimer(): void
     {
         $template = $this->getTwig()->load('chat/supprimer.twig');

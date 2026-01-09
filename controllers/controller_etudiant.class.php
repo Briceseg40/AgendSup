@@ -11,6 +11,13 @@
  */
 class ControllerEtudiant extends Controller
 {
+// Constructeur
+/**
+ * @brief Constructeur du contrôleur des étudiants.
+ * @param \Twig\Loader\FilesystemLoader $loader Chargeur de templates Twig.
+ * @param \Twig\Environment $twig Environnement Twig.
+ */
+
 public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
 {
 parent::__construct($loader, $twig);
@@ -18,6 +25,9 @@ parent::__construct($loader, $twig);
 
 
 // Afficher un étudiant
+/**
+ * @brief Affiche les détails d'un étudiant.
+ */
 public function afficher(): void
 {
 $template = $this->getTwig()->load('etudiant/afficher.twig');
@@ -28,8 +38,10 @@ echo $template->render([
 ]);
 }
 
-
 // Lister tous les étudiants
+/**
+ * @brief Affiche la liste des étudiants.
+ */
 public function lister(): void
 {
 $template = $this->getTwig()->load('etudiant/lister.twig');
@@ -40,12 +52,13 @@ echo $template->render([
 ]);
 }
 
-
 // Créer un étudiant
+/**
+ * @brief Crée un nouveau étudiant.
+ */
 public function creer(): void
 {
 $template = $this->getTwig()->load('etudiant/creer.twig');
-
 
 echo $template->render([
 "titre" => "Créer un étudiant"
@@ -54,6 +67,9 @@ echo $template->render([
 
 
 // Modifier un étudiant
+/**
+ * @brief Modifie les informations d'un étudiant.
+ */
 public function modifier(): void
 {
 $template = $this->getTwig()->load('etudiant/modifier.twig');
@@ -64,12 +80,13 @@ echo $template->render([
 ]);
 }
 
-
 // Supprimer un étudiant
+/**
+ * @brief Supprime un étudiant.
+ */
 public function supprimer(): void
 {
 $template = $this->getTwig()->load('etudiant/supprimer.twig');
-
 
 echo $template->render([
 "titre" => "Supprimer un étudiant"
