@@ -47,6 +47,14 @@ class controllerChat extends Controller
     }
     // Lister les chats où un utilisateur a parlé
     // (utilisé pour afficher les chats d'un utilisateur spécifique)
+    /**
+     * @brief Affiche la liste des chats où un utilisateur spécifique a parlé.
+     *
+     * Récupère les chats via le DAO et les affiche
+     * en utilisant un template Twig.
+     *
+     * @param int $id_utilisateur Identifiant de l'utilisateur.
+     */
     public function listerByUtilisateur(int $id_utilisateur): void
     {
         $manager = new ChatDAO($this->getPdo());
@@ -64,6 +72,14 @@ class controllerChat extends Controller
 
     // Lister les chats où au moins un des utilisateurs du tableau a parlé
     // (utilisé pour afficher les chats d'une liste d'utilisateurs spécifiques)
+    /**
+     * @brief Affiche la liste des chats où au moins un des utilisateurs spécifiés a parlé.
+     *
+     * Récupère les chats via le DAO et les affiche
+     * en utilisant un template Twig.
+     *
+     * @param array $userIds Tableau des identifiants des utilisateurs.
+     */
     public function listerByUtilisateurs(array $userIds): void
     {
         $manager = new ChatDAO($this->getPdo());
@@ -77,7 +93,6 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Creer
     /*  * @brief Affiche le formulaire de création d'un chat.
      */
     public function creer(): void
@@ -89,7 +104,6 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Modifier
     /*  * @brief Affiche le formulaire de modification d'un chat.
      */
     public function modifier(): void
@@ -101,8 +115,8 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Supprimer
-    /*  * @brief Affiche le formulaire de suppression d'un chat.
+    /**
+     * @brief Affiche le formulaire de suppression d'un chat.
      */
     public function supprimer(): void
     {
