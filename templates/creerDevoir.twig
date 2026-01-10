@@ -8,225 +8,46 @@
         <form action="index.php?controleur=devoir&methode=creer" method="post" enctype="multipart/form-data">
 
             <div class="mb-3">
-                <label for="libelle" class="form-label">Matière / Ressource *</label>
-                <select class="form-select" id="libelle" name="libelle" required>
-                    <option value="" selected disabled>-- Choisissez un cours --</option>
-                    {% if app.user and app.user.Annee == 1 %}
-                    <optgroup label="Ressources Semestre 1">
-                        <option value="R1.01 - Init. au développement (P1)">R1.01 - Initiation au développement (Partie 1)</option>
-                        <option value="R1.01 - Init. au développement (P2)">R1.01 - Initiation au développement (Partie 2)</option>
-                        <option value="R1.02 - Dev. interfaces web (P1)">R1.02 - Développement d'interfaces web - (Partie 1)</option>
-                        <option value="R1.02 - Dev. interfaces web (P2)">R1.02 - Développement d'interfaces web - (Partie 2)</option>
-                        <option value="R1.03 - Arch. des ordinateurs">R1.03 - Introduction à l'architecture des ordinateurs</option>
-                        <option value="R1.04 - Systèmes d'exploitation">R1.04 - Introduction aux systèmes d'exploitation</option>
-                        <option value="R1.05 - Bases de données et SQL">R1.05 - Introduction aux bases de données et SQL</option>
-                        <option value="R1.06 - Mathématiques discrètes">R1.06 - Mathématiques discrètes</option>
-                        <option value="R1.07 - Outils mathématiques">R1.07 - Outils mathématiques fondamentaux</option>
-                        <option value="R1.08 - Gestion des organisations">R1.08 - Introduction à la gestion des organisations</option>
-                        <option value="R1.09 - Économie durable">R1.09 - Introduction à l'économie durable et numérique</option>
-                        <option value="R1.10 - Anglais technique">R1.10 - Anglais technique</option>
-                        <option value="R1.11 - Bases de la communication">R1.11 - Bases de la communication</option>
-                        <option value="R1.12 - Projet Pro. et Personnel">R1.12 - Projet Professionnel et Personnel</option>
-                    </optgroup>
+                <label for="idCours" class="form-label">Matière / Ressource</label>
+                <select name="idCours" id="idCours" class="form-select" required>
+                    <option value="" selected disabled>-- Sélectionnez une matière --</option>
+                
+                    {% set currentSemestre = "" %}
+                    {% set currentType = "" %}
 
-                    <optgroup label="SAE Semestre 1">
-                        <option value="S1.01 - Implémentation besoin client">S1.01 - Implémentation d'un besoin client</option>
-                        <option value="S1.02 - Comparaison algorithmique">S1.02 - Comparaison d'approches algorithmiques</option>
-                        <option value="S1.03 - Installation poste dév.">S1.03 - Installation d'un poste pour le développement</option>
-                        <option value="S1.04 - Création base de données">S1.04 - Création d'une base de données</option>
-                        <option value="S1.05 - Recueil de besoins">S1.05 - Recueil de besoins</option>
-                        <option value="S1.06 - Environnement éco. et écolo.">S1.06 - Découverte de l'environnement économique</option>
-                        <option value="P1.01 - Démarche Portfolio">P1.01 - Démarche Portfolio</option>
-                        <option value="Z1.01 - Complément Mathématiques">Z1.01 - Complément Mathématiques</option>
-                    </optgroup>
+                    {% for cours in lesCours %}
+                        {% set typeCours = cours.libelle|slice(0, 1) == 'S' ? 'SAÉ' : 'Ressources' %}
+                        {% set groupLabel = "Semestre " ~ cours.semestre ~ " - " ~ typeCours %}
 
-                    {# --- SEMESTRE 2 --- #}
-                    <optgroup label="Ressources Semestre 2">
-                        <option value="R2.01">R2.01 - Développement orienté objets</option>
-                        <option value="R2.02">R2.02 - Dev. d'applications avec IHM</option>
-                        <option value="R2.03">R2.03 - Qualité de développement</option>
-                        <option value="R2.04">R2.04 - Communication bas niveau</option>
-                        <option value="R2.05">R2.05 - Introduction aux services réseaux</option>
-                        <option value="R2.06">R2.06 - Exploitation d'une base de données</option>
-                        <option value="R2.07">R2.07 - Graphes</option>
-                        <option value="R2.08">R2.08 - Outils numériques / stats</option>
-                        <option value="R2.09">R2.09 - Méthodes numériques</option>
-                        <option value="R2.10">R2.10 - Gestion des systèmes d'info</option>
-                        <option value="R2.11">R2.11 - Introduction au droit</option>
-                        <option value="R2.12">R2.12 - Anglais d'entreprise</option>
-                        <option value="R2.13">R2.13 - Communication professionnelle</option>
-                        <option value="R2.14">R2.14 - Projet Professionnel et Personnel</option>
-                    </optgroup>
+                        {% if cours.semestre != currentSemestre or typeCours != currentType %}
+                            {% if currentSemestre != "" %}</optgroup>{% endif %}
+                            <optgroup label="{{ groupLabel }}">
+                            {% set currentSemestre = cours.semestre %}
+                            {% set currentType = typeCours %}
+                        {% endif %}
 
-                    <optgroup label="SAE Semestre 2">
-                        <option value="S2.01">S2.01 - Développement d'une application</option>
-                        <option value="S2.02">S2.02 - Exploration algorithmique</option>
-                        <option value="S2.03">S2.03 - Installation de services réseau</option>
-                        <option value="S2.04">S2.04 - Exploitation d'une base de données</option>
-                        <option value="S2.05">S2.05 - Gestion d'un projet</option>
-                        <option value="S2.06">S2.06 - Organisation d'un travail d'équipe</option>
-                    </optgroup>
-                    {% endif %}
-                    {% if app.user and app.user.Annee == 2 %}
-                    <optgroup label="Ressources Semestre 3">
-                        <option value="R3.01 : Développement web">R3.01 : Développement web</option>
-                        <option value="R3.02 : Développement efficace">R3.02 : Développement efficace</option>
-                        <option value="R3.03 : Analyse">R3.03 : Analyse</option>
-                        <option value="R3.04 : Qualité de développement">R3.04 : Qualité de développement</option>
-                        <option value="R3.05 : Programmation du système">R3.05 : Programmation du système</option>
-                        <option value="R3.06 : Architecture des réseaux">R3.06 : Architecture des réseaux</option>
-                        <option value="R3.07 : SQL dans un langage de programmation">R3.07 : SQL dans un langage de programmation</option>
-                        <option value="R3.08 : Probabilités">R3.08 : Probabilités</option>
-                        <option value="R3.09 : Cryptographie et sécurité">R3.09 : Cryptographie et sécurité</option>
-                        <option value="R3.10 : Management des systèmes d'information (Agilité)">R3.10 : Management des systèmes d'information (Agilité)</option>
-                        <option value="R3.10 : Management des systèmes d'information (Gestion)">R3.10 : Management des systèmes d'information (Gestion)</option>
-                        <option value="R3.11 : Droit des contrats et du numérique">R3.11 : Droit des contrats et du numérique</option>
-                        <option value="R3.12 : Anglais">R3.12 : Anglais</option>
-                        <option value="R3.13 : Communication professionnelle">R3.13 : Communication professionnelle</option>
-                        <option value="R3.14 : Projet personnel et professionnel">R3.14 : Projet personnel et professionnel</option>
-                    </optgroup>
+                        <option value="{{ cours.id }}">{{ cours.libelle }}</option>
+                    {% endfor %}
                     
-                        {% if app.user and app.user.Parcour == 'A' %}
-                            <optgroup label="SAE Semestre 3">
-                                <option value="SAÉ 3.A.01 : Développement d'une application">SAÉ 3.A.01 : Développement d'une application</option>
-                                <option value="PORTFOLIO : Démarche portfolio">PORTFOLIO : Démarche portfolio</option>
-                            </optgroup>
-                        {% elseif app.user.Parcour == 'D' %}
-                            <optgroup label="SAE Semestre 3">
-                                <option value="SAÉ 3.D.01 : Gestion de projet et développement logiciel">SAÉ 3.D.01 : Gestion de projet et développement logiciel</option>
-                                <option value="PORTFOLIO : Démarche portfolio">PORTFOLIO : Démarche portfolio</option>
-                            </optgroup>
-                        {% endif %}
-
-                    {# --- SEMESTRE 4 --- #}
-                    <optgroup label="Ressources Semestre 4">
-                        <option value="R4.01 : Architecture logicielle (LARAVEL) ">R4.01 : Architecture logicielle (LARAVEL) </option>
-                        <option value="R4.01 : Architecture logicielle (Javascript)">R4.01 : Architecture logicielle (Javascript)</option>
-                        <option value="R4.02 : Qualité de développement">R4.02 : Qualité de développement</option>
-                        <option value="R4.03 : Qualité et au-delà du rationnel">R4.03 : Qualité et au-delà du rationnel</option>
-                        <option value="R4.04 : Méthodes d'optimisation">R4.04 : Méthodes d'optimisation</option>
-                        <option value="R4.05 : Anglais">R4.05 : Anglais</option>
-                        <option value="R4.06 : Communication interne">R4.06 : Communication interne</option>
-                        <option value="R4.07 : Projet Personnel et Professionnel">R4.07 : Projet Personnel et Professionnel</option>
-                    </optgroup>
-
-                    {% if app.user.Parcour == 'A' %}
-                            <optgroup label="Ressource Parcours A">
-                                <option value="R4.A.08 : Virtualisation">R4.A.08 : Virtualisation</option>
-                                <option value="R4.A.09 : Management avancé des systèmes d'information">R4.A.09 : Management avancé des systèmes d'information</option>
-                                <option value="R4.A.10 : Complément Web">R4.A.10 : Complément Web</option>
-                                <option value="R4.A.11 : Développement pour applications mobiles">R4.A.11 : Développement pour applications mobiles</option>
-                                <option value="R4.A.12 : Automates et Langages">R4.A.12 : Automates et Langages</option>
-                            </optgroup>
-                        {% elseif app.user.Parcour == 'D' %}
-                            <optgroup label="Ressource Parcours D">
-                                <option value="R4.D.08 : Réseau avancé">R4.D.08 : Réseau avancé</option>
-                                <option value="R4.D.09 : Outils mathématiques pour la gestion">R4.D.09 : Outils mathématiques pour la gestion</option>
-                                <option value="R4.D.10 : Management avancé des systèmes d'information">R4.D.10 : Management avancé des systèmes d'information</option>
-                                <option value="R4.D.11 : Ergonomie">R4.D.11 : Ergonomie</option>
-                            </optgroup>
-                        {% endif %}
-
-                    {% endif %}
-
-                     {% if app.user and app.user.Annee == 3 %}
-                    <optgroup label="Ressources Semestre 5">
-                        <option value="R5.01 : Initiation au management d'une équipe de projet informatique">R5.01 : Initiation au management d'une équipe de projet informatique</option>
-                        <option value="R5.02 : Projet personnel et professionnel">R5.02 : Projet personnel et professionnel</option>
-                        <option value="R5.03 : Politique de communication">R5.03 : Politique de communication</option>
-                        </optgroup>
-                    <optgroup label="SAE Semestre 5">
-                            <option value="SAÉ 5.01 : Développement avancé / Adaptation de Système d'Information">SAÉ 5.01 : Développement avancé / Adaptation de Système d'Information</option>
-                            <option value="PORTFOLIO S5 : Démarche portfolio">PORTFOLIO S5 : Démarche portfolio</option>
-                        </optgroup>
-                    
-                    {% if app.user.Parcour == 'A' %}
-                            <optgroup label="Ressource Parcours A">
-                                <option value="R5.A.04 : Qualité algorithmique">R5.A.04 : Qualité algorithmique</option>
-                                <option value="R5.A.05 : Programmation avancée">R5.A.05 : Programmation avancée</option>
-                                <option value="R5.A.06 : Sensibilisation à la programmation multimédia">R5.A.06 : Sensibilisation à la programmation multimédia</option>
-                                <option value="R5.A.07 : Automatisation de la chaîne de production">R5.A.07 : Automatisation de la chaîne de production</option>
-                                <option value="R5.A.08 : Qualité de développement">R5.A.08 : Qualité de développement</option>
-                                <option value="R5.A.09 : Virtualisation avancée">R5.A.09 : Virtualisation avancée</option>
-                                <option value="R5.A.10 : Nouveaux paradigmes de base de données">R5.A.10 : Nouveaux paradigmes de base de données</option>
-                                <option value="R5.A.11 : Méthodes d'optimisation pour l'aide à la décision">R5.A.11 : Méthodes d'optimisation pour l'aide à la décision</option>
-                                <option value="R5.A.12 : Modélisations mathématiques">R5.A.12 : Modélisations mathématiques</option>
-                                <option value="R5.A.13 : Économie durable et numérique">R5.A.13 : Économie durable et numérique</option>
-                                <option value="R5.A.14 : Anglais">R5.A.14 : Anglais</option>
-                                <option value="R5.A.15 : Éco-conception logicielle">R5.A.15 : Éco-conception logicielle</option>
-                            </optgroup>
-                        {% elseif app.user.Parcour == 'D' %}
-                            <optgroup label="Ressource Parcours D">
-                                <option value="R5.D.04 : Développement pour progiciels">R5.D.04 : Développement pour progiciels</option>
-                                <option value="R5.D.04 Développement pour progiciels Partie WordPress">R5.D.04 Développement pour progiciels Partie WordPress</option>
-                                <option value="R5.D.05 : Nouveaux paradigmes de base de données">R5.D.05 : Nouveaux paradigmes de base de données</option>
-                                <option value="R5.D.06 : Continuité de service">R5.D.06 : Continuité de service</option>
-                                <option value="R5.D.07 : Qualité de développement">R5.D.07 : Qualité de développement</option>
-                                <option value="R5.D.08 : Cybersécurité">R5.D.08 : Cybersécurité</option>
-                                <option value="R5.D.09 : Méthodes d'optimisation pour l'aide à la décision">R5.D.09 : Méthodes d'optimisation pour l'aide à la décision</option>
-                                <option value="R5.D.10 : Économie durable et numérique">R5.D.10 : Économie durable et numérique</option>
-                                <option value="R5.D.11 : Intégration et performance des systèmes d'information">R5.D.11 : Intégration et performance des systèmes d'information</option>
-                                <option value="R5.D.12 : Anglais">R5.D.12 : Anglais</option>
-                                <option value="R5.D.15 : Éco-conception logicielle">R5.D.15 : Éco-conception logicielle</option>
-                                <option value="R5.D.14 : Compléments SI">R5.D.14 : Compléments SI</option>
-                            </optgroup>
-                        {% endif %}
-
-
-                        {# --- SEMESTRE 6 --- #}
-                        <optgroup label="Ressources Semestre 6">
-                            <option value="R6.01 : Initiation à l'entrepreneuriat ">R6.01 : Initiation à l'entrepreneuriat </option>
-                            <option value="R6.02 : Droit du numérique et de la propriété intellectuelle">R6.02 : Droit du numérique et de la propriété intellectuelle</option>
-                            <option value="R6.03 : Communication et information (iniciaux)">R6.03 : Communication et information (iniciaux)</option>
-                            <option value="R6.03 : Communication : diffusion et information (alternants)">R6.03 : Communication : diffusion et information (alternants)</option>
-                            <option value="R6.04 : Projet personnel et professionnel"> R6.04 : Projet personnel et professionnel</option>
-                        </optgroup>
-
-                        <optgroup label="SAE Semestre 6">
-                            <option value="SAÉ 6.01 : Valorisation d'une application">SAÉ 6.01 : Valorisation d'une application</option>
-                            <option value="STAGE S6 ">STAGE S6</option>
-                            <option value="PORTFOLIO S6 INIT Démarche portfolio">PORTFOLIO S6 INIT Démarche portfolio</option>
-                              <option value="PORTFOLIO S6 ALT Démarche portfolio">PORTFOLIO S6 ALT Démarche portfolio</option>
-                        </optgroup>
-
-                    {% if app.user.Parcour == 'A' %}
-                            <optgroup label="Ressource Parcours A">
-                                <option value="R6.A.05 : Développement avancé">R6.A.05 : Développement avancé</option>
-                                <option value="R6.A.06 : Maintenance applicative">R6.A.06 : Maintenance applicative</option>
-                                <option value="R6.A.07 : Éco-conception logicielle avancée">R6.A.07 : Éco-conception logicielle avancée</option>
-                            </optgroup>
-                        {% elseif app.user.Parcour == 'D' %}
-                            <optgroup label="Ressource Parcours D">
-                                <option value="R6.D.05 : Maintenance applicative">R6.D.05 : Maintenance applicative</option>
-                                <option value="R6.D.06 : Management du changement et de l'innovation numérique">R6.D.06 : Management du changement et de l'innovation numérique</option>
-                                <option value="R6.D.07 Complément développement Web">R6.D.07 Complément développement Web</option>²
-                            </optgroup>
-                        {% endif %}
-
-                    {% endif %}
-
+                    {% if currentSemestre != "" %}</optgroup>{% endif %}
                 </select>
             </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="date_deb" class="form-label">Date de début *</label>
-                    <input type="date" class="form-control" id="date_deb" name="date_deb" required>
+            <div class="row g-2"> <div class="col-md-3 mb-3">
+                    <label for="date_deb" class="form-label small">Date de début *</label>
+                    <input type="date" class="form-control form-control-sm" id="date_deb" name="date_deb" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="date_fin" class="form-label">Date de fin *</label>
-                    <input type="date" class="form-control" id="date_fin" name="date_fin" required>
+                <div class="col-md-3 mb-3">
+                    <label for="date_fin" class="form-label small">Date de fin *</label>
+                    <input type="date" class="form-control form-control-sm" id="date_fin" name="date_fin" required>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="heure_deb" class="form-label">Heure de début *</label>
-                    <input type="time" class="form-control" id="heure_deb" name="heure_deb" required>
+                <div class="col-md-3 mb-3">
+                    <label for="heure_deb" class="form-label small">Heure de début *</label>
+                    <input type="time" class="form-control form-control-sm" id="heure_deb" name="heure_deb" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="heure_fin" class="form-label">Heure de fin *</label>
-                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" required>
+                <div class="col-md-3 mb-3">
+                    <label for="heure_fin" class="form-label small">Heure de fin *</label>
+                    <input type="time" class="form-control form-control-sm" id="heure_fin" name="heure_fin" required>
                 </div>
             </div>
 
@@ -235,11 +56,11 @@
                 <textarea class="form-control" id="contenu" name="contenu" rows="3" placeholder="Description du travail à faire..." required></textarea>
             </div>
 
-            <div class="mb-3">
-                <label for="Couleur" class="form-label">Couleur</label>
-                <select class="form-select" id="Couleur" name="Couleur">
+            <div class="mb-3" style="max-width: 300px;">
+                <label for="Couleur" class="form-label small">Couleur</label>
+                <select class="form-select form-select-sm" id="Couleur" name="Couleur">
                     <option value="Blue">Bleu</option>
-                    <option value="purple">violet</option>
+                    <option value="purple">Violet</option>
                     <option value="Green">Vert</option>
                     <option value="Yellow">Jaune</option>
                 </select>
@@ -250,7 +71,6 @@
     </div>
 
     <script>
-        // Gestion de la date par défaut (aujourd'hui)
         const dateDeb = document.getElementById('date_deb');
         const dateFin = document.getElementById('date_fin');
         const today = new Date().toISOString().split('T')[0];
@@ -258,7 +78,6 @@
         dateDeb.value = today;
         dateFin.value = today;
 
-        // Si on change la date de début, cela met à jour la date de fin automatiquement
         dateDeb.addEventListener('change', () => {
             dateFin.value = dateDeb.value;
         });

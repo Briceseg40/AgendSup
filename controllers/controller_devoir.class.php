@@ -27,8 +27,56 @@ class ControllerDevoir extends Controller{
 }
 
     //Creer
-    //Creer
     public function creer(): void
+{
+    // 1. On récupère l'utilisateur en session
+    $user = $_SESSION['user'];
+    $message = null;
+
+    // --- AJOUT : Récupération des cours pour le formulaire ---
+    $annee = $user->getAnnee(); // On récupère l'année de l'étudiant
+    $parcours = $user->getParcour(); // On récupère son parcours (A, D ou null)
+    
+    $coursManager = new CoursDao($this->getPdo());
+    $listeDesCours = $coursManager->findByAnneeEtParcours((int)$annee, $parcours);
+    // ---------------------------------------------------------
+
+    // 2. Si le formulaire est soumis (méthode POST)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        // Création de l'objet Devoir
+        $nouveauDevoir = new Devoir(
+            null,
+            $_POST['libelle'],
+            $_POST['date_deb'],
+            $_POST['date_fin'],
+            $_POST['heure_deb'],
+            $_POST['heure_fin'],
+            $_POST['contenu'],
+            $_POST['Couleur'],
+            $_POST['idCours'], // MODIFIÉ : On utilise l'ID récupéré du select Twig
+            $user->getIdClasse()
+        );
+
+        $devoirDAO = new DevoirDAO($this->getPdo());
+        
+        if ($devoirDAO->create($nouveauDevoir)) {
+            header('Location: index.php?controleur=devoir&methode=afficher');
+            exit();
+        } else {
+            $message = "Erreur lors de la création du devoir.";
+        }
+    }
+
+    // 3. Affichage du formulaire avec transmission de 'lesCours'
+    echo $this->getTwig()->render('creerDevoir.twig', [
+        "titre" => "Créer un devoir",
+        "erreur" => $message,
+        "lesCours" => $listeDesCours // On envoie la liste à Twig
+    ]);
+}
+
+    public function creer1(): void
     {
         // 1. On récupère l'utilisateur en session pour avoir son idClasse
         $user = $_SESSION['user'];
@@ -126,7 +174,7 @@ class ControllerDevoir extends Controller{
                 'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb(),
                 'end'   => $d->getDatefin() . 'T' . $d->getHeureFin(),
                 'extendedProps' => [
-                    'description' => $d->getContenu()
+                'description' => $d->getContenu()
                 ],
                 'color' => $d->getCouleur()
             ];
