@@ -45,6 +45,20 @@ class ControllerDevoir extends Controller {
                     $libelleMatiere = $cours->getLibelle();
                     break;
                 }
+
+                // On combine date et heure pour comparer facilement
+            $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
+            $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
+
+            if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
+                // En cas d'erreur, on ne sauvegarde pas et on renvoie un message
+                $listeDesCours = $coursManager->findByAnneeEtParcours((int)$user->getAnnee(), $user->getParcour());
+                echo $this->getTwig()->render('creerDevoir.twig', [
+                    "lesCours" => $listeDesCours,
+                    "error" => "La date de fin doit être postérieure à la date de début."
+                ]);
+                return;
+            }
             }
 
             // Maintenant $idCoursRecu vaut 85 et $libelleMatiere vaut le nom du cours
@@ -80,7 +94,7 @@ class ControllerDevoir extends Controller {
     public function modifier(): void
     {
         $user = $_SESSION['user'];
-        $idDevoir = $_GET['id'] ?? null; // On récupère l'ID du devoir dans l'URL
+        $idDevoir = $_GET['id'] ?? null;
     
         if (!$idDevoir) {
             header("Location: index.php?controleur=devoir&methode=lister");
@@ -89,40 +103,49 @@ class ControllerDevoir extends Controller {
     
         $devoirManager = new DevoirDAO($this->getPdo());
         $coursManager = new CoursDao($this->getPdo());
+        $error = null; // Variable pour stocker le message d'erreur
     
         // 1. TRAITEMENT DU FORMULAIRE (SI POST)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // On crée un objet Devoir avec les nouvelles données du formulaire
-            $devoirModifie = new Devoir(
-                (int)$idDevoir,
-                $_POST['libelle'],
-                $_POST['date_deb'],
-                $_POST['date_fin'],
-                $_POST['heure_deb'],
-                $_POST['heure_fin'],
-                $_POST['contenu'],
-                $_POST['Couleur'],
-                (int)$_POST['idCours'],
-                (int)$user->getIdClasse(),
-                (int)$user->getId()
-            );
+            
+            // --- NOUVEAU : VÉRIFICATION DE LA CHRONOLOGIE ---
+            $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
+            $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
     
-            // Appel de la fonction update que nous avons corrigée au tour précédent
-            if ($devoirManager->update($devoirModifie)) {
-                header("Location: index.php?controleur=devoir&methode=lister&success=1");
-                exit();
+            if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
+                $error = "La date et l'heure de fin doivent être supérieures au début.";
+            } else {
+                // Si c'est correct, on procède à la modification
+                $devoirModifie = new Devoir(
+                    (int)$idDevoir,
+                    $_POST['libelle'] ?? '', // Assurez-vous que ce champ existe dans votre HTML
+                    $_POST['date_deb'],
+                    $_POST['date_fin'],
+                    $_POST['heure_deb'],
+                    $_POST['heure_fin'],
+                    $_POST['contenu'],
+                    $_POST['Couleur'],
+                    (int)$_POST['idCours'],
+                    (int)$user->getIdClasse(),
+                    (int)$user->getId()
+                );
+    
+                if ($devoirManager->update($devoirModifie)) {
+                    header("Location: index.php?controleur=devoir&methode=lister&success=1");
+                    exit();
+                }
             }
         }
     
-        // 2. AFFICHAGE DU FORMULAIRE (GET)
-        // On récupère les données actuelles du devoir pour pré-remplir les champs
+        // 2. AFFICHAGE DU FORMULAIRE (GET ou Retour d'erreur)
         $devoir = $devoirManager->findById((int)$idDevoir);
-        $listeDesCours = $coursManager->findAll(); // Récupère tous les cours pour la liste déroulante
+        $listeDesCours = $coursManager->findAll();
     
         echo $this->getTwig()->render('modifierDevoir.twig', [
             "titre" => "Modifier le devoir",
             "devoir" => $devoir,
-            "cours" => $listeDesCours
+            "cours" => $listeDesCours,
+            "error" => $error // On envoie l'erreur au template
         ]);
     }
 

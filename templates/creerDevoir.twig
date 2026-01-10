@@ -3,100 +3,141 @@
 {% block title %}AgendSup - Création de devoirs{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h2 class="mb-4">Création d'un Devoir</h2>
-        
-        <form action="index.php?controleur=devoir&methode=creer" method="post">
-
-            {# Sélection de la matière #}
-            <div class="mb-3">
-                <label for="idCours" class="form-label">Matière / Ressource</label>
-                <select name="libelle" id="libelle" class="form-select" required>
-                    <option value="" selected disabled>-- Sélectionnez une matière --</option>
-                    {% set currentSemestre = "" %}
-                    {% for cours in lesCours %}
-                        {% if cours.semestre != currentSemestre %}
-                            {% if currentSemestre != "" %}</optgroup>{% endif %}
-                            <optgroup label="Semestre {{ cours.semestre }}">
-                            {% set currentSemestre = cours.semestre %}
+    <div class="container mt-3"> {# mt-3 pour remonter le formulaire #}
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+                        <h3 class="mb-0 h6"><i class="bi bi-plus-circle"></i> Création d'un Devoir</h3>
+                        <a href="index.php?controleur=devoir&methode=lister" class="btn btn-sm btn-light">Retour</a>
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        {# Message d'erreur serveur #}
+                        {% if error %}
+                            <div class="alert alert-danger alert-dismissible fade show shadow-sm py-2" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <strong>Erreur :</strong> {{ error }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         {% endif %}
-                        <option value="{{ cours.id }}">{{ cours.libelle }}</option>
-                    {% endfor %}
-                    </optgroup>
-                </select>
-            </div>
+                        
+                        <form action="index.php?controleur=devoir&methode=creer" method="post" id="formCreer">
 
-            {# Dates et Heures #}
-            <div class="row g-2">
-                <div class="col-md-3 mb-3">
-                    <label for="date_deb" class="form-label small">Date de début *</label>
-                    <input type="date" class="form-control form-control-sm" id="date_deb" name="date_deb" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="date_fin" class="form-label small">Date de fin *</label>
-                    <input type="date" class="form-control form-control-sm" id="date_fin" name="date_fin" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="heure_deb" class="form-label small">Heure de début *</label>
-                    <input type="time" class="form-control form-control-sm" id="heure_deb" name="heure_deb" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="heure_fin" class="form-label small">Heure de fin *</label>
-                    <input type="time" class="form-control form-control-sm" id="heure_fin" name="heure_fin" required>
+                            {# Sélection de la matière #}
+                            <div class="mb-3">
+                                <label for="libelle" class="form-label small fw-bold">Matière / Ressource</label>
+                                <select name="libelle" id="libelle" class="form-select" required>
+                                    <option value="" selected disabled>-- Sélectionnez une matière --</option>
+                                    {% set currentSemestre = "" %}
+                                    {% for cours in lesCours %}
+                                        {% if cours.semestre != currentSemestre %}
+                                            {% if currentSemestre != "" %}</optgroup>{% endif %}
+                                            <optgroup label="Semestre {{ cours.semestre }}">
+                                            {% set currentSemestre = cours.semestre %}
+                                        {% endif %}
+                                        <option value="{{ cours.id }}">{{ cours.libelle }}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            {# Dates et Heures #}
+                            <div class="row g-3">
+                                <div class="col-md-3 mb-3">
+                                    <label for="date_deb" class="form-label small fw-bold text-primary">Date de début *</label>
+                                    <input type="date" class="form-control" id="date_deb" name="date_deb" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="date_fin" class="form-label small fw-bold text-danger">Date de fin *</label>
+                                    <input type="date" class="form-control" id="date_fin" name="date_fin" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="heure_deb" class="form-label small fw-bold">Heure de début *</label>
+                                    <input type="time" class="form-control" id="heure_deb" name="heure_deb" required>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="heure_fin" class="form-label small fw-bold">Heure de fin *</label>
+                                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" required>
+                                </div>
+                            </div>
+
+                            {# Description avec Compteur #}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <label for="contenu" class="form-label small fw-bold">Consignes / Contenu</label>
+                                    <small id="char-count" class="text-muted">0 / 1000</small>
+                                </div>
+                                <textarea 
+                                    class="form-control" 
+                                    id="contenu" 
+                                    name="contenu" 
+                                    rows="4" 
+                                    maxlength="1000" 
+                                    placeholder="Description du travail à faire..."
+                                    required></textarea>
+                            </div>
+
+                            {# Couleur de priorité #}
+                            <div class="mb-4">
+                                <label for="Couleur" class="form-label small fw-bold">Couleur de priorité</label>
+                                <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
+                                       value="#4e73df" title="Choisir une couleur">
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100 shadow-sm">
+                                <i class="bi bi-check-lg"></i> Enregistrer le devoir
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-
-            {# Description avec Compteur #}
-            <div class="mb-3">
-        <div class="d-flex justify-content-between">
-            <label for="contenu" class="form-label">Consignes / Contenu</label>
-            <small id="char-count" class="text-muted">0 / 1000</small>
         </div>
-        <textarea 
-            class="form-control" 
-            id="contenu" 
-            name="contenu" 
-            rows="4" 
-            maxlength="1000" 
-            placeholder="Description du travail à faire..."
-            required></textarea>
-    </div>
-
-            {# <div class="mb-3" style="max-width: 300px;">
-                <label for="Couleur" class="form-label small">Couleur</label>
-                <select class="form-select form-select-sm" id="Couleur" name="Couleur">
-                    <option value="Blue">Bleu</option>
-                    <option value="purple">Violet</option>
-                    <option value="Green">Vert</option>
-                    <option value="Yellow">Jaune</option>
-                </select>
-            </div> #}
-
-             <div class="mb-4">
-                            <label for="Couleur" class="form-label fw-bold">Couleur de priorité</label>
-                            <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
-                                   value="{{ devoir.couleur|default('#4e73df') }}" title="Choisir une couleur">
-                        </div>
-
-            <button type="submit" class="btn btn-success w-100">Enregistrer</button>
-        </form>
     </div>
 
     <script>
-        // Gestion auto des dates [cite: 17, 18]
-        const dDeb = document.getElementById('date_deb');
-        const dFin = document.getElementById('date_fin');
-        const now = new Date().toISOString().split('T')[0];
-        dDeb.value = now; dFin.value = now;
-        dDeb.addEventListener('change', () => { dFin.value = dDeb.value; });
+        document.addEventListener('DOMContentLoaded', () => {
+            const dDeb = document.getElementById('date_deb');
+            const dFin = document.getElementById('date_fin');
+            const hDeb = document.getElementById('heure_deb');
+            const hFin = document.getElementById('heure_fin');
+            const txt = document.getElementById('contenu');
+            const cnt = document.getElementById('char-count');
+            const form = document.getElementById('formCreer');
 
-        // Compteur de caractères [cite: 20, 21]
-        const txt = document.getElementById('contenu');
-        const cnt = document.getElementById('char-count');
-        txt.addEventListener('input', () => {
-            const len = txt.value.length;
-            cnt.textContent = `${len} / 1000`;
-            cnt.classList.toggle('text-danger', len >= 950);
+            // 1. Initialisation des dates à "Aujourd'hui" et gestion du minimum
+            const today = new Date().toISOString().split('T')[0];
+            dDeb.value = today;
+            dFin.value = today;
+            dDeb.min = today;
+            dFin.min = today;
+
+            // 2. Logique de synchronisation des dates
+            dDeb.addEventListener('change', () => {
+                dFin.min = dDeb.value; // La fin ne peut être avant le début
+                if (dFin.value < dDeb.value) {
+                    dFin.value = dDeb.value;
+                }
+            });
+
+            // 3. Compteur de caractères
+            txt.addEventListener('input', () => {
+                const len = txt.value.length;
+                cnt.textContent = `${len} / 1000`;
+                cnt.classList.toggle('text-danger', len >= 950);
+            });
+
+            // 4. Vérification chronologique finale au submit
+            form.addEventListener('submit', (e) => {
+                // Création d'objets dates complets pour comparer Date + Heure
+                const debutFull = new Date(dDeb.value + 'T' + hDeb.value);
+                const finFull = new Date(dFin.value + 'T' + hFin.value);
+
+                if (finFull <= debutFull) {
+                    e.preventDefault();
+                    alert("Erreur : La date et l'heure de fin doivent être strictement supérieures au début !");
+                }
+            });
         });
     </script>
 {% endblock %}
