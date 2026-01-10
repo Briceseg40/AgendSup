@@ -42,7 +42,8 @@ class DevoirDAO {
                 $row['contenu'],
                 $row['Couleur'],
                 $row['idCours'],
-                $row['idClasse']
+                $row['idClasse'],
+                $row['idEtudiant']
             );
         }
     
@@ -55,8 +56,8 @@ class DevoirDAO {
     public function create(Devoir $devoir): bool
     {
         // 1. Correction de la requête SQL (Ajout de la virgule entre date_fin et heure_deb, et du : devant heure_fin)
-        $sql = "INSERT INTO devoir (libelle, date_deb, date_fin, heure_deb, heure_fin, contenu, Couleur, idCours, idClasse) 
-                VALUES (:libelle, :date_deb, :date_fin, :heure_deb, :heure_fin, :contenu, :couleur, :idCours, :idClasse)";
+        $sql = "INSERT INTO devoir (libelle, date_deb, date_fin, heure_deb, heure_fin, contenu, Couleur, idCours, idClasse,idEtudiant) 
+                VALUES (:libelle, :date_deb, :date_fin, :heure_deb, :heure_fin, :contenu, :couleur, :idCours, :idClasse,:idEtudiant)";
         
         $stmt = $this->pdo->prepare($sql);
         
@@ -70,8 +71,40 @@ class DevoirDAO {
             ':contenu'   => $devoir->getContenu(),
             ':couleur'   => $devoir->getCouleur(),
             ':idCours'   => $devoir->getIdCours(),
-            ':idClasse'  => $devoir->getIdClasse()
+            ':idClasse'  => $devoir->getIdClasse(),
+            ':idEtudiant'=> $devoir->getIdEtudiant()
         ]);
+    }
+
+    public function findByEtudiant(int $idEtudiant): array
+    {
+        $sql = "SELECT * 
+                FROM devoir
+                WHERE idEtudiant = :idEtudiant";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':idEtudiant' => $idEtudiant]);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $devoirs = [];
+        
+        foreach ($results as $row) {
+            $devoirs[] = new Devoir(
+                $row['id'],
+                $row['libelle'],
+                $row['date_deb'],
+                $row['date_fin'],
+                $row['heure_deb'],
+                $row['heure_fin'],
+                $row['contenu'],
+                $row['Couleur'],
+                $row['idCours'],
+                $row['idClasse'],
+                $row['idEtudiant']
+            );
+        }
+        
+        return $devoirs;
     }
 
     // Récupère un devoir par son id
@@ -139,7 +172,8 @@ class DevoirDAO {
                 $data['contenu'],
                 $data['couleur'],
                 (int)$data['idCours'],
-                (int)$data['idClasse']
+                (int)$data['idClasse'],
+                (int)$data['idEtudiant']
             );
         }
         return $result;

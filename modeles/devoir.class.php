@@ -12,9 +12,10 @@ class Devoir {
     private string|null $couleur;
     private int|null $idCours;
     private int|null $idClasse;
+    private int|null $idEtudiant;
 
     //Constructeur
-    public function __construct(?int $id = null, ?string $libelle = null, ?string $date_deb = null,?string $date_fin = null,?string $heure_deb = null,?string $heure_fin = null, ?string $contenu = null, ?string $couleur = null, ?int $idCours = null, ?int $idClasse = null) {
+    public function __construct(?int $id = null, ?string $libelle = null, ?string $date_deb = null,?string $date_fin = null,?string $heure_deb = null,?string $heure_fin = null, ?string $contenu = null, ?string $couleur = null, ?int $idCours = null, ?int $idClasse = null, ?int $idEtudiant = null) {
         $this->id = $id;
         $this->libelle = $libelle;
         $this->date_deb = $date_deb;
@@ -25,6 +26,7 @@ class Devoir {
         $this->couleur = $couleur;
         $this->idCours = $idCours;
         $this->idClasse = $idClasse;
+        $this->idEtudiant = $idEtudiant;
     }
 
     //Getters et Setters 
@@ -130,6 +132,16 @@ class Devoir {
     public function setIdClasse(int $idClasse): void
     {
         $this->idClasse = $idClasse;
+    }
+
+    public function getIdEtudiant(): int
+    {
+        return $this->idEtudiant;
+    }
+
+    public function setIdEtudiant(int $idEtudiant): void
+    {
+        $this->idEtudiant = $idEtudiant;
     }
 
     //Méthode usuelles

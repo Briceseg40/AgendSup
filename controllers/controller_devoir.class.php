@@ -58,7 +58,8 @@ class ControllerDevoir extends Controller {
                 $_POST['contenu'],
                 $_POST['Couleur'],
                 $idCoursRecu,     // Ce n'est plus NULL, c'est l'entier 85
-                $user->getIdClasse()
+                $user->getIdClasse(),
+                $user->getId()  // On assigne l'ID de l'étudiant connecté
             );
 
             $devoirDAO = new DevoirDAO($this->getPdo());
@@ -87,6 +88,24 @@ class ControllerDevoir extends Controller {
     {
         $template = $this->getTwig()->load('supprimerDevoir.twig');
         echo $template->render(["titre" => "Supprimer un devoir"]);
+    }
+    
+    public function lister(): void
+    {
+        // Récupération de l'utilisateur en session
+        $user = $_SESSION['user'];
+        
+        // Initialisation du DAO
+        $manager = new DevoirDAO($this->getPdo());
+        
+        // Correction : On nomme la variable $devoirs
+        $devoirs = $manager->findByEtudiant($user->getIdClasse()); 
+    
+        // On envoie 'devoirs' au template pour correspondre au {% for devoir in devoirs %}
+        echo $this->getTwig()->render('listerDevoir.twig', [
+            "titre" => "Mes Devoirs",
+            "devoirs" => $devoirs 
+        ]);
     }
 
     // Route API pour FullCalendar
