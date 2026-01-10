@@ -146,14 +146,14 @@ class DevoirDAO {
         ]);
     }
 
-    // Supprime un devoir par son id
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM devoir WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
+        
+        // On lie l'ID pour éviter les injections SQL
         return $stmt->execute([':id' => $id]);
     }
-
     // Récupère tous les devoirs
     public function getAll(): array
     {

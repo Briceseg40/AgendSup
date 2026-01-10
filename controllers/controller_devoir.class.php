@@ -86,8 +86,22 @@ class ControllerDevoir extends Controller {
     // Supprimer
     public function supprimer(): void
     {
-        $template = $this->getTwig()->load('supprimerDevoir.twig');
-        echo $template->render(["titre" => "Supprimer un devoir"]);
+        // 1. Récupération de l'ID depuis l'URL (index.php?controleur=devoir&methode=supprimer&id=...)
+        $id = $_GET['id'] ?? null;
+    
+        if ($id) {
+            // 2. Initialisation du DAO
+            $manager = new DevoirDAO($this->getPdo());
+            
+            // 3. Appel de la méthode de suppression (à créer dans le DAO ci-dessous)
+            $manager->delete((int)$id);
+            
+            // Optionnel : Ajouter un message flash ici pour confirmer la suppression
+        }
+    
+        // 4. Redirection vers la liste pour voir le résultat immédiatement
+        header("Location: index.php?controleur=devoir&methode=lister");
+        exit();
     }
     
     public function lister(): void
