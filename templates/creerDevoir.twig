@@ -5,35 +5,30 @@
 {% block body %}
     <div class="container mt-5">
         <h2 class="mb-4">Création d'un Devoir</h2>
-        <form action="index.php?controleur=devoir&methode=creer" method="post" enctype="multipart/form-data">
+        
+        <form action="index.php?controleur=devoir&methode=creer" method="post">
 
+            {# Sélection de la matière #}
             <div class="mb-3">
                 <label for="idCours" class="form-label">Matière / Ressource</label>
-                <select name="idCours" id="idCours" class="form-select" required>
+                <select name="libelle" id="libelle" class="form-select" required>
                     <option value="" selected disabled>-- Sélectionnez une matière --</option>
-                
                     {% set currentSemestre = "" %}
-                    {% set currentType = "" %}
-
                     {% for cours in lesCours %}
-                        {% set typeCours = cours.libelle|slice(0, 1) == 'S' ? 'SAÉ' : 'Ressources' %}
-                        {% set groupLabel = "Semestre " ~ cours.semestre ~ " - " ~ typeCours %}
-
-                        {% if cours.semestre != currentSemestre or typeCours != currentType %}
+                        {% if cours.semestre != currentSemestre %}
                             {% if currentSemestre != "" %}</optgroup>{% endif %}
-                            <optgroup label="{{ groupLabel }}">
+                            <optgroup label="Semestre {{ cours.semestre }}">
                             {% set currentSemestre = cours.semestre %}
-                            {% set currentType = typeCours %}
                         {% endif %}
-
                         <option value="{{ cours.id }}">{{ cours.libelle }}</option>
                     {% endfor %}
-                    
-                    {% if currentSemestre != "" %}</optgroup>{% endif %}
+                    </optgroup>
                 </select>
             </div>
 
-            <div class="row g-2"> <div class="col-md-3 mb-3">
+            {# Dates et Heures #}
+            <div class="row g-2">
+                <div class="col-md-3 mb-3">
                     <label for="date_deb" class="form-label small">Date de début *</label>
                     <input type="date" class="form-control form-control-sm" id="date_deb" name="date_deb" required>
                 </div>
@@ -51,10 +46,21 @@
                 </div>
             </div>
 
+            {# Description avec Compteur #}
             <div class="mb-3">
-                <label for="contenu" class="form-label">Consignes / Contenu</label>
-                <textarea class="form-control" id="contenu" name="contenu" rows="3" placeholder="Description du travail à faire..." required></textarea>
-            </div>
+        <div class="d-flex justify-content-between">
+            <label for="contenu" class="form-label">Consignes / Contenu</label>
+            <small id="char-count" class="text-muted">0 / 1000</small>
+        </div>
+        <textarea 
+            class="form-control" 
+            id="contenu" 
+            name="contenu" 
+            rows="4" 
+            maxlength="1000" 
+            placeholder="Description du travail à faire..."
+            required></textarea>
+    </div>
 
             <div class="mb-3" style="max-width: 300px;">
                 <label for="Couleur" class="form-label small">Couleur</label>
@@ -66,20 +72,25 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-success w-100">Enregistrer dans l'agenda</button>
+            <button type="submit" class="btn btn-success w-100">Enregistrer</button>
         </form>
     </div>
 
     <script>
-        const dateDeb = document.getElementById('date_deb');
-        const dateFin = document.getElementById('date_fin');
-        const today = new Date().toISOString().split('T')[0];
-        
-        dateDeb.value = today;
-        dateFin.value = today;
+        // Gestion auto des dates [cite: 17, 18]
+        const dDeb = document.getElementById('date_deb');
+        const dFin = document.getElementById('date_fin');
+        const now = new Date().toISOString().split('T')[0];
+        dDeb.value = now; dFin.value = now;
+        dDeb.addEventListener('change', () => { dFin.value = dDeb.value; });
 
-        dateDeb.addEventListener('change', () => {
-            dateFin.value = dateDeb.value;
+        // Compteur de caractères [cite: 20, 21]
+        const txt = document.getElementById('contenu');
+        const cnt = document.getElementById('char-count');
+        txt.addEventListener('input', () => {
+            const len = txt.value.length;
+            cnt.textContent = `${len} / 1000`;
+            cnt.classList.toggle('text-danger', len >= 950);
         });
     </script>
 {% endblock %}

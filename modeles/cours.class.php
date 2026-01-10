@@ -29,7 +29,7 @@ class Cours
         $this->id = $id;
     }
 
-    public function getLibelle(): ?string
+    public function getLibelle(): ?string 
     {
         return $this->libelle;
     }
