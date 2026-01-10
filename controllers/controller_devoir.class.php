@@ -28,7 +28,6 @@ class ControllerDevoir extends Controller {
     public function creer(): void
     {
         $user = $_SESSION['user'];
-        $message = null;
 
         $coursManager = new CoursDao($this->getPdo());
         $listeDesCours = $coursManager->findByAnneeEtParcours((int)$user->getAnnee(), $user->getParcour());
@@ -40,9 +39,10 @@ class ControllerDevoir extends Controller {
             
             $libelleMatiere = "";
             // On cherche le NOM correspondant à cet ID pour ton objet Devoir
+            // On utilise les méthodes de l'objet Cours
             foreach ($listeDesCours as $cours) {
-                if ((int)$cours['id'] === $idCoursRecu) {
-                    $libelleMatiere = $cours['libelle'];
+                if ((int)$cours->getId() === $idCoursRecu) { 
+                    $libelleMatiere = $cours->getLibelle();
                     break;
                 }
             }
@@ -79,10 +79,54 @@ class ControllerDevoir extends Controller {
     // Modifier
     public function modifier(): void
     {
-        $template = $this->getTwig()->load('modifierDevoir.twig');
-        echo $template->render(["titre" => "Modifier un devoir"]);
+        $user = $_SESSION['user'];
+        $idDevoir = $_GET['id'] ?? null; // On récupère l'ID du devoir dans l'URL
+    
+        if (!$idDevoir) {
+            header("Location: index.php?controleur=devoir&methode=lister");
+            exit();
+        }
+    
+        $devoirManager = new DevoirDAO($this->getPdo());
+        $coursManager = new CoursDao($this->getPdo());
+    
+        // 1. TRAITEMENT DU FORMULAIRE (SI POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // On crée un objet Devoir avec les nouvelles données du formulaire
+            $devoirModifie = new Devoir(
+                (int)$idDevoir,
+                $_POST['libelle'],
+                $_POST['date_deb'],
+                $_POST['date_fin'],
+                $_POST['heure_deb'],
+                $_POST['heure_fin'],
+                $_POST['contenu'],
+                $_POST['Couleur'],
+                (int)$_POST['idCours'],
+                (int)$user->getIdClasse(),
+                (int)$user->getId()
+            );
+    
+            // Appel de la fonction update que nous avons corrigée au tour précédent
+            if ($devoirManager->update($devoirModifie)) {
+                header("Location: index.php?controleur=devoir&methode=lister&success=1");
+                exit();
+            }
+        }
+    
+        // 2. AFFICHAGE DU FORMULAIRE (GET)
+        // On récupère les données actuelles du devoir pour pré-remplir les champs
+        $devoir = $devoirManager->findById((int)$idDevoir);
+        $listeDesCours = $coursManager->findAll(); // Récupère tous les cours pour la liste déroulante
+    
+        echo $this->getTwig()->render('modifierDevoir.twig', [
+            "titre" => "Modifier le devoir",
+            "devoir" => $devoir,
+            "cours" => $listeDesCours
+        ]);
     }
 
+    
     // Supprimer
     public function supprimer(): void
     {

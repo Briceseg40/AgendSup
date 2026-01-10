@@ -62,7 +62,7 @@
             required></textarea>
     </div>
 
-            <div class="mb-3" style="max-width: 300px;">
+            {# <div class="mb-3" style="max-width: 300px;">
                 <label for="Couleur" class="form-label small">Couleur</label>
                 <select class="form-select form-select-sm" id="Couleur" name="Couleur">
                     <option value="Blue">Bleu</option>
@@ -70,7 +70,13 @@
                     <option value="Green">Vert</option>
                     <option value="Yellow">Jaune</option>
                 </select>
-            </div>
+            </div> #}
+
+             <div class="mb-4">
+                            <label for="Couleur" class="form-label fw-bold">Couleur de priorité</label>
+                            <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
+                                   value="{{ devoir.couleur|default('#4e73df') }}" title="Choisir une couleur">
+                        </div>
 
             <button type="submit" class="btn btn-success w-100">Enregistrer</button>
         </form>

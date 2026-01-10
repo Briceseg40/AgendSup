@@ -51,6 +51,35 @@ class DevoirDAO {
     }
 
 
+    public function findById(int $id): ?Devoir
+{
+    // On utilise :id pour correspondre à la clé du tableau execute
+    $stmt = $this->pdo->prepare("SELECT * FROM devoir WHERE id = :id");
+    $stmt->execute([':id' => $id]); 
+    
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$row) {
+        return null;
+    }
+
+    // On retourne DIRECTEMENT l'objet Devoir
+    return new Devoir(
+        $row['id'],
+        $row['libelle'],
+        $row['date_deb'],
+        $row['date_fin'],
+        $row['heure_deb'],
+        $row['heure_fin'],
+        $row['contenu'],
+        $row['Couleur'],
+        $row['idCours'],
+        $row['idClasse'],
+        $row['idEtudiant']
+    );
+}
+
+
     // Crée un nouveau devoir
     // Crée un nouveau devoir
     public function create(Devoir $devoir): bool
@@ -129,22 +158,38 @@ class DevoirDAO {
 
     // Met à jour un devoir existant
     public function update(Devoir $devoir): bool
-    {
-        $sql = "UPDATE devoir SET libelle = :libelle, date_a_realiser = :date_a_realiser, contenu = :contenu, idCours = :idCours WHERE id = :id";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
-            ':libelle' => $devoir->getLibelle(),
-            ':date_deb' => $devoir->getDateDeb(),
-            ':date_fin' => $devoir->getDateFin(),
-            ':heure_deb' => $devoir->getHeureDeb(),
-            ':heure_fin' => $devoir->getHeureFin(),
-            ':contenu' => $devoir->getContenu(),
-            ':couleur' => $devoir->getCouleur(),
-            ':idCours' => $devoir->getIdCours(),
-            ':idClasse' => $devoir->getIdClasse(),
-            ':id' => $devoir->getId()
-        ]);
-    }
+{
+    // 1. Définition de la requête avec TOUS les marqueurs nécessaires
+    $sql = "UPDATE devoir 
+            SET libelle = :libelle, 
+                date_deb = :date_deb, 
+                date_fin = :date_fin, 
+                heure_deb = :heure_deb, 
+                heure_fin = :heure_fin, 
+                contenu = :contenu, 
+                Couleur = :couleur, 
+                idCours = :idCours, 
+                idClasse = :idClasse, 
+                idEtudiant = :idEtudiant
+            WHERE id = :id";
+
+    $stmt = $this->pdo->prepare($sql);
+
+    // 2. Mapping strict : chaque marqueur ci-dessus doit être une clé ici
+    return $stmt->execute([
+        ':libelle'    => $devoir->getLibelle(),
+        ':date_deb'   => $devoir->getDateDeb(),
+        ':date_fin'   => $devoir->getDateFin(),
+        ':heure_deb'  => $devoir->getHeureDeb(),
+        ':heure_fin'  => $devoir->getHeureFin(),
+        ':contenu'    => $devoir->getContenu(),
+        ':couleur'    => $devoir->getCouleur(),
+        ':idCours'    => $devoir->getIdCours(),
+        ':idClasse'   => $devoir->getIdClasse(),
+        ':idEtudiant' => $devoir->getIdEtudiant(),
+        ':id'         => $devoir->getId()
+    ]);
+}
 
     public function delete(int $id): bool
     {
