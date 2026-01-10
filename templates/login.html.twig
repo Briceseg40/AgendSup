@@ -24,6 +24,11 @@
 		<div class="bg-gray position-absolute top-50 start-50 translate-middle hero text-center rounded-5 p-5">
 			<h1 class="titre">AgendSup</h1>
 			<p class="text-btn mb-5" >veuillez vous connecter</p>
+
+			 {% if erreur %}
+				<div class="alert alert-danger">{{ erreur }}</div>
+			{% endif %}
+
 			<div
 				class="hero-buttons position-relative d-flex flex-column gap-3 w-90 mx-auto">
 				{# <img src="public/assets/img/agendboyquisait.png" alt=""> #}

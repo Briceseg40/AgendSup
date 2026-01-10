@@ -104,4 +104,77 @@ class Etudiant
         $this->Mdp = $Mdp;
     }
 
+    public function mailExiste(): bool
+    {
+        //Connexion à la base de données
+        $pdo = Bd::getInstance()->getConnection();
+
+        //Préparation de la requête pour vérifier si l'email existe
+        $requete = $pdo->prepare("SELECT COUNT(*) FROM etudiant WHERE mail = :mail");
+
+        //Execution de la requete avec l'email recupere au niveau du formulaire
+        $requete->execute([':mail' => $this->getMail()]);
+
+        //Retourne vrai si l'email existe, sinon faux
+        return $requete->fetchColumn() > 0;
+    }
+
+    public function estRobuste(string $password): bool
+    {
+        $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&.]{8,}$/';
+        // La fonction preg_match retourne 1 si une correspondance est trouvée.
+        return preg_match($regex, $password) === 1;
+    }
+
+    public function inscription(EtudiantDAO $etudiantDAO): void 
+    {
+        //Verification de la robustesse du mot de passe
+        if (!$this->estRobuste($this->getMdp())) 
+        {
+            throw new Exception("Mot de passe faible");
+        }
+
+        //Verifie si l'email existe déjà
+        if ($this->mailExiste()) 
+        {
+            throw new Exception("Compte existant");
+        }
+
+        //Obtention de l'instance PDO via la classe BD
+        $pdo = Bd::getInstance()->getConnection();
+
+        //Appel de la méthode ajouter de EtudiantDAO pour insérer l'étudiant en base
+        $etudiantDAO->ajouter($this);
+    }
+
+    public function authentification(): bool 
+    {
+        //Connexion à la base de données
+        $pdo = Bd::getInstance()->getConnection();
+
+        //Recherche de l'etudiant correspondant à l'email fourni
+        $requete = $pdo->prepare("SELECT * FROM etudiant WHERE mail = :mail");
+
+        //execution de la requete avec l'email de l'etudiant
+        $requete->execute([':mail' => $this->getMail()]);
+
+        //Recupération des informations de l'etudiant en base 
+        $etudiantEnBase = $requete->fetch();
+        
+        //Vérifie si l'etudiant en base existe
+        if ($etudiantEnBase)
+        {
+            //Utilise password_verify pour comparer le mot de passe fourni avec le mot de passe haché en base
+            if (password_verify($this->getMdp(), $etudiantEnBase['mdp'])) 
+            {
+                $this->identifiant = $etudiantEnBase['id'];
+
+                //Reinitialisation du mot de passe en clair pour ne pas conserver de données sensibles 
+                $this->setMdp(null);
+
+                return true; //Authentification réussie
+            }
+        }
+        return false; //Authentification échouée
+    }
 }

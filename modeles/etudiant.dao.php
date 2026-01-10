@@ -121,25 +121,25 @@ class EtudiantDAO
         return null;
     }
 
-    /** Insère un nouvel étudiant */
-    public function insert(Etudiant $etudiant): bool
-    {
-        $nom = $etudiant->getNom();
-        $prenom = $etudiant->getPrenom();
-        $role = $etudiant->getRole();
-        $annee = $etudiant->getAnnee();
-        $idClasse = $etudiant->getIdClasse();
-        $mail = $etudiant->getMail();
-        $hashedMdp = password_hash($etudiant->getMdp(), PASSWORD_DEFAULT);
+    // Ajout d'un étudiant
+    public function ajouter(Etudiant $etudiant): void {
+        //Hachage du mot de passe avec password_hash()
+        $passwordHache = password_hash($etudiant->getMdp(), PASSWORD_BCRYPT);
 
-        $stmt = $this->pdo->prepare("INSERT INTO etudiant (Nom, Prenom, role, Annee, idClasse, mail, mdp) VALUES (:nom, :prenom, :role, :annee, :idClasse, :mail, :mdp)");
-        $stmt->bindParam(':nom', $nom);
-        $stmt->bindParam(':prenom', $prenom);
-        $stmt->bindParam(':role', $role);
-        $stmt->bindParam(':annee', $annee);
-        $stmt->bindParam(':idClasse', $idClasse);
-        $stmt->bindParam(':mail', $mail);
-        $stmt->bindParam(':mdp', $hashedMdp);
-        return $stmt->execute();
+        //Préparation de la requete d'insertion
+        $requete = $this->pdo->prepare(
+            'INSERT INTO etudiant (Nom, Prenom, mail, mdp, role, Annee, idClasse)
+             VALUES (:Nom, :Prenom, :mail, :mdp, :role, :Annee, :idClasse)'
+        );
+
+        $requete->execute([
+            ':Nom' => $etudiant->getNom(),
+            ':Prenom' => $etudiant->getPrenom(),
+            ':role' => $etudiant->getRole(),
+            ':Annee' => $etudiant->getAnnee(),
+            ':idClasse' => $etudiant->getIdClasse(),
+            ':mail' => $etudiant->getMail(),
+            ':mdp' => $passwordHache
+        ]);
     }
 }
