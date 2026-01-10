@@ -22,20 +22,25 @@ class controllerCours extends Controller
         ));
     }
 
-    public function listerByAgenda($id_Agenda): void
-    {
-        $manager = new CoursDao($this->getPdo());
-        $cours = $manager->findByAgenda($id_Agenda);
+    public function findByAnnee($Annee): void
+{
+    // 1. Récupérer le parcours de l'utilisateur (depuis la session ou l'objet User)
+    // On suppose que l'info est stockée en session comme dans votre Twig initial
+    $parcours = $_SESSION['user']['Parcour'] ?? null; 
 
-        //Chargement du template
-        $template = $this->getTwig()->load('cours.twig');
+    // 2. Appeler le manager avec les deux critères
+    $manager = new CoursDao($this->getPdo());
+    $listeDesCours = $manager->findByAnneeEtParcours((int)$Annee, $parcours);
 
-        //Affichage du template et transmission des données
-        echo $template->render(array(
-            'cours' => $cours,
-            'menu' => "category"
-        ));
-    }
+    // 3. Chargement du template
+    $template = $this->getTwig()->load('cours.twig');
+
+    // 4. Affichage et transmission
+    echo $template->render(array(
+        'lesCours' => $listeDesCours, // On utilise un nom explicite
+        'menu' => "category"
+    ));
+}
 
      //Creer
      public function creer(): void

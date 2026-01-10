@@ -1,0 +1,96 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Création de devoirs{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2 class="mb-4">Création d'un Devoir</h2>
+        
+        <form action="index.php?controleur=devoir&methode=creer" method="post">
+
+            {# Sélection de la matière #}
+            <div class="mb-3">
+                <label for="idCours" class="form-label">Matière / Ressource</label>
+                <select name="libelle" id="libelle" class="form-select" required>
+                    <option value="" selected disabled>-- Sélectionnez une matière --</option>
+                    {% set currentSemestre = "" %}
+                    {% for cours in lesCours %}
+                        {% if cours.semestre != currentSemestre %}
+                            {% if currentSemestre != "" %}</optgroup>{% endif %}
+                            <optgroup label="Semestre {{ cours.semestre }}">
+                            {% set currentSemestre = cours.semestre %}
+                        {% endif %}
+                        <option value="{{ cours.id }}">{{ cours.libelle }}</option>
+                    {% endfor %}
+                    </optgroup>
+                </select>
+            </div>
+
+            {# Dates et Heures #}
+            <div class="row g-2">
+                <div class="col-md-3 mb-3">
+                    <label for="date_deb" class="form-label small">Date de début *</label>
+                    <input type="date" class="form-control form-control-sm" id="date_deb" name="date_deb" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="date_fin" class="form-label small">Date de fin *</label>
+                    <input type="date" class="form-control form-control-sm" id="date_fin" name="date_fin" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="heure_deb" class="form-label small">Heure de début *</label>
+                    <input type="time" class="form-control form-control-sm" id="heure_deb" name="heure_deb" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="heure_fin" class="form-label small">Heure de fin *</label>
+                    <input type="time" class="form-control form-control-sm" id="heure_fin" name="heure_fin" required>
+                </div>
+            </div>
+
+            {# Description avec Compteur #}
+            <div class="mb-3">
+        <div class="d-flex justify-content-between">
+            <label for="contenu" class="form-label">Consignes / Contenu</label>
+            <small id="char-count" class="text-muted">0 / 1000</small>
+        </div>
+        <textarea 
+            class="form-control" 
+            id="contenu" 
+            name="contenu" 
+            rows="4" 
+            maxlength="1000" 
+            placeholder="Description du travail à faire..."
+            required></textarea>
+    </div>
+
+            <div class="mb-3" style="max-width: 300px;">
+                <label for="Couleur" class="form-label small">Couleur</label>
+                <select class="form-select form-select-sm" id="Couleur" name="Couleur">
+                    <option value="Blue">Bleu</option>
+                    <option value="purple">Violet</option>
+                    <option value="Green">Vert</option>
+                    <option value="Yellow">Jaune</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Enregistrer</button>
+        </form>
+    </div>
+
+    <script>
+        // Gestion auto des dates [cite: 17, 18]
+        const dDeb = document.getElementById('date_deb');
+        const dFin = document.getElementById('date_fin');
+        const now = new Date().toISOString().split('T')[0];
+        dDeb.value = now; dFin.value = now;
+        dDeb.addEventListener('change', () => { dFin.value = dDeb.value; });
+
+        // Compteur de caractères [cite: 20, 21]
+        const txt = document.getElementById('contenu');
+        const cnt = document.getElementById('char-count');
+        txt.addEventListener('input', () => {
+            const len = txt.value.length;
+            cnt.textContent = `${len} / 1000`;
+            cnt.classList.toggle('text-danger', len >= 950);
+        });
+    </script>
+{% endblock %}

@@ -33,7 +33,7 @@ class ControllerConnecter extends Controller {
     
 
     public function deconnexion() {
-        session_destroy();
+        session_destroy(); //
         header('Location: index.php?controleur=connecter&methode=connexion');
         exit();
     }
@@ -43,8 +43,9 @@ class ControllerConnecter extends Controller {
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
-        echo $this->getTwig()->render('connected.html.twig', ['user' => $_SESSION['user']]);
-    }
 
-    
+        echo $this->getTwig()->render('connected.html.twig', [
+            'user' => $_SESSION['user']
+        ]);
+    }
 }

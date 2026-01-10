@@ -1,0 +1,95 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Liste des devoirs{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h3">📅 {{ titre }}</h2>
+        <a href="index.php?controleur=devoir&methode=creer" class="btn btn-success shadow-sm">
+            <i class="bi bi-plus-circle-fill"></i> Ajouter un devoir
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4" style="width: 25%;">Matière</th>
+                            <th style="width: 15%;">Dates</th>
+                            <th style="width: 12%;">Horaires</th>
+                            <th style="width: 18%;">Description</th>
+                            <th class="text-center" style="width: 10%;">Couleur</th>
+                            {# Alignement du titre au centre pour correspondre aux boutons #}
+                            <th class="text-center" style="width: 20%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for devoir in devoirs %}
+                        <tr>
+                            <td class="ps-4">
+                                <span class="fw-bold text-dark">{{ devoir.libelle }}</span>
+                            </td>
+
+                            {# Dates #}
+                            <td>
+                                <div class="small">
+                                    <div class="text-nowrap mb-1">{{ devoir.dateDeb|date("d/m/Y") }}</div>
+                                    <div class="text-nowrap text-danger fw-semibold">{{ devoir.datefin|date("d/m/Y") }}</div>
+                                </div>
+                            </td>
+
+                            {# Horaires #}
+                            <td>
+                                <div class="small">
+                                    <div class="text-nowrap text-muted mb-1">{{ devoir.heureDeb }}</div>
+                                    <div class="text-nowrap text-danger">{{ devoir.heureFin }}</div>
+                                </div>
+                            </td>
+
+                            {# Description #}
+                            <td>
+                                <div class="text-muted small text-truncate" style="max-width: 150px;" title="{{ devoir.contenu }}">
+                                    {{ devoir.contenu|default('...') }}
+                                </div>
+                            </td>
+                            
+                            {# Couleur #}
+                            <td class="text-center">
+                                <span class="d-inline-block rounded-circle shadow-sm" 
+                                      style="width: 20px; height: 20px; background-color: {{ devoir.couleur|default('#4e73df') }}; border: 2px solid white; outline: 1px solid #dee2e6;">
+                                </span>
+                            </td>
+
+                            {# Actions PARFAITEMENT ALIGNÉES #}
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="index.php?controleur=devoir&methode=modifier&id={{ devoir.id }}" 
+                                       class="btn btn-sm btn-outline-primary py-1 px-2 d-flex align-items-center shadow-sm" style="font-size: 0.85rem;">
+                                        <i class="bi bi-pencil-square me-1"></i> Modifier
+                                    </a>
+                                    <a href="index.php?controleur=devoir&methode=supprimer&id={{ devoir.id }}" 
+                                       class="btn btn-sm btn-outline-danger py-1 px-2 d-flex align-items-center shadow-sm" 
+                                       style="font-size: 0.85rem;"
+                                       onclick="return confirm('Voulez-vous supprimer ce devoir ?')">
+                                        <i class="bi bi-trash3 me-1"></i> Supprimer
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                <p class="text-muted mb-0">Aucun devoir à afficher.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

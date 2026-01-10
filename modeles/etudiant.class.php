@@ -1,6 +1,5 @@
 <?php
 
-
 class Etudiant
 {
     private int|null $id;
@@ -8,11 +7,12 @@ class Etudiant
     private string|null $Prenom;
     private string|null $role;
     private int|null $Annee;
-    private int|null $idClasse;
     private string|null $Mail;
-    private string|null $Mdp;
+    private string|null $Mdp;   
+    private string|null $Parcour;
+    private int|null $idClasse;
 
-    public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?int $idClasse = null, ?string $Mail = null, ?string $Mdp = null)
+    public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?string $Mail = null, ?string $Mdp = null, ?string $Parcour = null,?int $idClasse = null)
     {
         $this->setId($id);
         $this->setNom($Nom);
@@ -22,6 +22,8 @@ class Etudiant
         $this->setIdClasse($idClasse);
         $this->setMail($Mail);
         $this->setMdp($Mdp);
+        $this->setParcour($Parcour);
+        $this->setIdClasse($idClasse);
     }
 
     public function getId(): ?int
@@ -72,16 +74,6 @@ class Etudiant
     public function setAnnee(?int $Annee): void
     {
         $this->Annee = $Annee;
-    }
-
-    public function getIdClasse(): ?int
-    {
-        return $this->idClasse;
-    }
-
-    public function setIdClasse(?int $idClasse): void
-    {
-        $this->idClasse = $idClasse;
     }
     
     public function getMail(): ?string

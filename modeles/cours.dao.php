@@ -31,6 +31,7 @@ class CoursDAO
             $cours[] = new Cours(
                 $row['id'],
                 $row['libelle'],
+                $row['']
             );
         }
 
@@ -56,30 +57,29 @@ class CoursDAO
     }
 
     /** Récupère tous les cours liés à un agenda */
-    public function findByAgenda(int $id_agenda): array
+    public function findByAnneeEtParcours(int $annee, ?string $parcours): array
     {
-        $sql = "
-            SELECT c.id, c.libelle, a.date_cours, a.horaire
-            FROM afficher a
-            INNER JOIN cours c ON a.id_cours = c.id
-            WHERE a.id_agenda = :id_agenda
-        ";
+    // 1. La requête adaptée à ta structure (libelle contient le code + nom)
+    $sql = "
+        SELECT id, libelle, type, semestre 
+        FROM cours
+        WHERE annee = :userAnnee 
+        AND (parcours = :userParcours OR parcours IS NULL)
+        ORDER BY semestre ASC, type DESC, libelle ASC;
+    ";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id_agenda', $id_agenda, PDO::PARAM_INT);
-        $stmt->execute();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $this->pdo->prepare($sql);
+    
+    // 2. On lie les bons paramètres
+    $stmt->bindValue(':userAnnee', $annee, PDO::PARAM_INT);
+    $stmt->bindValue(':userParcours', $parcours, PDO::PARAM_STR);
+    
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $cours = [];
-        foreach ($results as $row) {
-            $cours[] = new Cours(
-                $row['id'],
-                $row['libelle'],
-                $row['date_cours'],
-                $row['horaire']
-            );
-        }
-
-        return $cours;
+    // 3. On retourne les résultats (soit en tableau simple, soit en objet)
+    // Si tu utilises une classe "Cours", assure-toi que le constructeur accepte ces données
+    return $results; 
     }
+
 }

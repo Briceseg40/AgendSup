@@ -43,3 +43,8 @@ $twig->addExtension(new \Twig\Extension\DebugExtension());
 
 // Ajout de l'extension d'internationalisation pour Twig.
 //$twig->addExtension(new IntlExtension());
+$twig->addGlobal('app', [
+    'user' => $_SESSION['user'] ?? null
+]);
+
+$twig->addGlobal('session', $_SESSION);

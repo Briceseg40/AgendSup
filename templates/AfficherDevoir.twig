@@ -4,6 +4,7 @@
 
 
 {% block body %}
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -50,7 +51,31 @@
     });
 </script>
 
+{% if app.user and app.user.role == 'delegue' %}
+    <div class="mb-3 text-end">
+        <a href="index.php?controleur=devoir&methode=lister" 
+           class="btn btn-primary shadow" 
+           style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 50px; padding: 10px 20px;">
+            devoir
+        </a>
+    </div>
+{% endif %}   
+
+{% if app.user and app.user.role == 'ressource' %}
+    <div class="mb-3 text-end">
+        <a href="index.php?controleur=devoir&methode=lister" 
+           class="btn btn-primary shadow" 
+           style="position: fixed; bottom: 40px; right: 20px; z-index: 1000; border-radius: 50px; padding: 10px 20px;">
+            devoir
+        </a>
+    </div>
+{% endif %}   
+
 <div class="container mt-4">
     <div id='calendar'></div>
 </div>
+
+
+
+
 {% endblock %}
