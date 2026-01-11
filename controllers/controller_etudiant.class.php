@@ -93,21 +93,18 @@ echo $template->render([
 }
 
 /**
- * @brief Lister tous les étudiants avec leurs données.
+ * @brief Afficher le profil de l'étudiant connecté.
  * @return void
  */
-public function lister(): void
+public function afficher(): void
 {
-    // 1. On récupère les étudiants via le DAO (à adapter selon ton nom de méthode DAO)
-    $etudiantDAO = new EtudiantDAO(Bd::getInstance()->getConnection());
-    $listeEtudiants = $etudiantDAO->listerTous(); // Imaginons que la méthode s'appelle ainsi
+    // On récupère l'étudiant connecté en session (exemple)
+    // Ou on le récupère via un ID passé en paramètre
+    $etudiant = $_SESSION['user_object'] ?? null; 
 
-    // 2. Chargement du template
-    $template = $this->getTwig()->load('etudiant/lister.twig');
-
-    // 3. Rendu avec la variable "etudiants"
+    $template = $this->getTwig()->load('etudiant/afficher.twig');
     echo $template->render([
-        "titre" => "Annuaire des Étudiants",
-        "etudiants" => $listeEtudiants
+        "titre" => "Mon Profil",
+        "etudiant" => $etudiant
     ]);
 }
