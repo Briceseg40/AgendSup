@@ -3,6 +3,7 @@ var index =
     [ "Introduction", "index.html#intro_sec", null ],
     [ "Dépôt GitHub", "index.html#repo_sec", null ],
     [ "Fonctionnalités principales", "index.html#features_sec", null ],
+    [ "peut faire quoi ?", "index.html#Qui", null ],
     [ "Conventions de Nommage", "index.html#naming_sec", [
       [ "Classes et Types", "index.html#naming_classes", null ],
       [ "Méthodes", "index.html#naming_methods", null ],

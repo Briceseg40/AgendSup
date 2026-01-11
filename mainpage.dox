@@ -16,10 +16,10 @@
  * - Ajout et suivi des devoirs
  * - Gestion des utilisateurs (inscription, connexion, mot de passe oublié)
  *
- * @section Qui peut faire quoi ?
- * - Les devoirs sont gérer et poster par les Étudiants qui ont le rôle de délégué seuls eux peuvent ajouter les devoirs.
- * - Les cours de révisions sont quant à eux poster par les Étudiants ayant le statut "Étudiant Ressource".
- * - Tous les étudiants peuvent consulter les devoirs ainsi que créer ou rejoindre une salle de classe.
+ * @section roles_sec Qui peut faire quoi ?
+ * - **Étudiants Délégués** : Seuls eux peuvent gérer et poster les devoirs de la classe.
+ * - **Étudiants Ressources** : Ils sont responsables de la publication des cours de révisions.
+ * - **Tous les Étudiants** : Peuvent consulter les devoirs, ainsi que créer ou rejoindre une salle de classe.
  *
  * @section naming_sec Conventions de Nommage
  * Les conventions suivantes sont utilisées dans le code source du projet AgendSup :

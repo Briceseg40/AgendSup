@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['types_0',['Classes et Types',['../index.html#naming_classes',1,'']]]
+  ['quoi_0',['peut faire quoi ?',['../index.html#Qui',1,'']]]
 ];
