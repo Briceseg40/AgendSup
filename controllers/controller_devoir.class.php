@@ -63,21 +63,30 @@ class ControllerDevoir extends Controller {
             /**
              * @brief Recherche du libellé du cours correspondant à l'ID reçu
              */
+
+            $idCoursRecu = $_POST['idCour']; 
+            
+            $libelleMatiere = "";
+
             foreach ($listeDesCours as $cours) {
-                if ((int)$cours->getId() === $idCoursRecu) { 
+                if ($cours->getId() == $idCoursRecu) { 
                     $libelleMatiere = $cours->getLibelle();
                     break;
                 }
 
             /* @brief Vérification de la cohérence des dates et heures */
+            // On combine date et heure pour comparer facilement
             $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
             /* @brief Vérification que la date et l'heure de fin sont postérieures à celles de début */
             $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
             
             /* @brief Si la date de fin est antérieure ou égale à la date de début */
+
+            $contenuproteger = htmlentities($_POST['contenu']);
+
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
                 // En cas d'erreur, on ne sauvegarde pas et on renvoie un message
-                $listeDesCours = $coursManager->findByAnneeEtParcours((int)$user->getAnnee(), $user->getParcour());
+                $listeDesCours = $coursManager->findByAnneeEtParcours($user->getAnnee(), $user->getParcour());
                 echo $this->getTwig()->render('creerDevoir.twig', [
                     "lesCours" => $listeDesCours,
                     "error" => "La date de fin doit être postérieure à la date de début."
@@ -94,11 +103,11 @@ class ControllerDevoir extends Controller {
                 $_POST['date_fin'],
                 $_POST['heure_deb'],
                 $_POST['heure_fin'],
-                $_POST['contenu'],
+                $contenuproteger,
                 $_POST['Couleur'],
-                $idCoursRecu,     // Ce n'est plus NULL, c'est l'entier 85
+                $idCoursRecu,
                 $user->getIdClasse(),
-                $user->getId()  // On assigne l'ID de l'étudiant connecté
+                $user->getId()
             );
             /* @brief Initialisation du DAO pour les devoirs */
             $devoirDAO = new DevoirDAO($this->getPdo());
@@ -145,6 +154,8 @@ class ControllerDevoir extends Controller {
             $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
             /* @brief Vérification que la date et l'heure de fin sont postérieures à celles de début */
             $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
+
+            $contenuproteger = htmlentities($_POST['contenu']);
     
             /* @brief Si la date de fin est antérieure ou égale à la date de début */
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
@@ -161,10 +172,10 @@ class ControllerDevoir extends Controller {
                     $_POST['heure_deb'],
                     $_POST['heure_fin'],
                     $_POST['contenu'],
-                    $_POST['Couleur'],
-                    (int)$_POST['idCours'],
-                    (int)$user->getIdClasse(),
-                    (int)$user->getId()
+                    $contenuproteger,
+                    $_POST['idCours'],
+                    $user->getIdClasse(),
+                    $user->getId()
                 );
                 /* @brief Mise à jour du devoir dans la base de données */
                 if ($devoirManager->update($devoirModifie)) {
@@ -222,6 +233,8 @@ class ControllerDevoir extends Controller {
         
         /* @brief Récupération des devoirs pour la classe de l'étudiant */
         $devoirs = $manager->findByEtudiant($user->getIdClasse()); 
+        // Correction : On nomme la variable $devoirs
+        $devoirs = $manager->findByEtudiant($user->getId()); 
     
         /* @brief Affichage de la liste des devoirs */
         echo $this->getTwig()->render('listerDevoir.twig', [

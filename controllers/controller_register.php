@@ -58,7 +58,7 @@ class ControllerRegister extends Controller {
 
         /**
          * @brief Calcul de l'ID de la classe à partir de la promotion, du TD et du TP.
-         */ */
+         */ 
         $promo = (int)$_POST['promo'];
         $td = (int)$_POST['td_group'];
         $tp = (int)$_POST['tp_group'];

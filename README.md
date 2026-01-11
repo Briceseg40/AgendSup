@@ -11,5 +11,5 @@
 Le projet est déployé sur les serveurs de l'IUT (Lakartxela).
 
 ## API
-Voici des api à installer : 
+Voici des api utilisées : 
 - **Full Calendar :** npm install fullcalendar

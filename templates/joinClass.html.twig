@@ -40,10 +40,13 @@
 			<div class="position-relative section-class bg-gray w-100 d-flex flex-column justify-content-center border-black border-1 align-items-center border p-5 mt-3">
 
 				<div class="input-group w-50 position-absolute mb-4 top-30px">
-					<span class="input-group-text">
-						<i class="fa-solid fa-magnifying-glass"></i>
-					</span>
-					<input type="search" class="form-control" placeholder="Saisissez votre recherche">
+					<form method="post" action="?controleur=joinClass&methode=rejoindreParCode" class="input-group w-50 position-absolute mb-4 top-30px" style="z-index: 10;">
+    <span class="input-group-text">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </span>
+    <input type="search" name="code_classe" class="form-control" placeholder="Entrez le code de la classe...">
+    <button type="submit" class="btn btn-dark">Rechercher</button>
+</form>
 				</div>
 
 				<div class="w-50 d-flex flex-column gap-2 overflow-auto mt-40 custom-scroll mh-48vh">
@@ -90,7 +93,7 @@
 				</div>
 
 				<div class="btn-right d-flex flex-column justify-content-end align-items-left mt-4">
-					<a href="?controleur=paramclasse&methode=render" class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-4 w-auto">Ajout d'une classe</a>
+					<a href="?controleur=paramclasse&methode=render" class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-4 w-auto">Créer une classe</a>
 					<a href="?controleur=connecter&methode=render" class="btn text-btn btn-light w-110px rounded-3 shadow border-black p-3 mt-4">Retour</a>
 				</div>
 			</div>

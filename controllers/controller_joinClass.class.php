@@ -29,12 +29,19 @@ class ControllerJoinClass extends Controller {
         /* @brief Récupération de l'ID de l'étudiant. */
         $idEtudiant = is_array($utilisateurConnecte) ? $utilisateurConnecte['id'] : $utilisateurConnecte->getId();
         /* @brief Récupération de la liste des classes de l'étudiant. */
+        
+        $user = $_SESSION['user'];
+        $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
+
         $pdo = Bd::getInstance()->getConnection();
         /* @brief Initialisation du DAO de classe. */
         $classeDAO = new ClasseDAO($pdo);
         /* @brief Recherche des classes de l'étudiant. */
         $listeDesClasses = $classeDAO->findPerso($idEtudiant);
         /* @brief Rendu du template Twig avec la liste des classes. */
+        
+        $listeDesClasses = $classeDAO->findInscrites($idEtudiant);
+
         echo $this->getTwig()->render('joinClass.html.twig', [
             'classes' => $listeDesClasses
         ]);
@@ -51,12 +58,16 @@ class ControllerJoinClass extends Controller {
             /* @brief Récupération du type d'action (rejoindre ou supprimer). */
             $typeAction = $_POST['action_type'] ?? null;
             /* @brief Vérification de l'ID de la classe. */
+            
+            $user = $_SESSION['user'];
+            $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
+
             if ($idClasse) {
                 $pdo = Bd::getInstance()->getConnection();
                 $classeDAO = new ClasseDAO($pdo);
 
                 if ($typeAction === 'supprimer') {
-                    $classeDAO->delete($idClasse); 
+                    $classeDAO->delete($idEtudiant, $idClasse); 
                 }
                 
                 if ($typeAction === 'rejoindre') {
@@ -69,6 +80,25 @@ class ControllerJoinClass extends Controller {
         header('Location: index.php?controleur=joinClass&methode=render');
         exit();
     }
-} 
-?>
- 
+
+    public function rejoindreParCode() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $code = $_POST['code_classe'] ?? '';
+
+            if (!empty($code)) {
+                $user = $_SESSION['user'];
+                $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
+
+                $pdo = Bd::getInstance()->getConnection();
+                $classeDAO = new ClasseDAO($pdo);
+                $classe = $classeDAO->findCode($code);
+
+                if ($classe) {
+                    $classeDAO->rejoindre($idEtudiant, $classe->getId());
+                }
+            }
+        }
+        header('Location: index.php?controleur=joinClass&methode=render');
+        exit();
+    }
+}

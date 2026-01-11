@@ -8,7 +8,7 @@ require_once "config/constantes.php";
  * instance de connexion à la base de données est créée et utilisée
  * tout au long de l'application.
  */
-/
+
 class Bd
 {
     /** @brief Instance unique de la classe Bd
