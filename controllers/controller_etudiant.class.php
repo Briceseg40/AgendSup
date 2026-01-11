@@ -91,3 +91,23 @@ echo $template->render([
 ]);
 }
 }
+
+/**
+ * @brief Lister tous les étudiants avec leurs données.
+ * @return void
+ */
+public function lister(): void
+{
+    // 1. On récupère les étudiants via le DAO (à adapter selon ton nom de méthode DAO)
+    $etudiantDAO = new EtudiantDAO(Bd::getInstance()->getConnection());
+    $listeEtudiants = $etudiantDAO->listerTous(); // Imaginons que la méthode s'appelle ainsi
+
+    // 2. Chargement du template
+    $template = $this->getTwig()->load('etudiant/lister.twig');
+
+    // 3. Rendu avec la variable "etudiants"
+    echo $template->render([
+        "titre" => "Annuaire des Étudiants",
+        "etudiants" => $listeEtudiants
+    ]);
+}

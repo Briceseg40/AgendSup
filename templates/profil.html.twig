@@ -1,0 +1,129 @@
+{#
+/**
+ * @file    profil.html.twig
+ * @brief   Vue affichant le profil de l'étudiant.
+ *
+ * @project AgendSup - SAÉ 3.01
+ * @version 1.1
+ * @date    10/01/2026
+ */
+#}
+
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Profils Étudiants{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3 class="mt-4 text-center">Annuaire des Étudiants</h3>
+    
+    <div class="position-relative section-class bg-light w-100 d-flex flex-column justify-content-center border-1 align-items-center border p-5 mt-3 shadow-sm rounded">
+
+        <!-- Barre de recherche (Optionnelle) -->
+        <div class="input-group w-50 mb-4">
+            <span class="input-group-text bg-white border-end-0">
+                <i class="fa-solid fa-user-graduate"></i>
+            </span>
+            <input type="search" id="searchStudent" class="form-control border-start-0" placeholder="Rechercher un étudiant par nom..." onkeyup="filterStudents()">
+        </div>
+
+        <!-- Formulaire pour actions groupées (Modifier/Supprimer) -->
+        <form method="post" action="?controleur=etudiant&methode=action" class="w-100 d-flex flex-column align-items-center">
+            
+            <input type="hidden" name="id_etudiant" id="selectedStudentId" required>
+            
+            <div id="studentList" class="w-75 d-flex flex-column gap-2 overflow-auto custom-scroll" style="max-height: 50vh;">
+                {% for etudiant in etudiants %}
+                    <div class="class-card btn btn-white border border-secondary-subtle p-3 w-100 text-start mb-2 position-relative shadow-sm" 
+                         onclick="selectStudent(this, {{ etudiant.getId() }})" style="cursor: pointer; transition: 0.3s;">
+
+                        <div class="row align-items-center g-3">
+                            <!-- Avatar -->
+                            <div class="col-auto">
+                                <div class="rounded-circle bg-dark d-flex align-items-center justify-content-center text-white" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                    {{ etudiant.getPrenom()|first }}{{ etudiant.getNom()|first }}
+                                </div>
+                            </div>
+
+                            <!-- Infos Principales -->
+                            <div class="col text-start">
+                                <h5 class="fw-bold mb-0 text-dark">{{ etudiant.getPrenom() }} {{ etudiant.getNom()|upper }}</h5>
+                                <p class="mb-0 text-muted small">
+                                    <i class="fa-solid fa-envelope me-1"></i> {{ etudiant.getMail() }}
+                                </p>
+                                <p class="mb-0 badge bg-info text-dark mt-1" style="font-size: 0.7rem;">
+                                    {{ etudiant.getParcour() ?: 'Parcours non défini' }}
+                                </p>
+                            </div>
+
+                            <!-- Infos Secondaires / Badges -->
+                            <div class="col-auto text-end">
+                                <span class="badge {{ etudiant.getRole() == 'admin' ? 'bg-danger' : 'bg-primary' }} rounded-pill mb-2">
+                                    {{ etudiant.getRole()|capitalize }}
+                                </span>
+                                <div class="fw-bold text-secondary small">
+                                    Année : {{ etudiant.getAnnee() }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning text-center">Aucun étudiant trouvé dans la base.</div>
+                {% endfor %}
+            </div>
+
+            <!-- Boutons d'actions (Style du bas) -->
+            <div class="d-flex w-75 justify-content-between flex-row align-items-center mt-4">
+                <div class="d-flex gap-2">
+                    <button type="submit" name="action" value="modifier" class="btn btn-outline-dark shadow-sm px-4">
+                        <i class="fa-solid fa-pen-to-square me-2"></i>Modifier
+                    </button>
+                    <button type="submit" name="action" value="supprimer" class="btn btn-outline-danger shadow-sm px-4">
+                        <i class="fa-solid fa-trash me-2"></i>Supprimer
+                    </button>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <a href="?controleur=etudiant&methode=creer" class="btn btn-dark shadow-sm px-4">
+                        <i class="fa-solid fa-plus me-2"></i>Ajouter
+                    </a>
+                    <a href="index.php" class="btn btn-light border shadow-sm px-4">Retour</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .selected {
+        border: 2px solid #000 !important;
+        background-color: #f8f9fa !important;
+        transform: translateX(10px);
+    }
+    .custom-scroll::-webkit-scrollbar { width: 5px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+</style>
+
+<script>
+    function selectStudent(elementDiv, idEtudiant) {
+        // Met à jour l'ID dans le champ caché
+        document.getElementById('selectedStudentId').value = idEtudiant;
+
+        // Gère le style visuel de sélection
+        document.querySelectorAll('.class-card').forEach(div => {
+            div.classList.remove('selected');
+        });
+        elementDiv.classList.add('selected');
+    }
+
+    // Petit script de filtrage dynamique
+    function filterStudents() {
+        let input = document.getElementById('searchStudent').value.toLowerCase();
+        let cards = document.querySelectorAll('.class-card');
+        cards.forEach(card => {
+            let name = card.querySelector('h5').innerText.toLowerCase();
+            card.style.display = name.includes(input) ? "block" : "none";
+        });
+    }
+</script>
+{% endblock %}
