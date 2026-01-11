@@ -46,7 +46,7 @@ require_once 'controllers/controller_joinClass.class.php';
 
 //require_once 'controllers/controller_forgetpasseword.php';
 
-require_once 'controllers/controller_param_classe.class.php';
+require_once 'controllers/controller_paramClasse.class.php';
 
 require_once 'controllers/controller_factory.php';
 

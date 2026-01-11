@@ -49,6 +49,10 @@ body {
     top: 30px;
 }
 
+.mh-48vh {
+    max-height: 48vh;
+}
+
 .text-btn{
     font-size: 24px !important;
     text-transform: uppercase;
@@ -292,7 +296,7 @@ header i {
 }
 
 .image-option-container.selected img {
-    border: 3px solid black !important;
+    border: 3px solid red !important;
     background-color: #e9ecef;
 }
 

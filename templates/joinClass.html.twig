@@ -8,59 +8,92 @@
 {% block body %}
 	<div>
 		<h3 class="mt-5 text-center">Rejoindre une classe</h3>
-		<div class="position-relative section-class bg-gray w-100 d-flex flex-column justify-content-center border-black border-1 align-items-center border p-5 mt-3">
-			<div class="input-group w-50 position-absolute mb-4 top-30px">
-				<span class="input-group-text">
-					<i class="fa-solid fa-magnifying-glass"></i>
-				</span>
-				<input type="search" class="form-control" placeholder="Saisissez votre recherche">
+		<form method="post" action="?controleur=joinClass&methode=action">
+
+			<input type="hidden" name="id_classe" id="selectedClassId" required>
+
+			<div class="position-relative section-class bg-gray w-100 d-flex flex-column justify-content-center border-black border-1 align-items-center border p-5 mt-3">
+
+				<div class="input-group w-50 position-absolute mb-4 top-30px">
+					<span class="input-group-text">
+						<i class="fa-solid fa-magnifying-glass"></i>
+					</span>
+					<input type="search" class="form-control" placeholder="Saisissez votre recherche">
+				</div>
+
+				<div class="w-50 d-flex flex-column gap-2 overflow-auto mt-40 custom-scroll mh-48vh">
+					{% for classe in classes %}
+						<div class="class-card btn btn-light border border-black p-3 w-100 text-start mb-2 position-relative" onclick="selectClass(this, {{ classe.getId() }})" style="cursor: pointer;">
+
+							<div class="row align-items-center g-3">
+								<div class="col-auto">
+									{% if classe.getImage() %}
+										<img src="{{ classe.getImage() }}" alt="Logo" class="rounded bg-white border border-dark" style="width: 80px; height: 80px; object-fit: contain;">
+									{% else %}
+										<img src="public/assets/img/agendboyquisait.png" alt="Defaut" class="rounded bg-white border border-dark" style="width: 80px; height: 80px; object-fit: contain;">
+									{% endif %}
+								</div>
+
+								<div class="col text-start">
+									<div class="d-flex align-items-center mb-1 gap-2">
+										<h5 class="fw-bold mb-0">{{ classe.getTitre() }}</h5>
+									</div>
+									<p class="mb-0 text-muted small fst-italic">{{ classe.getDescription() }}</p>
+								</div>
+
+								<div class="col-auto text-end">
+									<span class="badge bg-success rounded-pill" style="font-size: 0.7rem;">
+										Connexion stable
+										<i class="fa-solid fa-signal ms-1"></i>
+									</span>
+									<div class="fw-bold small">
+										TD{{ classe.getTD() }}
+										- TP{{ classe.getTP() }}
+									</div>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<p class="text-center mt-3 fw-bold">Aucune classe disponible pour le moment.</p>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="btn-class d-flex w-50 justify-content-between flex-row align-items-center mx-auto">
+				<div class="d-flex flex-column align-items-right mt-4">
+					<button type="submit" name="action_type" value="rejoindre" class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-4 w-auto">Rejoindre la classe</button>
+					<button type="submit" name="action_type" value="supprimer" class="btn text-btn btn-light ms-auto rounded-3 shadow border-black p-3 mt-4">Supprimer</button>
+				</div>
+
+				<div class="btn-right d-flex flex-column justify-content-end align-items-left mt-4">
+					<a href="?controleur=paramclasse&methode=render" class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-4 w-auto">Ajout d'une classe</a>
+					<a href="?controleur=connecter&methode=render" class="btn text-btn btn-light w-110px rounded-3 shadow border-black p-3 mt-4">Retour</a>
+				</div>
 			</div>
 
-			<div class="w-50 d-flex flex-column gap-2 overflow-auto mt-40 custom-scroll">
-				{% for classe in classes %}
-					<button type="button" class="btn btn-light border border-black p-3 w-100 class-item mb-2" data-id="{{ classe.getId() }}">
-    <div class="row align-items-center g-3">
-        
-        <div class="col-auto">
-                <img src="{{ classe.getImage()}}" alt="Logo" class="rounded bg-white border border-dark" style="width: 80px; height: 80px; object-fit: contain;">
-        </div>
-
-        <div class="col text-start">
-            <div class="d-flex align-items-center mb-1 gap-2">
-                <h5 class="fw-bold mb-0">{{ classe.getTitre() }}</h5>
-                
-            </div>
-            
-            <p class="mb-0 text-muted small fst-italic">{{ classe.getDescription() }}</p>
-        </div>
-
-        <div class="col-auto text-end">
-            <span class="badge bg-success rounded-pill" style="font-size: 0.7rem;">
-                    Connexion stable <i class="fa-solid fa-signal ms-1"></i>
-                </span>
-            <div class="fw-bold small">
-                TD{{ classe.getTD() }} - TP{{ classe.getTP() }}
-            </div>
-        </div>
-
-    </div>
-</button>
-				{% else %}
-					<p class="text-center mt-3 fw-bold">Aucune classe disponible pour le moment.</p>
-				{% endfor %}
-			</div>
-		</div>
+		</form>
 	</div>
 
-	<div class="btn-class d-flex w-30 justify-content-between flex-row align-items-center mx-auto">
-		<div class="d-flex flex-column align-items-right mt-4">
-			<button class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-4 w-auto">Rejoindre la classe</button>
-			<button class="btn text-btn btn-light ms-auto  rounded-3 shadow border-black p-3 mt-4 ">Supprimer</button>
-		</div>
-		<div class="btn-right d-flex flex-column justify-content-end align-items-left mt-4">
-			<a href="?controleur=paramclasse&methode=render" class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-4 w-auto">Ajout d'une classe</a>
-			<a href="?controleur=connecter&methode=render" class="btn text-btn btn-light w-110px rounded-3 shadow border-black p-3 mt-4 ">Retour</a>
-		</div>
-	</div>
-	{# <button class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-5 w-auto">Se déconnecter</button> #}
+	<script>
+		function selectClass(elementDiv, idClasse) {
+document.getElementById('selectedClassId').value = idClasse;
+
+document.querySelectorAll('.class-card').forEach(div => {
+div.classList.remove('selected');
+div.classList.remove('border-3');
+const badge = div.querySelector('.check-badge');
+if (badge) {
+badge.classList.add('d-none');
+badge.classList.remove('d-flex');
+}
+});
+
+elementDiv.classList.add('selected');
+elementDiv.classList.add('border-3');
+const badge = elementDiv.querySelector('.check-badge');
+if (badge) {
+badge.classList.remove('d-none');
+badge.classList.add('d-flex');
+}
+}
+	</script>
 {% endblock %}
