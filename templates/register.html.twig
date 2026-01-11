@@ -72,7 +72,7 @@
 
                 <!-- Mdp -->
                 <div class="row g-2 mb-3">
-                        <input type="password" name="password" class="form-control w-100 border-black rounded-pill fs-20 p-20" placeholder="Mot de passe" pattern= '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&].+$'
+                        <input type="password" name="password" class="form-control w-100 border-black rounded-pill fs-20 p-20" placeholder="Mot de passe" pattern= '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.].+$'
                             required maxlength="20" minlength="4" title="Entrez un mot de passe de 4 à 20 caractères avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial.">
                 </div>
 
@@ -155,8 +155,8 @@
     // Gestion dynamique des parcours en fonction de la promo
     const parcoursOptions = {
         1 : [{value: 'Aucun', label: 'Aucun'}],
-        2 : [{value: 'IAMSI A', label: 'IAMSI A'}, {value: 'IAMSI D', label: 'IAMSI D'}],
-        3 : [{value: 'IAMSI A', label: 'IAMSI A'}, {value: 'IAMSI D', label: 'IAMSI D'}]
+        2 : [{value: 'A', label: 'IAMSI A'}, {value: 'D', label: 'IAMSI D'}],
+        3 : [{value: 'A', label: 'IAMSI A'}, {value: 'D', label: 'IAMSI D'}]
     };
 
     const promoSelect = document.getElementById('promo_group');

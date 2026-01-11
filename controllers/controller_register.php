@@ -64,7 +64,8 @@ class ControllerRegister extends Controller {
             $promo,
             $idClasse,
             $_POST['email'],
-            $_POST['password']
+            $_POST['password'],
+            $_POST['parcours']
         );
 
         $pdo = Bd::getInstance()->getConnection();

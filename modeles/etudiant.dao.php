@@ -136,8 +136,8 @@ class EtudiantDAO
 
         //Préparation de la requete d'insertion
         $requete = $this->pdo->prepare(
-            'INSERT INTO etudiant (Nom, Prenom, mail, mdp, role, Annee, idClasse)
-             VALUES (:Nom, :Prenom, :mail, :mdp, :role, :Annee, :idClasse)'
+            'INSERT INTO etudiant (Nom, Prenom, mail, mdp, role, Annee, idClasse, Parcour)
+             VALUES (:Nom, :Prenom, :mail, :mdp, :role, :Annee, :idClasse, :Parcour)'
         );
 
         $requete->execute([
@@ -147,7 +147,8 @@ class EtudiantDAO
             ':Annee' => $etudiant->getAnnee(),
             ':idClasse' => $etudiant->getIdClasse(),
             ':mail' => $etudiant->getMail(),
-            ':mdp' => $passwordHache
+            ':mdp' => $passwordHache,
+            ':Parcour' => $etudiant->getParcour()
         ]);
     }
 }
