@@ -1,0 +1,106 @@
+<div class="modal fade" id="profilModal" tabindex="-1" aria-labelledby="profilModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg">
+
+		<div class="modal-content bg-gray border border-2 border-black rounded-4 shadow-lg p-0 overflow-hidden">
+			<div class="modal-header border-bottom border-black bg-white p-3">
+				<h3 class="modal-title w-100 text-center font-love fw-bold" id="profilModalLabel">Mon Profil</h3>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body p-4">
+
+				{% set user = session.user is defined ? session.user : null %}
+
+				{% if user %}
+					<div class="text-center mb-4 position-relative">
+						<div class="d-inline-block p-1 bg-white rounded-circle border border-2 border-black shadow-sm">
+							<img src="public/assets/img/agendboyquisait.png" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: contain;">
+						</div>
+
+						<h2 class="font-love mt-2 mb-0">
+							{{ user.getPrenom is defined ? user.getPrenom() : user['prenom'] }}
+							{{ user.getNom is defined ? user.getNom()|upper : user['nom']|upper }}
+						</h2>
+
+						{% set role = user.getRole is defined ? user.getRole() : user['role'] %}
+						<span class="bg-white border border-black rounded-pill fw-bold px-3 py-2 mt-3">
+							Étudiant
+							{{ role }}
+						</span>
+					</div>
+
+					<div class="d-flex flex-column gap-3 w-75 mx-auto">
+
+						<div class="bg-white border border-black rounded-3 p-3 shadow-sm d-flex align-items-center">
+							<div class="me-3 text-center" style="width: 40px;">
+								<i class="fa-solid fa-envelope fs-3"></i>
+							</div>
+							<div>
+								<div class="text-muted small fst-italic font-love">Adresse Email</div>
+								<div class="fs-5 fw-bold">{{ user.getMail is defined ? user.getMail() : user['email'] }}</div>
+							</div>
+						</div>
+
+						<div class="bg-white border border-black rounded-3 p-3 shadow-sm d-flex align-items-center justify-content-between">
+							<div class="d-flex align-items-center">
+								<div class="me-3 text-center" style="width: 40px;">
+									<i class="fa-solid fa-graduation-cap fs-3"></i>
+								</div>
+								<div>
+									<div class="text-muted small fst-italic font-love">Scolarité</div>
+									<div class="fs-5 fw-bold">
+										{% set annee = user.getAnnee is defined ? user.getAnnee() : user['annee'] %}
+
+										BUT
+										{{ annee }}
+										-
+										{% if annee > 1 %}
+											{% set parcour = user.getParcour is defined ? user.getParcour() : (user['parcour'] is defined ? user['parcour'] : '') %}
+											{% if parcour %}
+												<span class="fs-5 fw-bold">Parcour
+													{{ parcour }}</span>
+											{% endif %}
+										{% endif %}
+									</div>
+								</div>
+							</div>
+
+							<div class="text-end border-start border-black ps-3">
+
+								{% set idC = user.getIdClasse is defined ? user.getIdClasse() : user['idClasse'] %}
+								{% set td = (idC // 10) % 10 %}
+								{% set tp = idC % 10 %}
+
+								<div class="text-muted small font-love">Groupe</div>
+								<div class="fw-bold">
+									TD
+									{{ td }}
+									- TP
+									{{ tp }}
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				{% else %}
+					<div class="alert alert-warning text-center">
+						Vous n'êtes pas connecté.
+					</div>
+				{% endif %}
+
+			</div>
+
+			<div class="modal-footer border-top border-black bg-white justify-content-center gap-3 p-3">
+				<a href="?controleur=connecter&methode=deconnexion" class="btn btn-danger border border-black shadow text-uppercase font-love px-4 py-2 rounded-3">
+					Se déconnecter
+					<i class="fa-solid fa-power-off ms-2"></i>
+				</a>
+				<button type="button" class="btn btn-secondary border border-black shadow text-uppercase font-love px-4 py-2 rounded-3" data-bs-dismiss="modal">
+					Fermer
+				</button>
+			</div>
+
+		</div>
+	</div>
+</div>

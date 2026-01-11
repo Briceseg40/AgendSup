@@ -1,5 +1,5 @@
 <?php
-require_once "config/constantes.php";
+//require_once "config/constantes.php";
 /**
  * @class Bd
  * @brief Classe singleton pour la gestion de la connexion à la base de données.
