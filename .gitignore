@@ -1,6 +1,5 @@
-config/constantes.php
 
+config/config.yml
 node_modules
 
-docs/
 
