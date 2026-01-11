@@ -36,9 +36,10 @@
 							<div class="mb-3 text-start">
 								<label class="fs-4 mb-2">Code de la classe :</label>
 								<input type="text" name="code" class="form-control border-black shadow-sm p-2 fs-5" placeholder="Code classe">
-<p class="text-danger d-none fw-bold <?= $showError ? 'd-block' : 'd-none' ?>">
-    Ce code est déjà pris, veuillez choisir un autre
-</p>							</div>
+								<p class="text-danger d-none fw-bold <?= $showError ? 'd-block' : 'd-none' ?>">
+									Ce code est déjà pris, veuillez choisir un autre
+								</p>
+							</div>
 
 							<div class="mb-4 text-start">
 								<label class="fs-4 mb-2">Choisissez une image :</label>
@@ -181,8 +182,8 @@
 						</div>
 
 						<div class="mb-3 text-start">
-								<label class="fs-4 mb-2">Description de la classe :</label>
-								<input type="text" name="description" class="form-control border-black shadow-sm p-2 fs-5" placeholder="Classe preparatoire de math">
+							<label class="fs-4 mb-2">Description de la classe :</label>
+							<input type="text" name="description" class="form-control border-black shadow-sm p-2 fs-5" placeholder="Classe preparatoire de math">
 						</div>
 
 					</div>
@@ -202,8 +203,8 @@
 		</form>
 	</div>
 
-<script>
-const rangeInput = document.getElementById('volumeRange');
+	<script>
+		const rangeInput = document.getElementById('volumeRange');
 const rangeValue = document.getElementById('volumeValue');
 if (rangeInput) {
 rangeInput.addEventListener('input', function () {
@@ -218,5 +219,6 @@ div.classList.remove('selected');
 });
 elementDiv.classList.add('selected');
 }
-</script>
+	</script>
 {% endblock %}
+

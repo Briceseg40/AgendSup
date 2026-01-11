@@ -13,7 +13,7 @@ class ControllerJoinClass extends Controller {
         }
         $utilisateurConnecte = $_SESSION['user'];
 
-        $idEtudiant = $utilisateurConnecte->getId();
+        $idEtudiant = is_array($utilisateurConnecte) ? $utilisateurConnecte['id'] : $utilisateurConnecte->getId();
 
         $pdo = Bd::getInstance()->getConnection();
         $classeDAO = new ClasseDAO($pdo);
@@ -22,6 +22,31 @@ class ControllerJoinClass extends Controller {
         echo $this->getTwig()->render('joinClass.html.twig', [
             'classes' => $listeDesClasses
         ]);
+    }
+
+    public function action() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            $idClasse = $_POST['id_classe'] ?? null;
+            $typeAction = $_POST['action_type'] ?? null;
+
+            if ($idClasse) {
+                $pdo = Bd::getInstance()->getConnection();
+                $classeDAO = new ClasseDAO($pdo);
+
+                if ($typeAction === 'supprimer') {
+                    $classeDAO->delete($idClasse); 
+                }
+                
+                if ($typeAction === 'rejoindre') {
+                    header('Location: index.php?controleur=classe&methode=salle&id=' . $idClasse);
+                    exit();
+                }
+            }
+        }
+
+        header('Location: index.php?controleur=joinClass&methode=render');
+        exit();
     }
 } 
 ?>

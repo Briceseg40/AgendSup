@@ -10,46 +10,42 @@ class Classe
     private ?int $TP;
     private ?int $idEtudiant;
     private ?int $annee;
-    private ?string $formation;
     private ?string $code;
 
-    public function __construct(?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?int $TD = null, ?int $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $formation = null, ?string $code = null)
-    {
-        $this->setId($id);
-        $this->setImage($img);
-        $this->setTitre($titre);
-        $this->setDescription($description);
-        $this->setTD($TD);
-        $this->setTP($TP);
-        $this->setIdEtudiant($idEtudiant);
-        $this->setAnnee($annee);
-        $this->setFormation($formation);
-        $this->setCode($code);
-    }
-    public function getImage(): ?string
-    {
-        return $this->img;
+    public function __construct( ?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?int $TD = null, ?int $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $code = null) {
+        $this->id = $id;
+        $this->img = $img;
+        $this->titre = $titre;
+        $this->description = $description;
+        $this->TD = $TD;
+        $this->TP = $TP;
+        $this->idEtudiant = $idEtudiant;
+        $this->annee = $annee;
+        $this->code = $code;
     }
 
-    public function setImage(?string $img): void
-    {
-        $this->img = $img;
-    }
     public function getId(): ?int
     {
         return $this->id;
     }
-
     public function setId(?int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->img;
+    }
+    public function setImage(?string $img): void
+    {
+        $this->img = $img;
     }
 
     public function getTitre(): ?string
     {
         return $this->titre;
     }
-
     public function setTitre(?string $titre): void
     {
         $this->titre = $titre;
@@ -59,7 +55,6 @@ class Classe
     {
         return $this->description;
     }
-
     public function setDescription(?string $description): void
     {
         $this->description = $description;
@@ -69,7 +64,6 @@ class Classe
     {
         return $this->TD;
     }
-
     public function setTD(?int $TD): void
     {
         $this->TD = $TD;
@@ -79,7 +73,6 @@ class Classe
     {
         return $this->TP;
     }
-
     public function setTP(?int $TP): void
     {
         $this->TP = $TP;
@@ -89,7 +82,6 @@ class Classe
     {
         return $this->idEtudiant;
     }
-
     public function setIdEtudiant(?int $idEtudiant): void
     {
         $this->idEtudiant = $idEtudiant;
@@ -99,27 +91,15 @@ class Classe
     {
         return $this->annee;
     }
-
     public function setAnnee(?int $annee): void
     {
         $this->annee = $annee;
-    }
-
-    public function getFormation(): ?string
-    {
-        return $this->formation;
-    }
-
-    public function setFormation(?string $formation): void
-    {
-        $this->formation = $formation;
     }
 
     public function getCode(): ?string
     {
         return $this->code;
     }
-
     public function setCode(?string $code): void
     {
         $this->code = $code;
