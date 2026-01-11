@@ -1,14 +1,21 @@
 <?php
 require_once "config/constantes.php";
-
+/**
+ * @file    chat.class.php
+ * @author  Rémi Bouillon
+ * @brief   Classe représentant la base de données d,AgendSup
+ * @version 0.1
+ * @date    19/12/2025
+ */
 class Bd
 {
-    // Instance statique unique de la classe Bd
+    // Instance unique de la classe Bd
     private static ?Bd $instance = null;
 
     // Instance de PDO pour la connexion à la base de données
     private ?PDO $pdo;
 
+    
     private function __construct()
     {
         try
