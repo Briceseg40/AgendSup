@@ -26,8 +26,8 @@
 
                             {# Sélection de la matière #}
                             <div class="mb-3">
-                                <label for="libelle" class="form-label small fw-bold">Matière / Ressource</label>
-                                <select name="libelle" id="libelle" class="form-select" required>
+                                <label for="idCour" class="form-label small fw-bold">Matière / Ressource</label>
+                                <select name="idCour" id="idCour" class="form-select" required>
                                     <option value="" selected disabled>-- Sélectionnez une matière --</option>
                                     {% set currentSemestre = "" %}
                                     {% for cours in lesCours %}

@@ -33,26 +33,26 @@ class ControllerDevoir extends Controller {
         $listeDesCours = $coursManager->findByAnneeEtParcours((int)$user->getAnnee(), $user->getParcour());
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Le front envoie l'ID dans le champ nommé "libelle" 
-            // car ton Twig dit <select name="libelle"> et <option value="{{ cours.id }}">
-            $idCoursRecu = (int)$_POST['libelle']; 
+
+            $idCoursRecu = $_POST['idCour']; 
             
             $libelleMatiere = "";
-            // On cherche le NOM correspondant à cet ID pour ton objet Devoir
-            // On utilise les méthodes de l'objet Cours
+
             foreach ($listeDesCours as $cours) {
-                if ((int)$cours->getId() === $idCoursRecu) { 
+                if ($cours->getId() == $idCoursRecu) { 
                     $libelleMatiere = $cours->getLibelle();
                     break;
                 }
 
-                // On combine date et heure pour comparer facilement
+            // On combine date et heure pour comparer facilement
             $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
             $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
 
+            $contenuproteger = htmlentities($_POST['contenu']);
+
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
                 // En cas d'erreur, on ne sauvegarde pas et on renvoie un message
-                $listeDesCours = $coursManager->findByAnneeEtParcours((int)$user->getAnnee(), $user->getParcour());
+                $listeDesCours = $coursManager->findByAnneeEtParcours($user->getAnnee(), $user->getParcour());
                 echo $this->getTwig()->render('creerDevoir.twig', [
                     "lesCours" => $listeDesCours,
                     "error" => "La date de fin doit être postérieure à la date de début."
@@ -69,11 +69,11 @@ class ControllerDevoir extends Controller {
                 $_POST['date_fin'],
                 $_POST['heure_deb'],
                 $_POST['heure_fin'],
-                $_POST['contenu'],
+                $contenuproteger,
                 $_POST['Couleur'],
-                $idCoursRecu,     // Ce n'est plus NULL, c'est l'entier 85
+                $idCoursRecu,
                 $user->getIdClasse(),
-                $user->getId()  // On assigne l'ID de l'étudiant connecté
+                $user->getId()
             );
 
             $devoirDAO = new DevoirDAO($this->getPdo());
@@ -83,7 +83,6 @@ class ControllerDevoir extends Controller {
             }
         }
 
-        // BIEN VERIFIER QUE CETTE ACCOLADE FERME LE "IF POST"
         echo $this->getTwig()->render('creerDevoir.twig', [
             "titre" => "Créer un devoir",
             "lesCours" => $listeDesCours 
@@ -111,6 +110,8 @@ class ControllerDevoir extends Controller {
             // --- NOUVEAU : VÉRIFICATION DE LA CHRONOLOGIE ---
             $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
             $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
+
+            $contenuproteger = htmlentities($_POST['contenu']);
     
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
                 $error = "La date et l'heure de fin doivent être supérieures au début.";
@@ -124,10 +125,10 @@ class ControllerDevoir extends Controller {
                     $_POST['heure_deb'],
                     $_POST['heure_fin'],
                     $_POST['contenu'],
-                    $_POST['Couleur'],
-                    (int)$_POST['idCours'],
-                    (int)$user->getIdClasse(),
-                    (int)$user->getId()
+                    $contenuproteger,
+                    $_POST['idCours'],
+                    $user->getIdClasse(),
+                    $user->getId()
                 );
     
                 if ($devoirManager->update($devoirModifie)) {
