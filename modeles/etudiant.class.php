@@ -12,7 +12,7 @@ class Etudiant
     private string|null $Parcour;
     private int|null $idClasse;
 
-    public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?string $Mail = null, ?string $Mdp = null, ?string $Parcour = null,?int $idClasse = null)
+    public function __construct(?int $id = null, ?string $Nom = null, ?string $Prenom = null, ?string $role = null, ?int $Annee = null, ?int $idClasse = null, ?string $Mail = null, ?string $Mdp = null, ?string $Parcour = null)
     {
         $this->setId($id);
         $this->setNom($Nom);
@@ -23,7 +23,6 @@ class Etudiant
         $this->setMail($Mail);
         $this->setMdp($Mdp);
         $this->setParcour($Parcour);
-        $this->setIdClasse($idClasse);
     }
 
     public function getId(): ?int
@@ -96,6 +95,26 @@ class Etudiant
         $this->Mdp = $Mdp;
     }
 
+    public function getIdClasse(): ?int
+    {
+        return $this->idClasse;
+    }
+
+    public function setIdClasse(?int $idClasse): void
+    {
+        $this->idClasse = $idClasse;
+    }
+
+    public function getParcour(): ?string
+    {
+        return $this->Parcour;
+    }
+
+    public function setParcour(?string $Parcour): void
+    {
+        $this->Parcour = $Parcour;
+    }
+
     public function mailExiste(): bool
     {
         //Connexion à la base de données
@@ -113,7 +132,8 @@ class Etudiant
 
     public function estRobuste(string $password): bool
     {
-        $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&.]{8,}$/';
+        $regex = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{4,}$/';
+        
         // La fonction preg_match retourne 1 si une correspondance est trouvée.
         return preg_match($regex, $password) === 1;
     }
