@@ -1,25 +1,49 @@
 <?php
-
-class EtudiantDAO
-{
+/**
+ * @file    etudiant.dao.php
+ * @author  Guénolé Mourzelas et Baptiste Marsaa
+ * @brief   Classe représentant un étudiant.
+ * @details Cette classe encapsule les propriétés et méthodes
+ * liées à un étudiant dans le système AgendSup.
+ * @version 0.1
+ * @date    19/12/2025
+ */
+class EtudiantDAO {
+    /**
+     * @brief Instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
-
+    
+    /**
+     * @brief Constructeur de la classe EtudiantDAO.
+     * @param PDO|null $pdo Instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @brief Obtient l'instance PDO.
+     * @return PDO|null Instance PDO.
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
 
+    /**
+     * @brief Définit l'instance PDO.
+     * @param PDO|null $pdo Instance PDO.
+     */
     public function setPdo(?PDO $pdo): void
     {
         $this->pdo = $pdo;
     }
 
-    /** Récupère tous les étudiants */
+    /** 
+     * @brief Récupère tous les étudiants 
+     */
     public function findAll(): array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM etudiant");
@@ -45,7 +69,12 @@ class EtudiantDAO
         return $etudiant;
     }
 
-    /** Recherche un etudiant par son ID */
+    
+    /**
+     * @brief Recherche un étudiant par son ID
+     * @param integer $id_etudiant
+     * @return Etudiant|null
+     */
     public function findById(int $id_etudiant): ?Etudiant
     {
         $stmt = $this->pdo->prepare("SELECT * FROM etudiant WHERE id = :id");
@@ -71,7 +100,11 @@ class EtudiantDAO
         return null;
     }
 
-    /** Récupère tous les étudiants liés à une classe */
+    /** 
+     * @brief Récupère tous les étudiants d'une classe donnée
+     * @param integer $id_class
+     * @return array
+     */
     public function findByClasse(int $id_class): array
     {
         $sql = "
@@ -105,9 +138,11 @@ class EtudiantDAO
         return $etudiant;
     }
 
-    /* Recherche un étudiant par son email */
-    /* Recherche un étudiant par son email */
-    /* Dans EtudiantDAO.php */
+    /** 
+     * @brief Recherche un étudiant par son email
+     * @param string $email
+     * @return Etudiant|null
+     */
     public function findByEmail(string $email): ?Etudiant
     {
         $stmt = $this->pdo->prepare("SELECT * FROM etudiant WHERE mail = :mail");
@@ -130,7 +165,10 @@ class EtudiantDAO
         return null;
     }
 
-    // Ajout d'un étudiant
+    /** 
+     * @brief Ajoute un nouvel étudiant à la base de données.
+     * @param Etudiant $etudiant L'objet étudiant à ajouter.
+     */
     public function ajouter(Etudiant $etudiant): void {
         //Hachage du mot de passe avec password_hash()
         $passwordHache = password_hash($etudiant->getMdp(), PASSWORD_BCRYPT);

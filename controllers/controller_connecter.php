@@ -1,11 +1,23 @@
 <?php
-
+/**
+ * @file controller_connecter.php
+ * @brief Contrôleur pour la gestion de la connexion et déconnexion des utilisateurs.
+ * @date 19/11/2025
+ */
 class ControllerConnecter extends Controller {
-
+    // Constructeur
+    /**
+     * @brief Constructeur de la classe ControllerConnecter.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     * @param \Twig\Environment $twig Environnement Twig.
+     */
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig) {
         parent::__construct($loader, $twig);
     }
-
+    // Méthodes
+    /**
+     * @brief Gère la connexion des utilisateurs.
+     */
     public function connexion() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['loginName'] ?? '';
@@ -36,13 +48,18 @@ class ControllerConnecter extends Controller {
         }
     }
     
-
+    /**
+     * @brief Gère la déconnexion des utilisateurs.
+     */
     public function deconnexion() {
         session_destroy(); //
         header('Location: index.php?controleur=connecter&methode=connexion');
         exit();
     }
 
+    /**
+     * @brief Rend la page pour les utilisateurs connectés.
+     */
     public function render() {
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?controleur=connecter&methode=connexion');

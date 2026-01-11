@@ -1,13 +1,26 @@
 <?php
-
+/** @file    controller_chat.class.php
+* @author  Rémi Montignac
+* @brief   Contrôleur pour la gestion des chats.
+* @version 0.1
+* @date    19/12/2025
+*/
 class controllerChat extends Controller
 {
+    // Constructeur
+    /**
+     * @brief Constructeur de la classe controllerChat.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     * @param \Twig\Environment $twig Environnement Twig.
+     */
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
     {
         parent::__construct($loader, $twig);
     }
-
-    // Lister tous les chats
+        
+    /**
+     * @brief Liste tous les chats.
+     */
     public function lister(): void
     {
         $manager = new ChatDAO($this->getPdo());
@@ -22,7 +35,10 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Lister les chats où un utilisateur a parlé (utiliser l'id unique)
+    /**
+     * @brief Liste les chats où un utilisateur spécifique a parlé.
+     * @param int $id_utilisateur Identifiant de l'utilisateur.
+     */
     public function listerByUtilisateur(int $id_utilisateur): void
     {
         $manager = new ChatDAO($this->getPdo());
@@ -38,7 +54,10 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Lister les chats où au moins un des utilisateurs du tableau a parlé
+    /**
+     * @brief Liste les chats où au moins un des utilisateurs spécifiés a parlé.
+     * @param array $userIds Tableau des identifiants des utilisateurs.
+     */
     public function listerByUtilisateurs(array $userIds): void
     {
         $manager = new ChatDAO($this->getPdo());
@@ -52,7 +71,9 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Creer
+    /**
+     * @brief Crée un nouveau chat.
+     */
     public function creer(): void
     {
         $template = $this->getTwig()->load('chat/creer.twig');
@@ -62,7 +83,9 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Modifier
+    /**
+     * @brief Modifie un chat existant.
+     */
     public function modifier(): void
     {
         $template = $this->getTwig()->load('chat/modifier.twig');
@@ -72,7 +95,9 @@ class controllerChat extends Controller
         ]);
     }
 
-    // Supprimer
+    /**
+     * @brief Supprime un chat existant.
+     */
     public function supprimer(): void
     {
         $template = $this->getTwig()->load('chat/supprimer.twig');

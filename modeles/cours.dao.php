@@ -1,15 +1,26 @@
 <?php
-
+/**
+ * @file cours.dao.php
+ * @author Rémi Bouillon
+ * @brief Définit la classe CoursDAO pour l'accès aux données des cours.
+ * @date 19/06/2024
+ */
 class CoursDAO
 {
+    /** @brief Instance de PDO pour la connexion à la base de données 
+    */
     private ?PDO $pdo;
-
+    
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
-    /** Récupère tous les cours avec tous les attributs */
+    /**
+     * @brief Récupère tous les cours avec tous les attributs.
+     *
+     * @return array
+     */
     public function findAll(): array
     {
         $stmt = $this->pdo->prepare("SELECT * FROM cours ORDER BY semestre ASC, libelle ASC");
@@ -32,7 +43,11 @@ class CoursDAO
         return $cours;
     }
 
-    /** Recherche un cours complet par son ID */
+    /**
+     * brief Récupère un cours par son ID avec tous les attributs.
+     * @param integer $id_cours
+     * @return Cours|null
+     */
     public function findById(int $id_cours): ?Cours
     {
         $stmt = $this->pdo->prepare("SELECT * FROM cours WHERE id = :id");
@@ -53,7 +68,12 @@ class CoursDAO
         return null;
     }
 
-    /** Récupère les cours filtrés par année et parcours sous forme d'objets */
+    /**
+     * @brief Récupère les cours filtrés par année et parcours.
+     * @param integer $annee
+     * @param string|null $parcours
+     * @return array
+     */
     public function findByAnneeEtParcours(int $annee, ?string $parcours): array
     {
         $sql = "
