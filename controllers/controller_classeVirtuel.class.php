@@ -21,7 +21,6 @@ class ControllerClasseVirtuel extends Controller
             exit();
         }
 
-        // On peut passer l'ID à la vue pour savoir dans quelle salle on est
         echo $this->getTwig()->render('classeVirtuel.html.twig', [
             'idClasse' => $idClasse
         ]);
