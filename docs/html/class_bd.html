@@ -92,30 +92,43 @@ $(function(){initNavTree('class_bd.html','','class_bd-members'); });
   <div class="headertitle"><div class="title">Référence de la classe Bd</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="class_classe.html">Classe</a> singleton pour la gestion de la connexion à la base de données.  
+ <a href="#details">Plus de détails...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Fonctions membres publiques</h2></td></tr>
 <tr class="memitem:af7b68de7e64594053427c12e92ad53d7" id="r_af7b68de7e64594053427c12e92ad53d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af7b68de7e64594053427c12e92ad53d7">getConnection</a> ()</td></tr>
+<tr class="memdesc:af7b68de7e64594053427c12e92ad53d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtient l'instance de PDO.  <br /></td></tr>
 <tr class="memitem:a88be1ae43fb5981d86dd3f2754a2f269" id="r_a88be1ae43fb5981d86dd3f2754a2f269"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88be1ae43fb5981d86dd3f2754a2f269">__wakeup</a> ()</td></tr>
+<tr class="memdesc:a88be1ae43fb5981d86dd3f2754a2f269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empêcher la sérialisation de l'instance.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Fonctions membres publiques statiques</h2></td></tr>
 <tr class="memitem:a5a0b72991c81b2c541f37dc3c988227b" id="r_a5a0b72991c81b2c541f37dc3c988227b"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5a0b72991c81b2c541f37dc3c988227b">getInstance</a> ()</td></tr>
+<tr class="memdesc:a5a0b72991c81b2c541f37dc3c988227b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtient l'instance unique de la classe <a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a>.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-methods" class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Fonctions membres privées</h2></td></tr>
 <tr class="memitem:ae4dc29d76f53aac7bd8ce6347e66587a" id="r_ae4dc29d76f53aac7bd8ce6347e66587a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4dc29d76f53aac7bd8ce6347e66587a">__construct</a> ()</td></tr>
+<tr class="memdesc:ae4dc29d76f53aac7bd8ce6347e66587a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructeur de la classe <a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a>.  <br /></td></tr>
 <tr class="memitem:a1cebe1b6ae7bb936655a7e01e41df8a5" id="r_a1cebe1b6ae7bb936655a7e01e41df8a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cebe1b6ae7bb936655a7e01e41df8a5">__clone</a> ()</td></tr>
+<tr class="memdesc:a1cebe1b6ae7bb936655a7e01e41df8a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empêcher le clonage de l'instance.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Attributs privés</h2></td></tr>
 <tr class="memitem:adb589756d38b7719dc1ff5b1b9c10ee1" id="r_adb589756d38b7719dc1ff5b1b9c10ee1"><td class="memItemLeft" align="right" valign="top">PDO&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb589756d38b7719dc1ff5b1b9c10ee1">$pdo</a></td></tr>
+<tr class="memdesc:adb589756d38b7719dc1ff5b1b9c10ee1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance de PDO pour la connexion à la base de données.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-static-attribs" class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
 Attributs privés statiques</h2></td></tr>
 <tr class="memitem:a57282c16cae287891a65df37de0152f4" id="r_a57282c16cae287891a65df37de0152f4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_bd.html">Bd</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57282c16cae287891a65df37de0152f4">$instance</a> = null</td></tr>
+<tr class="memdesc:a57282c16cae287891a65df37de0152f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance unique de la classe <a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a>.  <br /></td></tr>
 </table>
-<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentation des constructeurs et destructeur</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Description détaillée</h2>
+<div class="textblock"><p><a class="el" href="class_classe.html">Classe</a> singleton pour la gestion de la connexion à la base de données. </p>
+<p>Cette classe utilise le pattern Singleton pour garantir qu'une seule instance de connexion à la base de données est créée et utilisée tout au long de l'application. </p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentation des constructeurs et destructeur</h2>
 <a id="ae4dc29d76f53aac7bd8ce6347e66587a" name="ae4dc29d76f53aac7bd8ce6347e66587a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae4dc29d76f53aac7bd8ce6347e66587a">&#9670;&#160;</a></span>__construct()</h2>
 
@@ -138,6 +151,9 @@ Attributs privés statiques</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Constructeur de la classe <a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a>. </p>
+<p>Initialise la connexion à la base de données en utilisant PDO. </p>
 
 </div>
 </div>
@@ -165,6 +181,8 @@ Attributs privés statiques</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Empêcher le clonage de l'instance. </p>
+
 </div>
 </div>
 <a id="a88be1ae43fb5981d86dd3f2754a2f269" name="a88be1ae43fb5981d86dd3f2754a2f269"></a>
@@ -182,6 +200,8 @@ Attributs privés statiques</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Empêcher la sérialisation de l'instance. </p>
+
 </div>
 </div>
 <a id="af7b68de7e64594053427c12e92ad53d7" name="af7b68de7e64594053427c12e92ad53d7"></a>
@@ -198,6 +218,9 @@ Attributs privés statiques</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Obtient l'instance de PDO. </p>
+<dl class="section return"><dt>Renvoie</dt><dd>PDO Instance de PDO. </dd></dl>
 
 </div>
 </div>
@@ -224,6 +247,9 @@ Attributs privés statiques</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Obtient l'instance unique de la classe <a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a>. </p>
+<dl class="section return"><dt>Renvoie</dt><dd><a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a> Instance unique de <a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a>. </dd></dl>
+
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Documentation des données membres</h2>
@@ -247,6 +273,8 @@ Attributs privés statiques</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Instance unique de la classe <a class="el" href="class_bd.html" title="Classe singleton pour la gestion de la connexion à la base de données.">Bd</a>. </p>
+
 </div>
 </div>
 <a id="adb589756d38b7719dc1ff5b1b9c10ee1" name="adb589756d38b7719dc1ff5b1b9c10ee1"></a>
@@ -268,6 +296,8 @@ Attributs privés statiques</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Instance de PDO pour la connexion à la base de données. </p>
 
 </div>
 </div>

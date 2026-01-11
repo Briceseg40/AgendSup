@@ -16,7 +16,7 @@
  * - Ajout et suivi des devoirs
  * - Gestion des utilisateurs (inscription, connexion, mot de passe oublié)
  *
- * @section features_sec Qui peut faire quoi ?
+ * @section Qui peut faire quoi ?
  * - Les devoirs sont gérer et poster par les Étudiants qui ont le rôle de délégué seuls eux peuvent ajouter les devoirs.
  * - Les cours de révisions sont quant à eux poster par les Étudiants ayant le statut "Étudiant Ressource".
  * - Tous les étudiants peuvent consulter les devoirs ainsi que créer ou rejoindre une salle de classe.

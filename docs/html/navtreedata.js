@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "Agend Sup", "index.html", [
+    [ "AgendSup Documentation", "index.html", "index" ],
     [ "Liste des éléments obsolètes", "deprecated.html", null ],
     [ "Espaces de nommage", "namespaces.html", [
       [ "Liste des espaces de nommage", "namespaces.html", "namespaces_dup" ]

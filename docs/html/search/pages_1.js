@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['liste_20des_20éléments_20obsolètes_0',['Liste des éléments obsolètes',['../deprecated.html',1,'']]]
+  ['classes_20et_20types_0',['Classes et Types',['../index.html#naming_classes',1,'']]],
+  ['conventions_20de_20nommage_1',['Conventions de Nommage',['../index.html#naming_sec',1,'']]]
 ];

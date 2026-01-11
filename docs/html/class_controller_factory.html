@@ -96,6 +96,7 @@ $(function(){initNavTree('class_controller_factory.html','','class_controller_fa
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Fonctions membres publiques statiques</h2></td></tr>
 <tr class="memitem:a8ee6662bd46935e0f9b68443cf76c3ea" id="r_a8ee6662bd46935e0f9b68443cf76c3ea"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ee6662bd46935e0f9b68443cf76c3ea">getController</a> ($controleur, \<a class="el" href="class_twig_1_1_loader_1_1_filesystem_loader.html">Twig\Loader\FilesystemLoader</a> $loader, \<a class="el" href="class_twig_1_1_environment.html">Twig\Environment</a> $twig)</td></tr>
+<tr class="memdesc:a8ee6662bd46935e0f9b68443cf76c3ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtient une instance de contrôleur en fonction du nom fourni.  <br /></td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentation des fonctions membres</h2>
 <a id="a8ee6662bd46935e0f9b68443cf76c3ea" name="a8ee6662bd46935e0f9b68443cf76c3ea"></a>
@@ -129,6 +130,23 @@ Fonctions membres publiques statiques</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Obtient une instance de contrôleur en fonction du nom fourni. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$controleur</td><td>Nom du contrôleur demandé. </td></tr>
+    <tr><td class="paramtype">\Twig\Loader\FilesystemLoader</td><td class="paramname">$loader</td><td>Chargeur de fichiers <a class="el" href="namespace_twig.html">Twig</a>. </td></tr>
+    <tr><td class="paramtype">\Twig\Environment</td><td class="paramname">$twig</td><td>Environnement <a class="el" href="namespace_twig.html">Twig</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>mixed Instance du contrôleur demandé. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">Exception</td><td>Si le contrôleur n'existe pas. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

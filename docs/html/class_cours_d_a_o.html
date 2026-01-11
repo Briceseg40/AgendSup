@@ -97,12 +97,15 @@ $(function(){initNavTree('class_cours_d_a_o.html','','class_cours_d_a_o-members'
 Fonctions membres publiques</h2></td></tr>
 <tr class="memitem:a9bf82b2512673855f7dcffc3bb439f45" id="r_a9bf82b2512673855f7dcffc3bb439f45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9bf82b2512673855f7dcffc3bb439f45">__construct</a> (?PDO $pdo=null)</td></tr>
 <tr class="memitem:a1837730a64e4c629a8998ab8c5a57e84" id="r_a1837730a64e4c629a8998ab8c5a57e84"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1837730a64e4c629a8998ab8c5a57e84">findAll</a> ()</td></tr>
+<tr class="memdesc:a1837730a64e4c629a8998ab8c5a57e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Récupère tous les cours avec tous les attributs.  <br /></td></tr>
 <tr class="memitem:a2ce1f84ea79f69beb20a0ea5d051e589" id="r_a2ce1f84ea79f69beb20a0ea5d051e589"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ce1f84ea79f69beb20a0ea5d051e589">findById</a> (int $id_cours)</td></tr>
 <tr class="memitem:a5aa1f2f6f777057432872507104c37cb" id="r_a5aa1f2f6f777057432872507104c37cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5aa1f2f6f777057432872507104c37cb">findByAnneeEtParcours</a> (int $annee, ?string $parcours)</td></tr>
+<tr class="memdesc:a5aa1f2f6f777057432872507104c37cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Récupère les cours filtrés par année et parcours.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pri-attribs" class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Attributs privés</h2></td></tr>
 <tr class="memitem:a007b4a0d67f107c844034afb47cfabe2" id="r_a007b4a0d67f107c844034afb47cfabe2"><td class="memItemLeft" align="right" valign="top">PDO&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a007b4a0d67f107c844034afb47cfabe2">$pdo</a></td></tr>
+<tr class="memdesc:a007b4a0d67f107c844034afb47cfabe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instance de PDO pour la connexion à la base de données.  <br /></td></tr>
 </table>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Documentation des constructeurs et destructeur</h2>
 <a id="a9bf82b2512673855f7dcffc3bb439f45" name="a9bf82b2512673855f7dcffc3bb439f45"></a>
@@ -137,7 +140,9 @@ Attributs privés</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Récupère tous les cours avec tous les attributs </p>
+
+<p>Récupère tous les cours avec tous les attributs. </p>
+<dl class="section return"><dt>Renvoie</dt><dd>array </dd></dl>
 
 </div>
 </div>
@@ -159,7 +164,16 @@ Attributs privés</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Récupère les cours filtrés par année et parcours sous forme d'objets </p>
+
+<p>Récupère les cours filtrés par année et parcours. </p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">integer</td><td class="paramname">$annee</td><td></td></tr>
+    <tr><td class="paramtype">string&#160;|&#160;null</td><td class="paramname">$parcours</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>array </dd></dl>
 
 </div>
 </div>
@@ -177,7 +191,13 @@ Attributs privés</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Recherche un cours complet par son ID </p>
+<p>brief Récupère un cours par son ID avec tous les attributs. </p><dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">integer</td><td class="paramname">$id_cours</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Renvoie</dt><dd>Cours|null </dd></dl>
 
 </div>
 </div>
@@ -201,6 +221,8 @@ Attributs privés</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Instance de PDO pour la connexion à la base de données. </p>
 
 </div>
 </div>

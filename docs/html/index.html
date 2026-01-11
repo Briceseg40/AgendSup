@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.15.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Agend Sup: Page principale</title>
+<title>Agend Sup: AgendSup Documentation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -88,10 +88,73 @@ $(function(){initNavTree('index.html','',''); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Agend Sup Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">AgendSup Documentation </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><h1 class="doxsection"><a class="anchor" id="intro_sec"></a>
+Introduction</h1>
+<p>Bienvenue dans la documentation d'AgendSup, une application web de gestion d'agenda pour le BUT Informatique. Cette application permet aux étudiants de gérer leurs cours, leurs devoirs, de rejoindre ou créer des classes, et de consulter un agenda collaboratif.</p>
+<h1 class="doxsection"><a class="anchor" id="repo_sec"></a>
+Dépôt GitHub</h1>
+<p>Le code du projet AgendSup est disponible sur <a href="https://github.com/Briceseg40/AgendSup.git">ce dépôt GitHub</a>. Vous y trouverez les instructions nécessaires pour installer l'application sur votre machine.</p>
+<h1 class="doxsection"><a class="anchor" id="features_sec"></a>
+Fonctionnalités principales</h1>
+<ul>
+<li>Gestion des classes</li>
+<li>Consultation de l'agenda</li>
+<li>Ajout et suivi des devoirs</li>
+<li>Gestion des utilisateurs (inscription, connexion, mot de passe oublié)</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="features_sec"></a>
+Fonctionnalités principales</h1>
+<ul>
+<li>Les devoirs sont gérer et poster par les Étudiants qui ont le rôle de délégué seuls eux peuvent ajouter les devoirs.</li>
+<li>Les cours de révisions sont quant à eux poster par les Étudiants ayant le statut "Étudiant Ressource".</li>
+<li>Tous les étudiants peuvent consulter les devoirs ainsi que créer ou rejoindre une salle de classe.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="naming_sec"></a>
+Conventions de Nommage</h1>
+<p>Les conventions suivantes sont utilisées dans le code source du projet AgendSup :</p>
+<h2 class="doxsection"><a class="anchor" id="naming_classes"></a>
+Classes et Types</h2>
+<p>Basé sur le style Camel Case pour les classes, en commençant par une majuscule.</p>
+<p>Exemples :</p><ul>
+<li><span class="tt">ControllerClasse</span></li>
+<li><span class="tt"><a class="el" href="class_classe_d_a_o.html">ClasseDAO</a></span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="naming_methods"></a>
+Méthodes</h2>
+<p>Les méthodes utilisent le style camelCase en commençant par une minuscule.</p>
+<p>Exemples :</p><ul>
+<li><span class="tt">lister()</span></li>
+<li><span class="tt">render()</span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="naming_variables"></a>
+Variables</h2>
+<p>Les variables utilisent le style snake_case.</p>
+<p>Exemples :</p><ul>
+<li><span class="tt">$id_cours</span></li>
+<li><span class="tt">$devoir</span></li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="install_sec"></a>
+Installation</h1>
+<p>Pour générer la documentation sur votre machine :</p><ol type="1">
+<li>Installer Doxygen (<a href="https://www.doxygen.nl/">https://www.doxygen.nl/</a>)</li>
+<li>Placer ce fichier <span class="tt"><a class="el" href="mainpage_8dox.html">mainpage.dox</a></span> dans le dossier <span class="tt">docs/</span></li>
+<li>Ajouter <span class="tt">docs/mainpage.dox</span> au champ <span class="tt">INPUT</span> dans le fichier <span class="tt">Doxyfile</span> : <div class="fragment"><div class="line">INPUT = . ./docs/mainpage.dox</div>
+</div><!-- fragment --></li>
+<li>Exécuter la commande : <div class="fragment"><div class="line">doxygen Doxyfile</div>
+</div><!-- fragment --></li>
+</ol>
+<h1 class="doxsection"><a class="anchor" id="usage_sec"></a>
+Utilisation de la documentation</h1>
+<p>La documentation générée inclura :</p><ul>
+<li>La liste des classes et méthodes</li>
+<li>Les fichiers et templates <a class="el" href="namespace_twig.html">Twig</a></li>
+<li>Les diagrammes et relations entre classes (si Graphviz est configuré) </li>
+</ul>
+</div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->
