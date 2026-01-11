@@ -1,13 +1,13 @@
 <?php
 /* @file controller_classe.class.php
-* @author Rémi Bouillon
+* @author Brice Seguret
 * @brief Contrôleur pour la gestion des classes.
 * @details Ce contrôleur gère les opérations liées aux classes,
 * telles que l'affichage de la liste des classes.
 * @version 0.1
 * @date 19/11/2025
 */
-class controller_classe extends Controller
+class ControllerClasseVirtuel extends Controller
 {
     // Constructeur
     /**
@@ -20,20 +20,5 @@ class controller_classe extends Controller
         parent::__construct($loader, $twig);
     }
 
-    /**
-     * @brief Liste toutes les classes.
-     */
-    public function lister(): void
-    {
-        $manager = new ClasseDAO($this->getPdo());
-        $classes = $manager->findAll();
-
-        //Chargement du template
-        $template = $this->getTwig()->load('index.twig');
-
-        //Affichage du template et transmission des données
-        echo $template->render(array(
-            'classes' => $classes,
-        ));
-    }
+    
 }

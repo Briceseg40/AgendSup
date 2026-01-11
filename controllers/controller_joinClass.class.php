@@ -71,7 +71,7 @@ class ControllerJoinClass extends Controller {
                 }
                 
                 if ($typeAction === 'rejoindre') {
-                    header('Location: index.php?controleur=classe&methode=salle&id=' . $idClasse);
+                    header('Location: index.php?controleur=classeVirtuel&methode=salle&id=' . $idClasse);
                     exit();
                 }
             }
