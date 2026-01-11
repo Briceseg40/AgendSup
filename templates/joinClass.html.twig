@@ -1,3 +1,26 @@
+/**
+ * @file joinClasse.html.twig
+ * @brief Vue permettant à l'utilisateur de rechercher et rejoindre une classe.
+ *
+ * @details Cette page affiche une liste de classes disponibles sous forme de cartes 
+ * sélectionnables. L'utilisateur peut choisir une classe, la rejoindre, 
+ * en supprimer une (si autorisé) ou naviguer vers la création de classe.
+ *
+ * Fonctionnalités principales :
+ * - Affichage dynamique des classes via Twig.
+ * - Sélection interactive en JavaScript (mise en évidence visuelle).
+ * - Formulaire de soumission vers le contrôleur de gestion des classes.
+ *
+ * Technologies utilisées :
+ * - Twig (Moteur de template)
+ * - Bootstrap 5 & FontAwesome 6
+ * - JavaScript (DOM manipulation)
+ *
+ * @see JoinClassController
+ * @see ParamClasseController
+ * @version 1.1
+ */
+
 {% extends "base.html.twig" %}
 
 {% block title %}AgendSup - Rejoindre une classe

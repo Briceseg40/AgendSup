@@ -1,3 +1,38 @@
+{#
+/**
+ * @file creerDevoir.html.twig
+ * @brief Page de création d'un devoir
+ *
+ * Cette page permet à un utilisateur autorisé (délégué ou enseignant)
+ * de créer un nouveau devoir associé à une ressource / matière.
+ *
+ * Le formulaire inclut :
+ * - la sélection de la matière (par semestre)
+ * - les dates et heures de début et de fin
+ * - une zone de description avec compteur de caractères
+ * - une couleur de priorité pour l'affichage dans l'agenda
+ *
+ * Les données sont envoyées en POST vers le contrôleur Devoir
+ * pour être enregistrées en base de données.
+ *
+ * @section validation Validation côté client
+ * Plusieurs vérifications JavaScript sont réalisées :
+ * - initialisation des dates à la date du jour
+ * - synchronisation des dates (fin ≥ début)
+ * - compteur dynamique de caractères (max 1000)
+ * - vérification chronologique finale avant soumission
+ *
+ * @section access Accès à la page
+ * L'accès à cette page est réservé aux utilisateurs disposant
+ * des droits nécessaires pour créer des devoirs.
+ *
+ * @see base.html.twig
+ * @see DevoirController
+ * @author Groupe AgendSup
+ * @version 1.0
+ */
+#}
+
 {% extends "base.html.twig" %}
 
 {% block title %}AgendSup - Création de devoirs{% endblock %}

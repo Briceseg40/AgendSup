@@ -1,5 +1,8 @@
 <?php
-
+/* @brief index.php
+ * @brief Point d'entrée principal de l'application.
+ * @date 19/06/2024
+ */
 require_once 'modeles/etudiant.class.php';
 require_once 'modeles/etudiant.class.php'; 
 require_once 'modeles/etudiant.dao.php';
@@ -8,11 +11,11 @@ session_start();
 
 require_once 'vendor/autoload.php';
 require_once 'include.php'; 
-
+/* @brief Initialisation de la connexion à la base de données.*/
 $pdo = Bd::getInstance()->getConnection();
-
-
+/* @brief Initialisation du chargeur de classes.*/
 $controleurName = $_GET['controleur'] ?? 'connecter';
+/* @brief Initialisation de la méthode à appeler dans le contrôleur.*/
 $methode = $_GET['methode'] ?? 'connexion';
 
 try {

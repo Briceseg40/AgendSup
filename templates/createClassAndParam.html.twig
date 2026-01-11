@@ -1,3 +1,36 @@
+{#
+/**
+ * @file createClassAndParam.html.twig
+ * @brief Page de création et de paramétrage d'une classe
+ *
+ * @details Cette page permet à un utilisateur de créer une nouvelle classe
+ * dans l'application AgendSup.
+ *
+ * Elle est composée de deux onglets :
+ * - Classe : saisie du nom, du code et de l'image associée à la classe
+ * - Paramètres : configuration du volume sonore, du chat écrit et vocal,
+ *   ainsi que la description de la classe
+ *
+ * Le formulaire est envoyé en POST vers le contrôleur ParamClasse
+ * pour enregistrer la nouvelle classe.
+ *
+ * @section features Fonctionnalités
+ * - Création d'une classe
+ * - Choix d'une image représentative
+ * - Paramétrage des options de communication
+ * - Validation et envoi du formulaire
+ *
+ * @section javascript Scripts JavaScript
+ * - Gestion dynamique du volume sonore
+ * - Sélection interactive de l'image de la classe
+ *
+ * @see base.html.twig
+ * @see ParamClasseController
+ * @author Groupe AgendSup
+ * @version 1.0
+ */
+#}
+
 {% extends "base.html.twig" %}
 
 {% block title %}AgendSup - Créer une classe
