@@ -1,9 +1,21 @@
 <?php
-
+/**
+ * @file    validator.class.php
+ * @author  Baptiste Marsaa
+ * @brief   Classe représentant le validator.
+ * @version 0.1
+ * @date    05/01/2026
+ */
 class Validator
 {
-    private array $regles; // Les règles de validation à vérifier
-    private array $messagesErreurs = []; // Les messages d'erreurs standardisés.
+    /**
+     * @brief Tableau des règles de validation.
+     */
+    private array $regles;
+    /**
+     * @brief Tableau des messages d'erreurs.
+     */
+    private array $messagesErreurs = []; 
 
     /**
      * @brief Constructeur de la classe Validator qui prend en paramètre un tableau de règles de validation.
@@ -64,7 +76,7 @@ class Validator
             return true;
         }
 
-        // Validation des autres règles pour les champs non vides ou obligatoires remplis.
+        // 3. Validation des autres règles
         foreach ($regles as $regle => $parametre)
         {
             switch ($regle)

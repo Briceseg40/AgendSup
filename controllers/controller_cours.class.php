@@ -1,13 +1,28 @@
 <?php
-
-
+/* @file controller_cours.class.php
+ * @author Rémi Bouillon et Brice Seguret
+ * @brief Contrôleur pour la gestion des cours.
+ * @details Ce contrôleur gère les actions liées aux cours,
+ * telles que la liste, la création, la modification et la suppression.
+ * @version 0.1
+ * @date 19/11/2025
+ */
 class controllerCours extends Controller
 {
+    // Constructeur
+    /**
+     * @brief Constructeur de la classe controllerCours.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     * @param \Twig\Environment $twig Environnement Twig.
+     */
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
     {
         parent::__construct($loader, $twig);
     }
 
+    /**
+     * @brief Liste tous les cours.
+     */
     public function lister(): void
     {
         $manager = new CoursDao($this->getPdo());
@@ -22,8 +37,11 @@ class controllerCours extends Controller
         ));
     }
 
-    public function findByAnnee($Annee): void
-{
+    /**
+     * @brief Liste les cours filtrés par année et parcours de l'utilisateur.
+     * @param int $Annee Année pour filtrer les cours.
+     */
+    public function findByAnnee($Annee): void{
     // 1. Récupérer le parcours de l'utilisateur (depuis la session ou l'objet User)
     // On suppose que l'info est stockée en session comme dans votre Twig initial
     $parcours = $_SESSION['user']['Parcour'] ?? null; 
@@ -40,9 +58,13 @@ class controllerCours extends Controller
         'lesCours' => $listeDesCours, // On utilise un nom explicite
         'menu' => "category"
     ));
-}
+    }
 
-     //Creer
+    /**
+     * @brief Crée un nouveau cours.
+     *
+     * @return void
+     */
      public function creer(): void
      {
          $template = $this->getTwig()->load('cours/creer.twig');
@@ -53,6 +75,11 @@ class controllerCours extends Controller
      }
  
      //Modifier
+     /**
+      * @brief Modifie un cours existant.
+      *
+      * @return void
+      */
      public function modifier(): void
      {
          $template = $this->getTwig()->load('cours/modifier.twig');
@@ -63,6 +90,11 @@ class controllerCours extends Controller
      }
  
      //Supprimer
+     /**
+      * @brief Supprime un cours existant.
+      *
+      * @return void
+      */
      public function supprimer(): void
      {
          $template = $this->getTwig()->load('cours/supprimer.twig');

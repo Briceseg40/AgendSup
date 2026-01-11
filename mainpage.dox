@@ -1,0 +1,66 @@
+/**
+ * @mainpage AgendSup Documentation
+ *
+ * @section intro_sec Introduction
+ * Bienvenue dans la documentation d'AgendSup, une application web de gestion d'agenda pour le BUT Informatique. 
+ * Cette application permet aux étudiants de gérer leurs cours, leurs devoirs, de rejoindre ou créer des classes, 
+ * et de consulter un agenda collaboratif.
+ *
+ * @section repo_sec Dépôt GitHub
+ * Le code du projet AgendSup est disponible sur [ce dépôt GitHub](https://github.com/Briceseg40/AgendSup.git). 
+ * Vous y trouverez les instructions nécessaires pour installer l'application sur votre machine.
+ *
+ * @section features_sec Fonctionnalités principales
+ * - Gestion des classes
+ * - Consultation de l'agenda
+ * - Ajout et suivi des devoirs
+ * - Gestion des utilisateurs (inscription, connexion, mot de passe oublié)
+ *
+ * @section roles_sec Qui peut faire quoi ?
+ * - **Étudiants Délégués** : Seuls eux peuvent gérer et poster les devoirs de la classe.
+ * - **Étudiants Ressources** : Ils sont responsables de la publication des cours de révisions.
+ * - **Tous les Étudiants** : Peuvent consulter les devoirs, ainsi que créer ou rejoindre une salle de classe.
+ *
+ * @section naming_sec Conventions de Nommage
+ * Les conventions suivantes sont utilisées dans le code source du projet AgendSup :
+ *
+ * @subsection naming_classes Classes et Types
+ * Basé sur le style Camel Case pour les classes, en commençant par une majuscule.
+ *
+ * Exemples :
+ * - `ControllerClasse`
+ * - `ClasseDAO`
+ *
+ * @subsection naming_methods Méthodes
+ * Les méthodes utilisent le style camelCase en commençant par une minuscule.
+ *
+ * Exemples :
+ * - `lister()`
+ * - `render()`
+ *
+ * @subsection naming_variables Variables
+ * Les variables utilisent le style snake_case.
+ *
+ * Exemples :
+ * - `$id_cours`
+ * - `$devoir`
+ *
+ * @section install_sec Installation
+ * Pour générer la documentation sur votre machine :
+ * 1. Installer Doxygen (https://www.doxygen.nl/)
+ * 2. Placer ce fichier `mainpage.dox` dans le dossier `docs/`
+ * 3. Ajouter `docs/mainpage.dox` au champ `INPUT` dans le fichier `Doxyfile` :
+ *    @code
+ *    INPUT = . ./docs/mainpage.dox
+ *    @endcode
+ * 4. Exécuter la commande :
+ *    @code
+ *    doxygen Doxyfile
+ *    @endcode
+ *
+ * @section usage_sec Utilisation de la documentation
+ * La documentation générée inclura :
+ * - La liste des classes et méthodes
+ * - Les fichiers et templates Twig
+ * - Les diagrammes et relations entre classes (si Graphviz est configuré)
+ */

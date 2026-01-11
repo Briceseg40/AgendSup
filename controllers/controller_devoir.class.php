@@ -1,12 +1,25 @@
 <?php
+/* * @file controller_devoir.class.php
+ * @brief Contrôleur pour la gestion des devoirs.
+ * @version 0.1
+ * @date 19/11/2025
+ */
 class ControllerDevoir extends Controller {
 
+    /**
+     * @brief Constructeur de la classe ControllerDevoir.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     * @param \Twig\Environment $twig Environnement Twig.
+     */
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
     {
         parent::__construct($loader, $twig);
     }
 
-    // Afficher
+    /**
+     * @brief Affiche les devoirs pour la classe de l'utilisateur connecté.
+     * @return void
+     */
     public function afficher(): void
     {
         if (!isset($_SESSION['user'])) {
@@ -24,15 +37,32 @@ class ControllerDevoir extends Controller {
         ]);
     }
 
-    // Creer
+    /**
+     * @brief Crée un nouveau devoir.
+     * @return void
+     */
     public function creer(): void
     {
+        /* @brief Récupération de l'utilisateur en session */
         $user = $_SESSION['user'];
-
+        /* @brief Récupération des cours correspondant à l'année et au parcours de l'utilisateur */
         $coursManager = new CoursDao($this->getPdo());
+        /* @brief Liste des cours filtrés */
         $listeDesCours = $coursManager->findByAnneeEtParcours((int)$user->getAnnee(), $user->getParcour());
 
+        /* @brief Traitement du formulaire lors de la soumission (méthode POST) */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            /**
+             * @brief Récupération de l'ID du cours sélectionné dans le formulaire
+             */
+            $idCoursRecu = (int)$_POST['libelle']; 
+            /**
+             * @brief Initialisation de la variable pour le libellé du cours
+             */
+            $libelleMatiere = "";
+            /**
+             * @brief Recherche du libellé du cours correspondant à l'ID reçu
+             */
 
             $idCoursRecu = $_POST['idCour']; 
             
@@ -44,9 +74,13 @@ class ControllerDevoir extends Controller {
                     break;
                 }
 
+            /* @brief Vérification de la cohérence des dates et heures */
             // On combine date et heure pour comparer facilement
             $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
+            /* @brief Vérification que la date et l'heure de fin sont postérieures à celles de début */
             $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
+            
+            /* @brief Si la date de fin est antérieure ou égale à la date de début */
 
             $contenuproteger = htmlentities($_POST['contenu']);
 
@@ -61,7 +95,7 @@ class ControllerDevoir extends Controller {
             }
             }
 
-            // Maintenant $idCoursRecu vaut 85 et $libelleMatiere vaut le nom du cours
+            /* @brief Création d'un nouvel objet Devoir avec les données reçues */
             $nouveauDevoir = new Devoir(
                 null,
                 $libelleMatiere,
@@ -75,7 +109,7 @@ class ControllerDevoir extends Controller {
                 $user->getIdClasse(),
                 $user->getId()
             );
-
+            /* @brief Initialisation du DAO pour les devoirs */
             $devoirDAO = new DevoirDAO($this->getPdo());
             if ($devoirDAO->create($nouveauDevoir)) {
                 header('Location: index.php?controleur=devoir&methode=afficher');
@@ -83,43 +117,56 @@ class ControllerDevoir extends Controller {
             }
         }
 
+        /* @brief Affichage du formulaire de création de devoir (méthode GET ou en cas d'erreur) */
         echo $this->getTwig()->render('creerDevoir.twig', [
             "titre" => "Créer un devoir",
             "lesCours" => $listeDesCours 
         ]);
     }
 
-    // Modifier
+    /**
+     * @brief Modifie un devoir existant.
+     * @return void
+     */
     public function modifier(): void
     {
+        /* @brief Récupération de l'utilisateur en session */
         $user = $_SESSION['user'];
+        /* @brief Récupération de l'ID du devoir depuis l'URL */
         $idDevoir = $_GET['id'] ?? null;
     
+        /* @brief Si aucun ID n'est fourni, redirection vers la liste des devoirs */
         if (!$idDevoir) {
             header("Location: index.php?controleur=devoir&methode=lister");
             exit();
         }
     
+        /* @brief Initialisation des gestionnaires de devoirs et de cours */
         $devoirManager = new DevoirDAO($this->getPdo());
+        /* @brief Initialisation du gestionnaire de cours */
         $coursManager = new CoursDao($this->getPdo());
-        $error = null; // Variable pour stocker le message d'erreur
+        /* @brief Variable pour stocker le message d'erreur */
+        $error = null;
     
-        // 1. TRAITEMENT DU FORMULAIRE (SI POST)
+        /* @brief Traitement du formulaire lors de la soumission (méthode POST) */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
-            // --- NOUVEAU : VÉRIFICATION DE LA CHRONOLOGIE ---
+            /* @brief Récupération et concaténation des dates et heures de début et de fin */
             $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
+            /* @brief Vérification que la date et l'heure de fin sont postérieures à celles de début */
             $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
 
             $contenuproteger = htmlentities($_POST['contenu']);
     
+            /* @brief Si la date de fin est antérieure ou égale à la date de début */
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
                 $error = "La date et l'heure de fin doivent être supérieures au début.";
             } else {
-                // Si c'est correct, on procède à la modification
+                /* @brief Création d'un objet Devoir modifié avec les nouvelles données */
                 $devoirModifie = new Devoir(
+                    /* @brief On conserve l'ID du devoir existant */
                     (int)$idDevoir,
-                    $_POST['libelle'] ?? '', // Assurez-vous que ce champ existe dans votre HTML
+                    /* @brief On utilise le libellé reçu du formulaire ou une chaîne vide par défaut */
+                    $_POST['libelle'] ?? '', 
                     $_POST['date_deb'],
                     $_POST['date_fin'],
                     $_POST['heure_deb'],
@@ -130,7 +177,7 @@ class ControllerDevoir extends Controller {
                     $user->getIdClasse(),
                     $user->getId()
                 );
-    
+                /* @brief Mise à jour du devoir dans la base de données */
                 if ($devoirManager->update($devoirModifie)) {
                     header("Location: index.php?controleur=devoir&methode=lister&success=1");
                     exit();
@@ -138,10 +185,12 @@ class ControllerDevoir extends Controller {
             }
         }
     
-        // 2. AFFICHAGE DU FORMULAIRE (GET ou Retour d'erreur)
+        /* @brief Récupération du devoir existant pour pré-remplir le formulaire */
         $devoir = $devoirManager->findById((int)$idDevoir);
+        /* @brief Récupération de la liste des cours pour le formulaire */
         $listeDesCours = $coursManager->findAll();
     
+        /* @brief Affichage du formulaire de modification avec les données existantes */
         echo $this->getTwig()->render('modifierDevoir.twig', [
             "titre" => "Modifier le devoir",
             "devoir" => $devoir,
@@ -150,47 +199,55 @@ class ControllerDevoir extends Controller {
         ]);
     }
 
-    
-    // Supprimer
+    /**
+     * @brief Supprime un devoir existant.
+     *  @return void
+     */
     public function supprimer(): void
     {
-        // 1. Récupération de l'ID depuis l'URL (index.php?controleur=devoir&methode=supprimer&id=...)
+        /* @brief Récupération de l'ID du devoir à supprimer depuis l'URL */
         $id = $_GET['id'] ?? null;
-    
+        /* @brief Si un ID est fourni, procéder à la suppression */
         if ($id) {
-            // 2. Initialisation du DAO
+            /* @brief Récupération de l'utilisateur en session */
             $manager = new DevoirDAO($this->getPdo());
-            
-            // 3. Appel de la méthode de suppression (à créer dans le DAO ci-dessous)
+            /* @brief Suppression du devoir */
             $manager->delete((int)$id);
-            
-            // Optionnel : Ajouter un message flash ici pour confirmer la suppression
         }
     
-        // 4. Redirection vers la liste pour voir le résultat immédiatement
+        /* @brief Redirection vers la liste des devoirs après la suppression */ 
         header("Location: index.php?controleur=devoir&methode=lister");
         exit();
     }
     
+    /**
+     * @brief Liste les devoirs pour l'étudiant connecté.
+     * @return void
+     */
     public function lister(): void
     {
-        // Récupération de l'utilisateur en session
+        /* @brief Si l'utilisateur n'est pas connecté, redirection vers la page de connexion */
         $user = $_SESSION['user'];
-        
-        // Initialisation du DAO
+        /* @brief Initialisation du gestionnaire de devoirs */
         $manager = new DevoirDAO($this->getPdo());
         
+        /* @brief Récupération des devoirs pour la classe de l'étudiant */
+        $devoirs = $manager->findByEtudiant($user->getIdClasse()); 
         // Correction : On nomme la variable $devoirs
         $devoirs = $manager->findByEtudiant($user->getId()); 
     
-        // On envoie 'devoirs' au template pour correspondre au {% for devoir in devoirs %}
+        /* @brief Affichage de la liste des devoirs */
         echo $this->getTwig()->render('listerDevoir.twig', [
             "titre" => "Mes Devoirs",
             "devoirs" => $devoirs 
         ]);
     }
 
-    // Route API pour FullCalendar
+    /**
+     * @brief Fournit les événements de devoirs au format JSON pour l'API.
+     *
+     * @return void
+     */
     public function api_events(): void
     {
         if (ob_get_length()) ob_clean();
@@ -198,18 +255,22 @@ class ControllerDevoir extends Controller {
             echo json_encode([]);
             exit;
         }
-
+        /* @brief Récupération de l'utilisateur en session */
         $user = $_SESSION['user'];
+        /* @brief Récupération de l'ID de la classe de l'utilisateur */
         $idClasse = $user->getIdClasse(); 
+        /* @brief Si l'ID de la classe n'est pas défini, retourner un tableau vide */
         if (!$idClasse) {
             echo json_encode([]);
             exit;
         }
-
+        /* @brief Initialisation du gestionnaire de devoirs */
         $manager = new DevoirDAO($this->getPdo());
+        /* @brief Récupération des devoirs pour la classe de l'utilisateur */
         $devoirs = $manager->findByClasse($idClasse); 
-
+        /* @brief Préparation des événements au format attendu par FullCalendar */
         $events = [];
+        /* @brief Boucle sur chaque devoir pour formater les données */
         foreach ($devoirs as $d) {
             $events[] = [
                 'id'    => $d->getId(),
@@ -220,7 +281,7 @@ class ControllerDevoir extends Controller {
                 'color' => $d->getCouleur()
             ];
         }
-
+        /* @brief Envoi de la réponse JSON */
         header('Content-Type: application/json');
         echo json_encode($events);
         exit;

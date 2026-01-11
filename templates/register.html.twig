@@ -1,4 +1,35 @@
-{% extends "base.html.twig" %}
+{#
+/**
+ * @file inscription.html.twig
+ * @brief Page de création de compte utilisateur pour AgendSup.
+ *
+ * Cette interface permet aux nouveaux utilisateurs de s'enregistrer en renseignant
+ * leurs informations académiques et personnelles.
+ *
+ * Fonctionnalités :
+ * - Persistance des données saisies en cas d'erreur via 'form_data'.
+ * - Gestion dynamique des listes déroulantes (JavaScript) :
+ * - Filtrage des groupes de TP selon le groupe de TD sélectionné.
+ * - Filtrage des parcours disponibles selon l'année de promotion.
+ * - Système d'alertes complet pour les erreurs (compte existant, mot de passe faible).
+ *
+ * Technologies utilisées :
+ * - Twig (Moteur de rendu)
+ * - CSS : register.css
+ * - JavaScript (Manipulation du DOM pour les sélecteurs dépendants)
+ * - FontAwesome (Icônes interactives)
+ *
+ * @param array errors Liste des messages d'erreurs de validation.
+ * @param string error Code d'erreur spécifique (ex: 'compte_existant').
+ * @param array form_data Valeurs précédemment saisies par l'utilisateur.
+ *
+ * @see RegisterController::action()
+ * @see connexion.html.twig
+ * @version 1.0
+ */
+ #}
+ 
+ {% extends "base.html.twig" %}
 
 {% block title %}AgendSup - Page d'inscription{% endblock %}
 

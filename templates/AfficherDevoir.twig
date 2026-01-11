@@ -1,3 +1,24 @@
+{#
+/**
+ * @file afficherdevoir.twig
+ * @brief Affichage du calendrier des devoirs via FullCalendar
+ *
+ * @details Cette page affiche un calendrier hebdomadaire contenant les devoirs
+ * récupérés depuis une API interne (`devoir/api_events`).
+ *
+ * Le calendrier utilise la librairie FullCalendar avec :
+ * - une vue semaine (timeGridWeek)
+ * - des créneaux de 15 minutes
+ * - un affichage de 8h à 19h
+ * - la localisation en français
+ *
+ * Des popovers Bootstrap sont affichés au survol des événements
+ * pour montrer les descriptions des devoirs.
+ *
+ * @version 1.0
+ */
+#}
+
 {% extends "base.html.twig" %}
 
 {% block title %}AgendSup - Liste des devoirs{% endblock %}
@@ -74,8 +95,5 @@
 <div class="container mt-4">
     <div id='calendar'></div>
 </div>
-
-
-
 
 {% endblock %}

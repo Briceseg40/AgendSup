@@ -1,25 +1,51 @@
 <?php
-
+/**
+ * @file    devoirdao.class.php
+ * @author  Rémi Bouillon
+ * @brief   Classe représentant un étudiant.
+ * @details Cette classe encapsule les propriétés et méthodes
+ * liées à un étudiant dans le système AgendSup.
+ * @version 0.1
+ * @date    19/12/2025
+ */
 class DevoirDAO {
-
+    /**
+     * @brief Instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * @brief Constructeur de la classe DevoirDAO.
+     * @param PDO|null $pdo Instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @brief Obtient l'instance PDO.
+     * @return PDO|null Instance PDO.
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
 
+    /**
+     * @brief Définit l'instance PDO.
+     * @param PDO|null $pdo Instance PDO.
+     */
     public function setPdo(?PDO $pdo): void
     {
         $this->pdo = $pdo;
     }
 
-    /** Récupère tous les cours */
+    /**
+     * @brief Récupère les classes.
+     * @param integer $idClasse
+     * @return array
+     */
     public function findByClasse(int $idClasse): array
     {
         // On prépare la requête avec le marqueur :idClasse
@@ -49,10 +75,14 @@ class DevoirDAO {
     
         return $devoirs;
     }
-
-
-    public function findById(int $id): ?Devoir
-{
+    
+    /**
+     * @brief Récupère un devoir par son id
+     *
+     * @param integer $id
+     * @return Devoir|null
+     */
+    public function findById(int $id): ?Devoir{
     // On utilise :id pour correspondre à la clé du tableau execute
     $stmt = $this->pdo->prepare("SELECT * FROM devoir WHERE id = :id");
     $stmt->execute([':id' => $id]); 
@@ -77,11 +107,15 @@ class DevoirDAO {
         $row['idClasse'],
         $row['idEtudiant']
     );
-}
+    }
 
 
-    // Crée un nouveau devoir
-    // Crée un nouveau devoir
+    /**
+     * @brief Crée un nouveau devoir dans la base de données.
+     *
+     * @param Devoir $devoir L'objet Devoir à insérer.
+     * @return bool Retourne true si l'insertion a réussi, false sinon.
+     */
     public function create(Devoir $devoir): bool
     {
         // 1. Correction de la requête SQL (Ajout de la virgule entre date_fin et heure_deb, et du : devant heure_fin)
@@ -105,6 +139,12 @@ class DevoirDAO {
         ]);
     }
 
+    /**
+     * @brief Récupère les devoirs d'un étudiant donné.
+     *
+     * @param int $idEtudiant Identifiant de l'étudiant.
+     * @return array Liste des devoirs associés à l'étudiant.
+     */
     public function findByEtudiant(int $idEtudiant): array
     {
         $sql = "SELECT * 
@@ -136,7 +176,12 @@ class DevoirDAO {
         return $devoirs;
     }
 
-    // Récupère un devoir par son id
+    /**
+     * @brief Récupère un devoir par son identifiant.
+     *
+     * @param int $id Identifiant du devoir.
+     * @return Devoir|null Objet Devoir si trouvé, sinon null.
+     */
     public function read(int $id): ?Devoir
     {
         $sql = "SELECT * FROM devoir WHERE id = :id";
@@ -156,9 +201,13 @@ class DevoirDAO {
         return null;
     }
 
-    // Met à jour un devoir existant
-    public function update(Devoir $devoir): bool
-{
+    /**
+     * @brief Met à jour un devoir dans la base de données.
+     *
+     * @param Devoir $devoir L'objet Devoir à mettre à jour.
+     * @return bool Retourne true si la mise à jour a réussi, false sinon.
+     */
+    public function update(Devoir $devoir): bool{
     // 1. Définition de la requête avec TOUS les marqueurs nécessaires
     $sql = "UPDATE devoir 
             SET libelle = :libelle, 
@@ -189,8 +238,14 @@ class DevoirDAO {
         ':idEtudiant' => $devoir->getIdEtudiant(),
         ':id'         => $devoir->getId()
     ]);
-}
+    }
 
+    /**
+     * @brief Supprime un devoir de la base de données.
+     *
+     * @param int $id Identifiant du devoir à supprimer.
+     * @return bool Retourne true si la suppression a réussi, false sinon.
+     */
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM devoir WHERE id = :id";
@@ -199,7 +254,12 @@ class DevoirDAO {
         // On lie l'ID pour éviter les injections SQL
         return $stmt->execute([':id' => $id]);
     }
-    // Récupère tous les devoirs
+ 
+    /**
+     * @brief Récupère tous les devoirs de la base de données.
+     *
+     * @return array Liste de tous les devoirs.
+     */
     public function getAll(): array
     {
         $sql = "SELECT * FROM devoir";

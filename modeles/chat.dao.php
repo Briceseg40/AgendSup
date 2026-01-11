@@ -1,19 +1,40 @@
 <?php
-
+/**
+ * @file    chat.dao.php
+ * @author  Rémi Montignac
+ * @brief   Définit la classe ChatDAO pour gérer les opérations sur les chtas dans la base de données.
+ * @version 0.1
+ * @date    19/12/2025
+ */
 class ChatDAO
 {
+    /**
+     * @brief Instance de PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * @brief Constructeur de la classe ChatDAO.
+     * @param PDO|null $pdo Instance de PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * @brief Obtient l'instance de PDO.
+     * @return PDO|null Instance de PDO.
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
 
+    /**
+     * @brief Définit l'instance de PDO.
+     * @param PDO|null $pdo Instance de PDO.
+     */
     public function setPdo(?PDO $pdo): void
     {
         $this->pdo = $pdo;
@@ -36,6 +57,7 @@ class ChatDAO
         return $chats;
     }
 
+    /** Recherche un chat par son ID */
     public function findById(int $id_chat): ?Chat
     {
         $stmt = $this->pdo->prepare("SELECT * FROM chat WHERE id = :id");
@@ -53,6 +75,7 @@ class ChatDAO
         return null;
     }
 
+    /** Récupère les chats où un des utilisateurs a parlé */
     public function findChatsOuUtilisateurAParle(array $userIds): array
     {
         $userIds = array_values(array_unique($userIds));
@@ -87,8 +110,7 @@ class ChatDAO
         return $chats;
     }
 
-
-
+    /** Ajoute un nouveau chat */
     public function ajouter(Chat $chat): bool
     {
         $sql = "INSERT INTO chat (id, nom) VALUES (:id, :nom)";
@@ -102,6 +124,7 @@ class ChatDAO
         return $stmt->execute();
     }
 
+    /** Modifie un chat existant */
     public function modifier(Chat $chat): bool
     {
         $sql = "UPDATE chat SET nom = :nom WHERE id = :id";
@@ -115,6 +138,7 @@ class ChatDAO
         return $stmt->execute();
     }
 
+    /** Supprime un chat par son ID */
     public function supprimer(int $id_chat): bool
     {
         $sql = "DELETE FROM chat WHERE id = :id";

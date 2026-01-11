@@ -1,3 +1,28 @@
+{#
+/**
+ * @file liste_devoirs.html.twig
+ * @brief Vue de gestion et d'affichage de la liste des devoirs.
+ *
+ * @details Cette page permet aux utilisateurs (étudiants ou enseignants) de visualiser 
+ * l'ensemble des devoirs enregistrés dans l'application AgendSup.
+ *
+ * Elle offre une interface complète pour :
+ * - Consulter les détails (matière, dates, horaires, contenu).
+ * - Distinguer les devoirs par un code couleur personnalisé.
+ * - Accéder aux formulaires de modification et de création.
+ * - Supprimer un devoir avec une demande de confirmation.
+ *
+ * Technologies utilisées :
+ * - Twig (Moteur de rendu)
+ * - Bootstrap 5 & Bootstrap Icons
+ * - CSS Inline pour le rendu dynamique des couleurs
+ *
+ * @see DevoirController::afficher()
+ * @see DevoirController::modifier()
+ * @version 1.0
+ */
+#}
+
 {% extends "base.html.twig" %}
 
 {% block title %}AgendSup - Liste des devoirs{% endblock %}

@@ -1,3 +1,29 @@
+{#
+/**
+ * @file modifier_devoir.html.twig
+ * @brief Formulaire de modification d'un devoir existant.
+ *
+ * @details Cette page permet d'éditer les informations d'un devoir (matière, dates, 
+ * horaires, description et couleur). Elle intègre une validation côté client 
+ * pour garantir la cohérence temporelle des données.
+ *
+ * Fonctionnalités :
+ * - Chargement des données existantes du devoir via l'objet 'devoir'.
+ * - Groupement dynamique des matières par semestre dans le menu déroulant.
+ * - Validation en temps réel des dates (la date de fin ne peut être antérieure au début).
+ * - Sécurité sur la soumission du formulaire pour empêcher les durées négatives.
+ *
+ * @param array cours Liste des matières groupées par semestre.
+ * @param object devoir L'instance du devoir à modifier.
+ * @param string titre Le titre dynamique de la page.
+ * @param string error Message d'erreur éventuel en provenance du serveur.
+ *
+ * @see DevoirController::modifier()
+ * @see liste_devoirs.html.twig
+ * @version 1.0
+ */
+#}
+
 {% extends "base.html.twig" %}
 
 {% block title %}AgendSup - Modifier un devoir{% endblock %}
