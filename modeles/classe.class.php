@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file    classe.class.php
  * @author  Rémi Bouillon et Brice Seguret
@@ -47,6 +48,10 @@ class Classe
      */
     private ?string $code;
 
+    private ?string $prenomCreateur;
+
+    private ?string $nomCreateur;
+
     /**
      * @brief Constructeur de la classe Classe.
      * @param int|null $id Identifiant de la classe.
@@ -59,7 +64,8 @@ class Classe
      * @param int|null $annee Année de la classe.
      * @param string|null $code Code de la classe.
      */
-    public function __construct( ?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?int $TD = null, ?int $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $code = null) {
+    public function __construct(?int $id = null, ?string $img = null, ?string $titre = null, ?string $description = null, ?int $TD = null, ?int $TP = null, ?int $idEtudiant = null, ?int $annee = null, ?string $code = null, ?string $prenomCreateur = null, ?string $nomCreateur = null)
+    {
         $this->id = $id;
         $this->img = $img;
         $this->titre = $titre;
@@ -69,6 +75,8 @@ class Classe
         $this->idEtudiant = $idEtudiant;
         $this->annee = $annee;
         $this->code = $code;
+        $this->prenomCreateur = $prenomCreateur;
+        $this->nomCreateur = $nomCreateur;
     }
 
     //Getters et Setters
@@ -215,5 +223,24 @@ class Classe
     public function setCode(?string $code): void
     {
         $this->code = $code;
+    }
+
+    public function getPrenomCreateur(): ?string
+    {
+        return $this->prenomCreateur;
+    }
+    public function setPrenomCreateur(?string $prenom): void
+    {
+        $this->prenomCreateur = $prenom;
+    }
+
+    public function getNomCreateur(): ?string
+    {
+        return $this->nomCreateur;
+    }
+    
+    public function setNomCreateur(?string $nom): void
+    {
+        $this->nomCreateur = $nom;
     }
 }
