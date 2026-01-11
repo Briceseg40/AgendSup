@@ -180,7 +180,7 @@ class ControllerDevoir extends Controller {
         $manager = new DevoirDAO($this->getPdo());
         
         // Correction : On nomme la variable $devoirs
-        $devoirs = $manager->findByEtudiant($user->getIdClasse()); 
+        $devoirs = $manager->findByEtudiant($user->getId()); 
     
         // On envoie 'devoirs' au template pour correspondre au {% for devoir in devoirs %}
         echo $this->getTwig()->render('listerDevoir.twig', [
