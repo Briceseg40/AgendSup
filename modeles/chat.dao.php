@@ -1,5 +1,5 @@
 <?php
-
+/
 class ChatDAO
 {
     private ?PDO $pdo;
