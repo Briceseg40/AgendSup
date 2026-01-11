@@ -1,0 +1,27 @@
+var class_twig_1_1_abstract_twig_callable =
+[
+    [ "__construct", "class_twig_1_1_abstract_twig_callable.html#a64c85bb87245fbd65e90842226fc4d50", null ],
+    [ "__toString", "class_twig_1_1_abstract_twig_callable.html#aff7e3bf7f95fb49fa07c3fa390a9a175", null ],
+    [ "getAlternative", "class_twig_1_1_abstract_twig_callable.html#a3dd966ad99b871741b91a8e29f5c4043", null ],
+    [ "getArguments", "class_twig_1_1_abstract_twig_callable.html#a688a84e3f639d79026e1d91925feb56c", null ],
+    [ "getCallable", "class_twig_1_1_abstract_twig_callable.html#a2edb9e3acc459ed803c4eeb38ae694f5", null ],
+    [ "getDeprecatedVersion", "class_twig_1_1_abstract_twig_callable.html#ab0f245685570f27f3abedaa4528fa65c", null ],
+    [ "getDeprecatingPackage", "class_twig_1_1_abstract_twig_callable.html#a5d3ff82365681d27a0cd4e17a169ba91", null ],
+    [ "getDynamicName", "class_twig_1_1_abstract_twig_callable.html#af652b866f612f172510ae125117c9082", null ],
+    [ "getMinimalNumberOfRequiredArguments", "class_twig_1_1_abstract_twig_callable.html#ad0e9419aa0191dfe04027f3d1fa275fc", null ],
+    [ "getName", "class_twig_1_1_abstract_twig_callable.html#af37c01f8a12e0a0c13356892f1a1ee6b", null ],
+    [ "getNodeClass", "class_twig_1_1_abstract_twig_callable.html#a0d10e3ec3eca7caa0ff0883094c6a45b", null ],
+    [ "isDeprecated", "class_twig_1_1_abstract_twig_callable.html#a6e8c1dd2cfcdda7a895537de9a5bfa05", null ],
+    [ "isVariadic", "class_twig_1_1_abstract_twig_callable.html#a600a5f78f9a10af99a5f3f7b7ee2883a", null ],
+    [ "needsCharset", "class_twig_1_1_abstract_twig_callable.html#ac40191b2036c5ba4128f74bc79722ce5", null ],
+    [ "needsContext", "class_twig_1_1_abstract_twig_callable.html#abe0e41c3429fe4bd9a0eea871bcd5ad5", null ],
+    [ "needsEnvironment", "class_twig_1_1_abstract_twig_callable.html#a912674713913ff63cd46d4b7b57a5fce", null ],
+    [ "setArguments", "class_twig_1_1_abstract_twig_callable.html#a6c5ab26f818663efc13ef520036864f4", null ],
+    [ "triggerDeprecation", "class_twig_1_1_abstract_twig_callable.html#a68aa0ac7223427107873476896a4aa7a", null ],
+    [ "withDynamicArguments", "class_twig_1_1_abstract_twig_callable.html#a7dfef6611142f72c91b6605f49c7531e", null ],
+    [ "$arguments", "class_twig_1_1_abstract_twig_callable.html#ac5f962181263486c438292f9c97e6fea", null ],
+    [ "$callable", "class_twig_1_1_abstract_twig_callable.html#a14dac16492207c429696c08594abf26b", null ],
+    [ "$dynamicName", "class_twig_1_1_abstract_twig_callable.html#ada7dfe081f6fb213ff147904198a4575", null ],
+    [ "$name", "class_twig_1_1_abstract_twig_callable.html#a87e0ae3efc0f711aad61366d23e81226", null ],
+    [ "$options", "class_twig_1_1_abstract_twig_callable.html#a6946381262c5baab6afe232504e98cab", null ]
+];
