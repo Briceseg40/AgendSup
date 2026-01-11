@@ -13,3 +13,7 @@ Le projet est déployé sur les serveurs de l'IUT (Lakartxela).
 ## API
 Voici des api utilisées : 
 - **Full Calendar :** npm install fullcalendar
+
+## Fichier de config
+Renommer le fichier config_exemple.yml en config.yml
+Il faudra changer l'utilisateur (user), le mot de passe (password) et l'hébergeur (host)

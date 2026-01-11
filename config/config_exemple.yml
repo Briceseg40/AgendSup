@@ -1,0 +1,11 @@
+db:
+  host: localhost
+  user: root
+  password: root
+  name: AgendSup
+website:
+  title: AgendSup
+  url: http://localhost/agendsup
+  version: 1.0.0
+  description: Application de gestion de devoirs pour le BUT Informatique.
+  language: fr
