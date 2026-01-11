@@ -1,0 +1,121 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Modifier un devoir{% endblock %}
+
+{% block body %}
+<div class="container mt-3"> {# Marges réduites ici pour remonter #}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+                    <h3 class="mb-0 h6"><i class="bi bi-pencil-square"></i> {{ titre }}</h3>
+                    <a href="index.php?controleur=devoir&methode=lister" class="btn btn-sm btn-light">Retour</a>
+                </div>
+                
+                <div class="card-body p-4"> {# Padding ajusté #}
+                    
+                    {# Affichage de l'erreur serveur bien visible en haut #}
+                    {% if error %}
+                        <div class="alert alert-danger py-2 mb-3 shadow-sm">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+                        </div>
+                    {% endif %}
+
+                    <form action="index.php?controleur=devoir&methode=modifier&id={{ devoir.id }}" method="POST" id="formModifier">
+                        
+                        {# Sélection de la matière #}
+                        <div class="mb-3">
+                            <label for="idCours" class="form-label small fw-bold">Matière / ReSSource</label>
+                            <select name="idCours" id="idCours" class="form-select" required>
+                                <option value="" disabled>-- Sélectionnez une matière --</option>
+                                {% set currentSemestre = "" %}
+                                {% for c in cours %}
+                                    {% if c.semestre != currentSemestre %}
+                                        {% if currentSemestre != "" %}</optgroup>{% endif %}
+                                        <optgroup label="Semestre {{ c.semestre }}">
+                                        {% set currentSemestre = c.semestre %}
+                                    {% endif %}
+                                    <option value="{{ c.id }}" {% if c.id == devoir.idCours %}selected{% endif %}>
+                                        {{ c.libelle }}
+                                    </option>
+                                {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="date_deb" class="form-label small fw-bold text-primary">Date de début</label>
+                                <input type="date" class="form-control" id="date_deb" name="date_deb" 
+                                       value="{{ devoir.dateDeb|date('Y-m-d') }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="date_fin" class="form-label small fw-bold text-danger">Date de rendu (fin)</label>
+                                <input type="date" class="form-control" id="date_fin" name="date_fin" 
+                                       value="{{ devoir.datefin|date('Y-m-d') }}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="heure_deb" class="form-label small fw-bold">Heure de début</label>
+                                <input type="time" class="form-control" id="heure_deb" name="heure_deb" 
+                                       value="{{ devoir.heureDeb }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="heure_fin" class="form-label small fw-bold">Heure de fin</label>
+                                <input type="time" class="form-control" id="heure_fin" name="heure_fin" 
+                                       value="{{ devoir.heureFin }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contenu" class="form-label small fw-bold">Description du travail</label>
+                            <textarea class="form-control" id="contenu" name="contenu" rows="3">{{ devoir.contenu }}</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="Couleur" class="form-label small fw-bold">Couleur de priorité</label>
+                            <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
+                                   value="{{ devoir.couleur|default('#4e73df') }}">
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary shadow-sm">
+                                <i class="bi bi-check-circle"></i> Enregistrer les modifications
+                            </button>
+                            <a href="index.php?controleur=devoir&methode=lister" class="btn btn-link btn-sm text-muted text-decoration-none">Annuler</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Sécurité JS pour bloquer les dates incohérentes sans recharger
+    const dDeb = document.getElementById('date_deb');
+    const dFin = document.getElementById('date_fin');
+
+    dDeb.addEventListener('change', () => {
+        dFin.min = dDeb.value;
+        if (dFin.value < dDeb.value) {
+            dFin.value = dDeb.value;
+        }
+    });
+
+    document.getElementById('formModifier').addEventListener('submit', function(e) {
+        const hDeb = document.getElementById('heure_deb').value;
+        const hFin = document.getElementById('heure_fin').value;
+        
+        const debut = new Date(dDeb.value + 'T' + hDeb);
+        const fin = new Date(dFin.value + 'T' + hFin);
+
+        if (fin <= debut) {
+            e.preventDefault();
+            alert("L'heure/date de fin doit être après le début.");
+        }
+    });
+</script>
+{% endblock %}
