@@ -9,77 +9,78 @@ class CoursDAO
         $this->pdo = $pdo;
     }
 
-    public function getPdo(): ?PDO
-    {
-        return $this->pdo;
-    }
-
-    public function setPdo(?PDO $pdo): void
-    {
-        $this->pdo = $pdo;
-    }
-
-    /** Récupère tous les cours */
+    /** Récupère tous les cours avec tous les attributs */
     public function findAll(): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM cours");
+        $stmt = $this->pdo->prepare("SELECT * FROM cours ORDER BY semestre ASC, libelle ASC");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $cours = [];
         foreach ($results as $row) {
+            // Utilisation de toutes les colonnes pour créer l'objet Cours
             $cours[] = new Cours(
                 $row['id'],
                 $row['libelle'],
+                $row['annee'] ?? null,
+                $row['parcours'] ?? null,
+                $row['semestre'] ?? null,
+                $row['type'] ?? null
             );
         }
 
         return $cours;
     }
 
-    /** Recherche un cours par son ID */
+    /** Recherche un cours complet par son ID */
     public function findById(int $id_cours): ?Cours
     {
         $stmt = $this->pdo->prepare("SELECT * FROM cours WHERE id = :id");
-        $stmt->bindParam(':id', $id_cours, PDO::PARAM_INT);
-        $stmt->execute();
+        $stmt->execute([':id' => $id_cours]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
             return new Cours(
                 $row['id'],
                 $row['libelle'],
+                $row['annee'] ?? null,
+                $row['parcours'] ?? null,
+                $row['semestre'] ?? null,
+                $row['type'] ?? null
             );
         }
 
         return null;
     }
 
-    /** Récupère tous les cours liés à un agenda */
-    public function findByAgenda(int $id_agenda): array
+    /** Récupère les cours filtrés par année et parcours sous forme d'objets */
+    public function findByAnneeEtParcours(int $annee, ?string $parcours): array
     {
         $sql = "
-            SELECT c.id, c.libelle, a.date_cours, a.horaire
-            FROM afficher a
-            INNER JOIN cours c ON a.id_cours = c.id
-            WHERE a.id_agenda = :id_agenda
+            SELECT * FROM cours
+            WHERE annee = :userAnnee 
+            AND (parcours = :userParcours OR parcours IS NULL)
+            ORDER BY semestre ASC, type DESC, libelle ASC;
         ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id_agenda', $id_agenda, PDO::PARAM_INT);
+        $stmt->bindValue(':userAnnee', $annee, PDO::PARAM_INT);
+        $stmt->bindValue(':userParcours', $parcours, PDO::PARAM_STR);
         $stmt->execute();
+        
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $cours = [];
+        
+        $listeCours = [];
         foreach ($results as $row) {
-            $cours[] = new Cours(
+            $listeCours[] = new Cours(
                 $row['id'],
                 $row['libelle'],
-                $row['date_cours'],
-                $row['horaire']
+                $row['annee'],
+                $row['parcours'],
+                $row['semestre'],
+                $row['type']
             );
         }
-
-        return $cours;
+        return $listeCours; 
     }
 }
