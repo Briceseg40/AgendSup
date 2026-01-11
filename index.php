@@ -1,6 +1,8 @@
 <?php
 
 require_once 'modeles/etudiant.class.php';
+require_once 'modeles/etudiant.class.php'; 
+require_once 'modeles/etudiant.dao.php';
 
 session_start();
 

@@ -179,7 +179,7 @@ class Etudiant
             //Utilise password_verify pour comparer le mot de passe fourni avec le mot de passe haché en base
             if (password_verify($this->getMdp(), $etudiantEnBase['mdp'])) 
             {
-                $this->identifiant = $etudiantEnBase['id'];
+                $this->id = $etudiantEnBase['id'];
 
                 //Reinitialisation du mot de passe en clair pour ne pas conserver de données sensibles 
                 $this->setMdp(null);
