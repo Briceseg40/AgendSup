@@ -65,8 +65,10 @@ class ClasseDAO {
     }
 
     public function findInscrites(int $idEtudiant): array {
-        $sql = "SELECT c.* FROM classe c 
+        $sql = "SELECT c.*, e.Nom as nomCreateur, e.Prenom as prenomCreateur
+                FROM classe c 
                 JOIN inscription i ON c.id = i.id_classe 
+                JOIN etudiant e ON c.idEtudiant = e.id
                 WHERE i.id_etudiant = :id";
         
         $stmt = $this->pdo->prepare($sql);
@@ -84,7 +86,9 @@ class ClasseDAO {
                 $row['TP'],
                 $row['idEtudiant'],
                 $row['annee'],
-                $row['code']
+                $row['code'],
+                $row['prenomCreateur'],
+                $row['nomCreateur']
             );
         }
         return $classes;
