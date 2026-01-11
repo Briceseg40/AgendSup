@@ -6,106 +6,97 @@ class ControllerRegister extends Controller {
         parent::__construct($loader, $twig);
     }
 
-    public function register() {
-        $email = ($_POST['email'] ?? '');
-        $role = $_POST['role'] ?? '';
-        $nom = ($_POST['name'] ?? '');
-        $prenom = ($_POST['first_name'] ?? ''); 
-        $password = ($_POST['password'] ?? ''); 
-        $promo = $_POST['promo'] ?? '';
-        $td = $_POST['td_group'] ?? '';
-        $parcours = $_POST['parcours'] ?? '';
-        $tp = $_POST['tp_group'] ?? '';
-
-        // Map role values
-        $roleMap = [
-            '1' => 'normal',
-            '2' => 'delegue',
-            '3' => 'ressource'
-        ];
-        $role = $roleMap[$role] ?? 'normal';
-
-        // Validate data
-        $validator = new Validator([
-            'email' => ['obligatoire' => true, 'format' => FILTER_VALIDATE_EMAIL],
-            'name' => ['obligatoire' => true, 'longueur_min' => 2, 'longueur_max' => 50],
-            'first_name' => ['obligatoire' => true, 'longueur_min' => 2, 'longueur_max' => 50],
-            'password' => ['obligatoire' => true, 'longueur_min' => 8],
-            'promo' => ['obligatoire' => true],
-            'td_group' => ['obligatoire' => true],
-            'parcours' => ['obligatoire' => true],
-            'tp_group' => ['obligatoire' => true]
-        ]);
-
-        $data = [
-            'email' => $email,
-            'name' => $nom,
-            'first_name' => $prenom,
-            'password' => $password,
-            'promo' => $promo,
-            'td_group' => $td,
-            'parcours' => $parcours,
-            'tp_group' => $tp
+    public function register()
+    {
+        $reglesValidation = [
+            'email' => [
+                'obligatoire' => true,
+                'format' => FILTER_VALIDATE_EMAIL
+            ],
+            'name' => [
+                'obligatoire' => true,
+                'longueur_min' => 2
+            ],
+            'first_name' => [
+                'obligatoire' => true,
+                'longueur_min' => 2
+            ],
+            'password' => [
+                'obligatoire' => true
+            ]
         ];
 
-        $errors = [];
-        if (!$validator->valider($data)) {
-            $errors = $validator->getMessagesErreurs();
+        $validator = new Validator($reglesValidation);
+        $valide = $validator->valider($_POST);
+        $erreurs = $validator->getMessagesErreurs();
+
+        // ERREURS DE FORMULAIRE
+        if (!$valide) {
+            echo $this->getTwig()->render('register.html.twig', [
+                'errors' => $erreurs,
+                'form_data' => $_POST
+            ]);
+            return; // STOP
         }
 
-        if (!empty($errors)) {
-            // Remove password from form data for security
-            unset($data['password']);
-            echo $this->getTwig()->render('register.html.twig', ['errors' => $errors, 'form_data' => $data]);
-            return;
-        }
+        // DONNÉES
+        $promo = (int)$_POST['promo'];
+        $td = (int)$_POST['td_group'];
+        $tp = (int)$_POST['tp_group'];
 
-        // Check password complexity
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/', $password)) {
-            unset($data['password']);
-            echo $this->getTwig()->render('register.html.twig', ['error' => 'mdp_faible', 'form_data' => $data]);
-            return;
-        }
+        $idClasse = $promo * 100 + $td * 10 + $tp;
 
-        // Check if email already exists
-        $etudiantDAO = new EtudiantDAO(Bd::getInstance()->getConnection());
-        if ($etudiantDAO->findByEmail($email)) {
-            unset($data['password']);
-            echo $this->getTwig()->render('register.html.twig', ['error' => 'compte_existant', 'form_data' => $data]);
-            return;
-        }
+        $roleCode = (int)($_POST['role'] ?? 1); // par défaut 1 = normal
 
-        // Create Etudiant object
-        $idClasse = (int)$promo * 100 + (int)$td * 10 + (int)$tp;
-        $etudiant = new Etudiant(null, $nom, $prenom, $role, (int)$promo, $idClasse, $email, $password);
+        // Traduction en libellé
+        $role = match ($roleCode) {
+            1 => 'normal',
+            2 => 'delegue',
+            3 => 'ressource',
+            default => 'normal', // valeur par défaut
+        };
 
+        $etudiant = new Etudiant(
+            null,
+            $_POST['name'],
+            $_POST['first_name'],
+            $role,
+            $promo,
+            $idClasse,
+            $_POST['email'],
+            $_POST['password']
+        );
+
+        $pdo = Bd::getInstance()->getConnection();
+        $etudiantDAO = new EtudiantDAO($pdo);
+
+        // ERREURS 
         try {
-            if ($etudiantDAO->insert($etudiant)) {
-                // Set session
-                $pdo = Bd::getInstance()->getConnection();
-                $_SESSION['user'] = [
-                    'id' => $pdo->lastInsertId(),
-                    'nom' => $nom,
-                    'prenom' => $prenom,
-                    'role' => $role,
-                    'email' => $email
-                ];
-                echo $this->getTwig()->render('connected.html.twig', ['user' => $_SESSION['user']]);
-            } else {
-                unset($data['password']);
-                echo $this->getTwig()->render('register.html.twig', ['error' => 'Erreur lors de l\'inscription', 'form_data' => $data]);
-            }
+            $etudiant->inscription($etudiantDAO);
         } catch (Exception $e) {
-            unset($data['password']);
-            echo $this->getTwig()->render('register.html.twig', ['error' => $e->getMessage(), 'form_data' => $data]);
+            echo $this->getTwig()->render('register.html.twig', [
+                'errors' => [$e->getMessage()],
+                'form_data' => $_POST
+            ]);
+            return; // STOP
         }
+
+        // SUCCÈS 
+        header('Location: index.php?controleur=register&methode=success');
+        exit();
+    }
+
+    public function success()
+    {
+        echo $this->getTwig()->render('inscription_reussie.html.twig');
     }
 
     public function render() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->register();
-        } else {
-            echo $this->getTwig()->render('register.html.twig');
+            return;
         }
+
+        echo $this->getTwig()->render('register.html.twig');
     }
 }

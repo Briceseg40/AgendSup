@@ -10,31 +10,27 @@ class ControllerConnecter extends Controller {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['loginName'] ?? '';
             $password = $_POST['password'] ?? '';
-    
-            $pdo = Bd::getInstance()->getConnection();
-            $etudiantDAO = new EtudiantDAO($pdo);
-            $etudiant = $etudiantDAO->findByEmail($email);
-    
-            // Attention : En production, utilisez password_verify()
-            if ($etudiant && $password === $etudiant->getMdp()) {
-                
-                // On stocke l'objet complet en session
-                $_SESSION['user'] = $etudiant; 
-                
-                // Redirection
+
+            $etudiant = new Etudiant(null,null,null,null,null,null,$email,$password);
+
+            if ($etudiant->authentification()) {
+                $_SESSION['authentifie'] = true;
+                $_SESSION['user'] = [
+                    'id' => $etudiant->getId(),
+                    'mail' => htmlspecialchars($email)
+                ];
+
                 header('Location: index.php?controleur=connecter&methode=render');
                 exit();
             } else {
-                // On repasse l'erreur au template
-                echo $this->getTwig()->render('login.html.twig', [
-                    'error' => 'Identifiants incorrects',
-                    'last_username' => $email // Pratique pour ne pas retaper l'email
-                ]);
+                echo $this->getTwig()->render('login.html.twig', ['erreur' => 'Email ou mot de passe incorrect.']);
             }
         } else {
             echo $this->getTwig()->render('login.html.twig');
         }
     }
+
+    
 
     public function deconnexion() {
         session_destroy(); //
