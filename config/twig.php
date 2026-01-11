@@ -48,3 +48,6 @@ $twig->addGlobal('app', [
 ]);
 
 $twig->addGlobal('session', $_SESSION);
+
+// Ajout de la configuration YAML comme variable globale dans Twig (DANS TOUS LES TEMPLATES).
+$twig->addGlobal('config', Config::getConfig());
