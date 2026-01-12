@@ -7,7 +7,7 @@ require_once 'modeles/etudiant.class.php';
 
 require_once 'config/twig.php';
 
-require_once 'config/constante.php';
+require_once 'config/config.php';
 
 require_once 'modeles/bd.class.php';
 
