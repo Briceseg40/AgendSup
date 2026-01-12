@@ -31,5 +31,28 @@
 {% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="bg-gray position-absolute top-50 start-50 translate-middle hero text-center rounded-5 p-5">
+            <h1 class="titre">AgendSup</h1>
+            <p class="text-btn mb-5">Mot de passe oublié</p>
+            <div class="hero-buttons position-relative d-flex flex-column gap-3 w-90 mx-auto">
+                <form class="position-relative w-90 mx-auto" method="post" action="index.php?controleur=connecter&methode=resetPassword">
+                    
+                    <p class="mb-4 fw-bold fs-5">Entrez votre adresse email pour recevoir un lien de réinitialisation.</p>
 
+                    <input id="email" type="email" name="email" class="w-100 border-black mb-3 rounded-pill fs-20 p-20" placeholder="votre.email@iutbayonne.univ-pau.fr" required>
+
+                    <button type="submit" class="btn btn-light w-100 rounded-pill border-black p-3 text-btn mt-3">
+                        Envoyer
+                        <i class="fa-solid fa-paper-plane ml-1"></i>
+                    </button>
+
+                </form>
+
+                <div class="liens-compte fs-20 d-flex justify-content-center align-items-center mt-3">
+                    <a href="?controleur=connecter&methode=connexion" class="text-decoration-underline fw-bold text-dark">Retour à la connexion</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
