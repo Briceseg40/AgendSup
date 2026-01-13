@@ -129,75 +129,75 @@ class ControllerDevoir extends Controller {
      * @return void
      */
     public function modifier(): void
-    {
-        /* @brief Récupération de l'utilisateur en session */
-        $user = $_SESSION['user'];
-        /* @brief Récupération de l'ID du devoir depuis l'URL */
-        $idDevoir = $_GET['id'] ?? null;
-    
-        /* @brief Si aucun ID n'est fourni, redirection vers la liste des devoirs */
-        if (!$idDevoir) {
-            header("Location: index.php?controleur=devoir&methode=lister");
-            exit();
-        }
-    
-        /* @brief Initialisation des gestionnaires de devoirs et de cours */
-        $devoirManager = new DevoirDAO($this->getPdo());
-        /* @brief Initialisation du gestionnaire de cours */
-        $coursManager = new CoursDao($this->getPdo());
-        /* @brief Variable pour stocker le message d'erreur */
-        $error = null;
-    
-        /* @brief Traitement du formulaire lors de la soumission (méthode POST) */
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            /* @brief Récupération et concaténation des dates et heures de début et de fin */
-            $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
-            /* @brief Vérification que la date et l'heure de fin sont postérieures à celles de début */
-            $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
+{
+    $user = $_SESSION['user'];
+    $idDevoir = $_GET['id'] ?? null;
 
-            $contenuproteger = htmlentities($_POST['contenu']);
-    
-            /* @brief Si la date de fin est antérieure ou égale à la date de début */
-            if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
-                $error = "La date et l'heure de fin doivent être supérieures au début.";
-            } else {
-                /* @brief Création d'un objet Devoir modifié avec les nouvelles données */
-                $devoirModifie = new Devoir(
-                    /* @brief On conserve l'ID du devoir existant */
-                    (int)$idDevoir,
-                    /* @brief On utilise le libellé reçu du formulaire ou une chaîne vide par défaut */
-                    $_POST['libelle'] ?? '', 
-                    $_POST['date_deb'],
-                    $_POST['date_fin'],
-                    $_POST['heure_deb'],
-                    $_POST['heure_fin'],
-                    $_POST['contenu'],
-                    $contenuproteger,
-                    $_POST['idCours'],
-                    $user->getIdClasse(),
-                    $user->getId()
-                );
-                /* @brief Mise à jour du devoir dans la base de données */
-                if ($devoirManager->update($devoirModifie)) {
-                    header("Location: index.php?controleur=devoir&methode=lister&success=1");
-                    exit();
-                }
+    if (!$idDevoir) {
+        header("Location: index.php?controleur=devoir&methode=lister");
+        exit();
+    }
+
+    $devoirManager = new DevoirDAO($this->getPdo());
+    $coursManager = new CoursDao($this->getPdo());
+    $error = null;
+
+    // Récupération des cours autorisés (même logique que creer)
+    $listeDesCours = $coursManager->findByAnneeEtParcours((int)$user->getAnnee(), $user->getParcour());
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
+        $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
+        $contenuproteger = htmlentities($_POST['contenu']);
+
+        // Récupération de l'ID du cours (sans le s)
+        $idCoursRecu = $_POST['idCour'] ?? null; 
+        $libelleMatiere = "";
+
+        // On cherche le libellé correspondant à l'ID pour remplir la colonne 'libelle'
+        foreach ($listeDesCours as $cours) {
+            if ($cours->getId() == $idCoursRecu) { 
+                $libelleMatiere = $cours->getLibelle();
+                break;
             }
         }
-    
-        /* @brief Récupération du devoir existant pour pré-remplir le formulaire */
-        $devoir = $devoirManager->findById((int)$idDevoir);
-        /* @brief Récupération de la liste des cours pour le formulaire */
-        $listeDesCours = $coursManager->findAll();
-    
-        /* @brief Affichage du formulaire de modification avec les données existantes */
-        echo $this->getTwig()->render('modifierDevoir.twig', [
-            "titre" => "Modifier le devoir",
-            "devoir" => $devoir,
-            "cours" => $listeDesCours,
-            "error" => $error // On envoie l'erreur au template
-        ]);
+
+        if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
+            $error = "La date et l'heure de fin doivent être supérieures au début.";
+        } else {
+            /* * On crée l'objet Devoir. 
+             * IMPORTANT : Vérifiez que 'Couleur' a bien une majuscule dans votre HTML
+             */
+            $devoirModifie = new Devoir(
+                (int)$idDevoir,
+                $libelleMatiere,    // Le libellé récupéré via la boucle
+                $_POST['date_deb'],
+                $_POST['date_fin'],
+                $_POST['heure_deb'],
+                $_POST['heure_fin'],
+                $contenuproteger,
+                $_POST['Couleur'],  // Utilisation de la clé avec majuscule
+                (int)$idCoursRecu,  // L'ID sans le s
+                $user->getIdClasse(),
+                $user->getId()
+            );
+
+            if ($devoirManager->update($devoirModifie)) {
+                header("Location: index.php?controleur=devoir&methode=lister&success=1");
+                exit();
+            }
+        }
     }
+
+    $devoir = $devoirManager->findById((int)$idDevoir);
+    
+    echo $this->getTwig()->render('modifierDevoir.twig', [
+        "titre" => "Modifier le devoir",
+        "devoir" => $devoir,
+        "cours" => $listeDesCours,
+        "error" => $error 
+    ]);
+}
 
     /**
      * @brief Supprime un devoir existant.
