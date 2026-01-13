@@ -55,19 +55,12 @@ class ControllerDevoir extends Controller {
             /**
              * @brief Récupération de l'ID du cours sélectionné dans le formulaire
              */
-            $idCoursRecu = (int)$_POST['libelle']; 
+            $idCoursRecu = (int)$_POST['idCour']; 
             /**
              * @brief Initialisation de la variable pour le libellé du cours
              */
             $libelleMatiere = "";
-            /**
-             * @brief Recherche du libellé du cours correspondant à l'ID reçu
-             */
-
-            $idCoursRecu = $_POST['idCour']; 
             
-            $libelleMatiere = "";
-
             foreach ($listeDesCours as $cours) {
                 if ($cours->getId() == $idCoursRecu) { 
                     $libelleMatiere = $cours->getLibelle();
