@@ -28,6 +28,9 @@ class ControllerParamClasse extends Controller
     /**
      * @brief Gère la création d'une nouvelle classe.
      */
+    /**
+     * @brief Gère la création d'une nouvelle classe.
+     */
     public function creer()
     {
         /* @brief Vérification de la session utilisateur. */
@@ -35,11 +38,11 @@ class ControllerParamClasse extends Controller
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
+
         /* @brief Récupération de l'utilisateur connecté. */
         $sessionUser = $_SESSION['user'];
-        /* @brief Initialisation de l'objet utilisateur connecté. */
         $utilisateurConnecte = null;
-        /* @brief Conversion du tableau utilisateur en objet Etudiant si nécessaire. */
+
         if (is_array($sessionUser)) {
             $utilisateurConnecte = new Etudiant(
                 $sessionUser['id'],
@@ -51,18 +54,13 @@ class ControllerParamClasse extends Controller
                 $sessionUser['email'],
                 '' 
             );
-        } 
-        /* @brief Utilisation directe de l'objet utilisateur si déjà un objet. */
-        else {
+        } else {
             $utilisateurConnecte = $sessionUser;
         }
-        $anneeEtudiant = $utilisateurConnecte->getAnnee();
-        $idEtudiant = $utilisateurConnecte->getId();
-        $idCompose = $utilisateurConnecte->getIdClasse();
-        /* @brief Extraction des TD et TP à partir de l'ID composé. */
-        $tdEtudiant = floor(($idCompose % 100) / 10);
-        /* @brief Extraction du TP à partir de l'ID composé. */
-        $tpEtudiant = $idCompose % 10;
+
+        /* @brief Extraction des informations de l'étudiant. */
+        $idCreateur = $sessionUser->getId();
+        $idClasseSource = $sessionUser->getIdClasse();
 
         /* @brief Vérification de la méthode de la requête. */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -73,27 +71,31 @@ class ControllerParamClasse extends Controller
             $description = $_POST['description'] ?? '';
 
             $pdo = Bd::getInstance()->getConnection();
-            $classeDAO = new ClasseDAO($pdo);
+            $classeDAO = new ClasseVirtuelDAO($pdo);
 
             /* @brief Vérification de l'unicité du code de la classe. */
             if ($classeDAO->findCode($code)) {
                 echo $this->getTwig()->render('createClassAndParam.html.twig', ['error' => 'Ce code de classe existe déjà']);
                 return;
             }
-            /* @brief Création de la nouvelle classe. */
-            $nouvelleClasse = new Classe(
-                null,
-                $image,
-                $nom,
-                $description,
-                $tdEtudiant,
-                $tpEtudiant,
-                $idEtudiant,
-                $anneeEtudiant,
-                $code
+
+            /* @brief Création de la nouvelle classe. 
+               L'ordre des paramètres DOIT être :
+               1. id (null), 2. image, 3. titre, 4. description, 5. idClasse, 6. idCreateur, 7. code
+            */
+            $nouvelleClasse = new ClasseVirtuel(
+                null,           // $id
+                $image,         // $img
+                $nom,           // $titre
+                $description,   // $description
+                $idClasseSource,// $idClasse
+                $idCreateur,    // $idCreateur 
+                $code           // $code 
             );
+
             /* @brief Insertion de la nouvelle classe dans la base de données. */
             $classeDAO->create($nouvelleClasse);
+
             /* @brief Redirection vers la page de rejoindre une classe. */
             header('Location: index.php?controleur=joinClass&methode=render');
             exit();
