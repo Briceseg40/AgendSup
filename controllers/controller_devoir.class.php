@@ -45,6 +45,16 @@ class ControllerDevoir extends Controller {
     {
         /* @brief Récupération de l'utilisateur en session */
         $user = $_SESSION['user'];
+
+        if ($_SESSION['user']->getRole() !== 'delegue') {
+            header('Location: index.php?controleur=connecter&methode=render');
+            exit;
+        }
+        elseif ( $_SESSION['user']->getRole() === 'ressource') {
+            header('Location: index.php?controleur=connecter&methode=render');
+            exit;
+        }
+        
         /* @brief Récupération des cours correspondant à l'année et au parcours de l'utilisateur */
         $coursManager = new CoursDao($this->getPdo());
         /* @brief Liste des cours filtrés */
@@ -133,6 +143,15 @@ class ControllerDevoir extends Controller {
     $user = $_SESSION['user'];
     $idDevoir = $_GET['id'] ?? null;
 
+    if ($_SESSION['user']->getRole() !== 'delegue') {
+        header('Location: index.php?controleur=connecter&methode=render');
+        exit;
+    }
+    elseif ( $_SESSION['user']->getRole() === 'ressource') {
+        header('Location: index.php?controleur=connecter&methode=render');
+        exit;
+    }
+
     if (!$idDevoir) {
         header("Location: index.php?controleur=devoir&methode=lister");
         exit();
@@ -205,6 +224,15 @@ class ControllerDevoir extends Controller {
      */
     public function supprimer(): void
     {
+        if ($_SESSION['user']->getRole() !== 'delegue') {
+            header('Location: index.php?controleur=connecter&methode=render');
+            exit;
+        }
+        elseif ( $_SESSION['user']->getRole() === 'ressource') {
+            header('Location: index.php?controleur=connecter&methode=render');
+            exit;
+        }
+
         /* @brief Récupération de l'ID du devoir à supprimer depuis l'URL */
         $id = $_GET['id'] ?? null;
         /* @brief Si un ID est fourni, procéder à la suppression */
@@ -228,6 +256,16 @@ class ControllerDevoir extends Controller {
     {
         /* @brief Si l'utilisateur n'est pas connecté, redirection vers la page de connexion */
         $user = $_SESSION['user'];
+
+        if ($_SESSION['user']->getRole() !== 'delegue') {
+            header('Location: index.php?controleur=connecter&methode=render');
+            exit;
+        }
+        elseif ( $_SESSION['user']->getRole() === 'ressource') {
+            header('Location: index.php?controleur=connecter&methode=render');
+            exit;
+        }
+
         /* @brief Initialisation du gestionnaire de devoirs */
         $manager = new DevoirDAO($this->getPdo());
         
@@ -235,6 +273,9 @@ class ControllerDevoir extends Controller {
         $devoirs = $manager->findByEtudiant($user->getIdClasse()); 
         // Correction : On nomme la variable $devoirs
         $devoirs = $manager->findByEtudiant($user->getId()); 
+        
+        
+
     
         /* @brief Affichage de la liste des devoirs */
         echo $this->getTwig()->render('listerDevoir.twig', [

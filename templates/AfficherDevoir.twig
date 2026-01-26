@@ -72,6 +72,7 @@
     });
 </script>
 
+
 {% if app.user and app.user.role == 'delegue' %}
     <div class="mb-3 text-end">
         <a href="index.php?controleur=devoir&methode=lister" 
@@ -80,14 +81,13 @@
             Liste des devoirs
         </a>
     </div>
-{% endif %}   
 
-{% if app.user and app.user.role == 'ressource' %}
+{% elseif app.user.role == 'ressource' %}
     <div class="mb-3 text-end">
         <a href="index.php?controleur=devoir&methode=lister" 
            class="btn btn-primary shadow" 
            style="position: fixed; bottom: 40px; right: 20px; z-index: 1000; border-radius: 50px; padding: 10px 20px;">
-            Liste des devoirs
+            Liste des cours
         </a>
     </div>
 {% endif %}   
