@@ -37,8 +37,6 @@ class ControllerJoinClass extends Controller {
         /* @brief Initialisation du DAO de classe. */
         $classeDAO = new ClasseDAO($pdo);
         /* @brief Recherche des classes de l'étudiant. */
-        $listeDesClasses = $classeDAO->findPerso($idEtudiant);
-        /* @brief Rendu du template Twig avec la liste des classes. */
         
         $listeDesClasses = $classeDAO->findInscrites($idEtudiant);
 

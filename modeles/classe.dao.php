@@ -57,7 +57,6 @@ class ClasseDAO {
     }
 
     // Nouvelle méthode pour se désinscrire (au lieu de tout supprimer)
-    // J'ai gardé le nom 'delete' comme tu voulais
     public function delete(int $idEtudiant, int $idClasse): void {
         $sql = "DELETE FROM inscription WHERE id_etudiant = :ide AND id_classe = :idc";
         $stmt = $this->pdo->prepare($sql);
@@ -102,34 +101,6 @@ class ClasseDAO {
         $sql = "SELECT * FROM classe"; 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $classes = [];
-        foreach ($rows as $row) {
-            $classes[] = new Classe(
-                $row['id'],
-                $row['img'],
-                $row['titre'],
-                $row['description'],
-                $row['TD'],
-                $row['TP'],
-                $row['idEtudiant'],
-                $row['annee'],
-                $row['code']
-            );
-        }
-        return $classes;
-    }
-
-    /**
-     * @brief Trouve toutes les classes associées à un étudiant donné.
-     * @param int $idEtudiant Identifiant de l'étudiant.
-     * @return array Liste des classes associées à l'étudiant.
-     */
-    public function findPerso(int $idEtudiant): array {
-        $sql = "SELECT * FROM classe WHERE idEtudiant = :id"; 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $idEtudiant]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $classes = [];
