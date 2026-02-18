@@ -15,9 +15,9 @@ require_once "modeles/cours.class.php";
 
 require_once "modeles/cours.dao.php";
 
-require_once "modeles/classe.class.php";
+require_once "modeles/classeVirtuel.class.php";
 
-require_once "modeles/classe.dao.php";
+require_once "modeles/classeVirtuel.dao.php";
 
 require_once "modeles/devoir.class.php";
 

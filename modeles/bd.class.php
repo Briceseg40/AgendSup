@@ -41,4 +41,11 @@ class Bd
     {
         return $this->pdo;
     }
+
+    private function __clone(){}
+    public function __wakeup()
+    {
+        throw new \Exception("Erreur impossible de deserialize un singleton.");
+    }
 }
+

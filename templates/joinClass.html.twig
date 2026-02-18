@@ -77,7 +77,7 @@
 										- TP{{ classe.getTP() }}
 									</div>
 									<div class="fw-bold text-muted small">
-										Crée par : {{ classe.getNomCreateur() }} {{ classe.getPrenomCreateur() }}
+										Crée par : {{ classe.nomCreateur|default('Inconnu') }} {{ classe.prenomCreateur }}
 									</div>
 									
 								</div>

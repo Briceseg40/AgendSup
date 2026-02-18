@@ -43,10 +43,9 @@ class controllerCours extends Controller
      */
     public function findByAnnee($Annee): void{
     // 1. Récupérer le parcours de l'utilisateur (depuis la session ou l'objet User)
-    // On suppose que l'info est stockée en session comme dans votre Twig initial
     $parcours = $_SESSION['user']['Parcour'] ?? null; 
 
-    // 2. Appeler le manager avec les deux critères
+    // 2. appelle du manager avec les deux critères
     $manager = new CoursDao($this->getPdo());
     $listeDesCours = $manager->findByAnneeEtParcours((int)$Annee, $parcours);
 
@@ -55,52 +54,9 @@ class controllerCours extends Controller
 
     // 4. Affichage et transmission
     echo $template->render(array(
-        'lesCours' => $listeDesCours, // On utilise un nom explicite
+        'lesCours' => $listeDesCours,
         'menu' => "category"
     ));
     }
 
-    /**
-     * @brief Crée un nouveau cours.
-     *
-     * @return void
-     */
-     public function creer(): void
-     {
-         $template = $this->getTwig()->load('cours/creer.twig');
- 
-         echo $template->render([
-             "titre" => "Créer un cours"
-         ]);
-     }
- 
-     //Modifier
-     /**
-      * @brief Modifie un cours existant.
-      *
-      * @return void
-      */
-     public function modifier(): void
-     {
-         $template = $this->getTwig()->load('cours/modifier.twig');
- 
-         echo $template->render([
-             "titre" => "Modifier un cours"
-         ]);
-     }
- 
-     //Supprimer
-     /**
-      * @brief Supprime un cours existant.
-      *
-      * @return void
-      */
-     public function supprimer(): void
-     {
-         $template = $this->getTwig()->load('cours/supprimer.twig');
- 
-         echo $template->render([
-             "titre" => "Supprimer un cours"
-         ]);
-     }
 }
