@@ -91,17 +91,21 @@
                             </td>
 
                             <td class="text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    <a href="index.php?controleur=devoir&methode=modifier&id={{ devoir.id }}" 
-                                       class="btn btn-sm btn-outline-primary py-1 px-2 d-flex align-items-center shadow-sm" style="font-size: 0.85rem;">
-                                        <i class="bi bi-pencil-square me-1"></i> Modifier
-                                    </a>
-                                    <a href="index.php?controleur=devoir&methode=supprimer&id={{ devoir.id }}" 
-                                       class="btn btn-sm btn-outline-danger py-1 px-2 d-flex align-items-center shadow-sm" 
-                                       style="font-size: 0.85rem;"
-                                       onclick="return confirm('Voulez-vous supprimer ce devoir ?')">
-                                        <i class="bi bi-trash3 me-1"></i> Supprimer
-                                    </a>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="index.php?controleur=devoir&methode=modifier&id={{ devoir.id }}" 
+                                class="btn btn-sm btn-link text-dark p-1" 
+                                title="Modifier">
+                                <i class="bi bi-pencil-square fs-5"></i>
+                                </a>
+
+                                <a href="index.php?controleur=devoir&methode=supprimer&id={{ devoir.id }}" 
+                                class="btn btn-sm btn-link text-dark p-1" 
+                                title="Supprimer"
+                                onclick="return confirm('Voulez-vous supprimer ce devoir ?')">
+                                    <i class="bi bi-trash3 fs-5"></i>
+                                </a>
+                            </div>
+                        </td>
                                 </div>
                             </td>
                         </tr>
