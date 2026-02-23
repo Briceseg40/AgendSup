@@ -42,17 +42,14 @@ class controllerCours extends Controller
      * @param int $Annee Année pour filtrer les cours.
      */
     public function findByAnnee($Annee): void{
-    // 1. Récupérer le parcours de l'utilisateur (depuis la session ou l'objet User)
+
     $parcours = $_SESSION['user']['Parcour'] ?? null; 
 
-    // 2. appelle du manager avec les deux critères
     $manager = new CoursDao($this->getPdo());
     $listeDesCours = $manager->findByAnneeEtParcours((int)$Annee, $parcours);
 
-    // 3. Chargement du template
     $template = $this->getTwig()->load('cours.twig');
 
-    // 4. Affichage et transmission
     echo $template->render(array(
         'lesCours' => $listeDesCours,
         'menu' => "category"

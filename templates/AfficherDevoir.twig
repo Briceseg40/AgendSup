@@ -76,7 +76,7 @@
 {% if app.user and app.user.role == 'delegue' %}
     <div class="mb-3 text-end">
         <a href="index.php?controleur=devoir&methode=lister" 
-           class="btn btn-primary shadow" 
+           class="btn bg-white rounded-3 shadow border-black fw-bold" 
            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 50px; padding: 10px 20px;">
             Liste des devoirs
         </a>
@@ -85,7 +85,7 @@
 {% elseif app.user.role == 'ressource' %}
     <div class="mb-3 text-end">
         <a href="index.php?controleur=devoir&methode=lister" 
-           class="btn btn-primary shadow" 
+           class="btn bg-white rounded-3 shadow border-black fw-bold" 
            style="position: fixed; bottom: 40px; right: 20px; z-index: 1000; border-radius: 50px; padding: 10px 20px;">
             Liste des cours
         </a>
