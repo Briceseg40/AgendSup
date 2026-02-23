@@ -24,18 +24,13 @@ class ControllerJoinClass extends Controller {
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
-        /* @brief Récupération de l'utilisateur connecté. */
-        $utilisateurConnecte = $_SESSION['user'];
-        /* @brief Récupération de l'ID de l'étudiant. */
-        $idEtudiant = is_array($utilisateurConnecte) ? $utilisateurConnecte['id'] : $utilisateurConnecte->getId();
-        /* @brief Récupération de la liste des classes de l'étudiant. */
         
         $user = $_SESSION['user'];
         $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
 
         $pdo = Bd::getInstance()->getConnection();
         /* @brief Initialisation du DAO de classe. */
-        $classeDAO = new ClasseVirtuelDAO($pdo);
+        $classeDAO = new ClasseDAO($pdo);
         /* @brief Recherche des classes de l'étudiant. */
         
         $listeDesClasses = $classeDAO->findInscrites($idEtudiant);
@@ -62,7 +57,7 @@ class ControllerJoinClass extends Controller {
 
             if ($idClasse) {
                 $pdo = Bd::getInstance()->getConnection();
-                $classeDAO = new ClasseVirtuelDAO($pdo);
+                $classeDAO = new ClasseDAO($pdo);
 
                 if ($typeAction === 'supprimer') {
                     $classeDAO->delete($idEtudiant, $idClasse); 
@@ -88,7 +83,7 @@ class ControllerJoinClass extends Controller {
                 $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
 
                 $pdo = Bd::getInstance()->getConnection();
-                $classeDAO = new ClasseVirtuelDAO($pdo);
+                $classeDAO = new ClasseDAO($pdo);
                 $classe = $classeDAO->findCode($code);
 
                 if ($classe) {
