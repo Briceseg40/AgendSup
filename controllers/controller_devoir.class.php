@@ -46,7 +46,7 @@ class ControllerDevoir extends Controller {
         /* @brief Récupération de l'utilisateur en session */
         $user = $_SESSION['user'];
 
-        if ($_SESSION['user']->getRole() !== 'delegue') {
+        if ($_SESSION['user']->getRole() !== 'délégué') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
@@ -136,7 +136,7 @@ class ControllerDevoir extends Controller {
     $user = $_SESSION['user'];
     $idDevoir = $_GET['id'] ?? null;
 
-    if ($_SESSION['user']->getRole() !== 'delegue') {
+    if ($_SESSION['user']->getRole() !== 'délégué') {
         header('Location: index.php?controleur=connecter&methode=render');
         exit;
     }
@@ -217,7 +217,7 @@ class ControllerDevoir extends Controller {
      */
     public function supprimer(): void
     {
-        if ($_SESSION['user']->getRole() !== 'delegue') {
+        if ($_SESSION['user']->getRole() !== 'délégué') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
@@ -250,7 +250,7 @@ class ControllerDevoir extends Controller {
         /* @brief Si l'utilisateur n'est pas connecté, redirection vers la page de connexion */
         $user = $_SESSION['user'];
 
-        if ($_SESSION['user']->getRole() !== 'delegue') {
+        if ($_SESSION['user']->getRole() !== 'délégué') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }

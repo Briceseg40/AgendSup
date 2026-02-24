@@ -87,15 +87,39 @@
                         <label class="d-block mb-2 text-center fs-20">Choisissez votre rôle :</label>
                         <div class="d-flex gap-2 justify-content-center" id="role-container">
                             <input type="hidden" name="role" id="role_input" value="{{ form_data.role ?? '' }}" required>
-                            <button type="button" class="btn btn-light btn btn-outline-dark flex-fill rounded-pill role-btn {% if form_data.role == '1' %}active{% endif %}" data-value="1">
+                            
+                            <!-- Bouton Étudiant -->
+                            <button type="button" class="btn btn-light border-black flex-fill rounded-pill role-btn d-flex align-items-center justify-content-center gap-2 {% if form_data.role == '1' %}active{% endif %}" data-value="1">
                                 Étudiant
                             </button>
-                            <button type="button" class="btn btn-light btn btn-outline-dark flex-fill rounded-pill role-btn {% if form_data.role == '2' %}active{% endif %}" data-value="2">
+                            <i class="fa-solid fa-circle-question text-muted" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="focus" 
+                                title="Rôle Étudiant" 
+                                data-bs-content="Accès standard pour consulter l'emploi du temps de votre groupe."
+                                tabindex="0" role="button"></i>
+
+                            <!-- Bouton Délégué -->
+                            <button type="button" class="btn btn-light border-black flex-fill rounded-pill role-btn d-flex align-items-center justify-content-center gap-2 {% if form_data.role == '2' %}active{% endif %}" data-value="2">
                                 Délégué
                             </button>
-                            <button type="button" class="btn btn-light btn btn-outline-dark flex-fill rounded-pill role-btn {% if form_data.role == '3' %}active{% endif %}" data-value="3">
+                            <i class="fa-solid fa-circle-question text-muted" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="focus" 
+                                title="Rôle Délégué" 
+                                data-bs-content="Peut modifier les cours et ajouter des informations pour toute la promo."
+                                tabindex="0" role="button"></i>
+
+                            <!-- Bouton Ressource -->
+                            <button type="button" class="btn btn-light border-black flex-fill rounded-pill role-btn d-flex align-items-center justify-content-center gap-2 {% if form_data.role == '3' %}active{% endif %}" data-value="3">
                                 Ressource
                             </button>
+                            <i class="fa-solid fa-circle-question text-muted" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="focus" 
+                                title="Rôle Ressource" 
+                                data-bs-content="Rôle réservé à l'administration ou aux professeurs."
+                                tabindex="0" role="button"></i>
                         </div>
                     </div>
                 </div>
@@ -219,6 +243,12 @@
 </script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    });
     // Gestion de la sélection du rôle par boutons
     const roleButtons = document.querySelectorAll('.role-btn');
     const roleInput = document.getElementById('role_input');
@@ -226,12 +256,12 @@
     roleButtons.forEach(button => {
         button.addEventListener('click', function() {
             // 1. Retirer la classe 'active' de tous les boutons
-            roleButtons.forEach(btn => btn.classList.remove('active', 'btn-dark'));
-            roleButtons.forEach(btn => btn.classList.add('btn-outline-dark'));
+            roleButtons.forEach(btn => btn.classList.remove('active', 'btn-dark', 'text-white'));
+            roleButtons.forEach(btn => btn.classList.add('btn-light'));
 
             // 2. Ajouter la classe 'active' au bouton cliqué
-            this.classList.add('active', 'btn-dark');
-            this.classList.remove('btn-outline-dark');
+            this.classList.add('active', 'btn-dark', 'text-white');
+            this.classList.remove('btn-light');
 
             // 3. Mettre à jour la valeur de l'input caché
             roleInput.value = this.getAttribute('data-value');
