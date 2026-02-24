@@ -89,7 +89,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="heure_deb" class="form-label small fw-bold">Heure de début *</label>
-                                    <input type="time" class="form-control" id="heure_deb" name="heure_deb" required>
+                                    <input type="time" class="form-control" id="heure_deb" name="heure_deb" min="8:00" max="18:30" required>
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="heure_fin" class="form-label small fw-bold">Heure de fin *</label>
@@ -131,48 +131,66 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const dDeb = document.getElementById('date_deb');
-            const dFin = document.getElementById('date_fin');
-            const hDeb = document.getElementById('heure_deb');
-            const hFin = document.getElementById('heure_fin');
-            const txt = document.getElementById('contenu');
-            const cnt = document.getElementById('char-count');
-            const form = document.getElementById('formCreer');
+    document.addEventListener('DOMContentLoaded', () => {
+        const dDeb = document.getElementById('date_deb');
+        const dFin = document.getElementById('date_fin');
+        const hDeb = document.getElementById('heure_deb');
+        const hFin = document.getElementById('heure_fin');
+        const txt = document.getElementById('contenu');
+        const cnt = document.getElementById('char-count');
+        const form = document.getElementById('formCreer');
 
-            // 1. Initialisation des dates à "Aujourd'hui" et gestion du minimum
-            const today = new Date().toISOString().split('T')[0];
-            dDeb.value = today;
-            dFin.value = today;
-            dDeb.min = today;
-            dFin.min = today;
+        // 1. Initialisation des dates
+        const today = new Date().toISOString().split('T')[0];
+        dDeb.value = today;
+        dFin.value = today;
+        dDeb.min = today;
+        dFin.min = today;
 
-            // 2. Logique de synchronisation des dates
-            dDeb.addEventListener('change', () => {
-                dFin.min = dDeb.value; // La fin ne peut être avant le début
-                if (dFin.value < dDeb.value) {
-                    dFin.value = dDeb.value;
-                }
-            });
-
-            // 3. Compteur de caractères
-            txt.addEventListener('input', () => {
-                const len = txt.value.length;
-                cnt.textContent = `${len} / 1000`;
-                cnt.classList.toggle('text-danger', len >= 950);
-            });
-
-            // 4. Vérification chronologique finale au submit
-            form.addEventListener('submit', (e) => {
-                // Création d'objets dates complets pour comparer Date + Heure
-                const debutFull = new Date(dDeb.value + 'T' + hDeb.value);
-                const finFull = new Date(dFin.value + 'T' + hFin.value);
-
-                if (finFull <= debutFull) {
-                    e.preventDefault();
-                    alert("Erreur : La date et l'heure de fin doivent être strictement supérieures au début !");
-                }
-            });
+        // 2. Synchronisation des dates
+        dDeb.addEventListener('change', () => {
+            dFin.min = dDeb.value;
+            if (dFin.value < dDeb.value) {
+                dFin.value = dDeb.value;
+            }
         });
-    </script>
+
+        // 3. Compteur de caractères
+        txt.addEventListener('input', () => {
+            const len = txt.value.length;
+            cnt.textContent = `${len} / 1000`;
+            cnt.classList.toggle('text-danger', len >= 950);
+        });
+
+        // 4. VALIDATION UNIQUE AU SUBMIT (Fusionnée)
+        form.addEventListener('submit', (e) => {
+            const valHD = hDeb.value;
+            const valHF = hFin.value;
+            const HEURE_MIN = "08:00";
+            const HEURE_MAX = "18:30";
+
+            // A. Vérification des bornes Min/Max
+            if (valHD < HEURE_MIN || valHD > HEURE_MAX) {
+                e.preventDefault();
+                alert(`L'heure de début (${valHD}) doit être entre ${HEURE_MIN} et ${HEURE_MAX}`);
+                return; // On arrête tout si c'est faux
+            }
+
+            if (valHF < HEURE_MIN || valHF > HEURE_MAX) {
+                e.preventDefault();
+                alert(`L'heure de fin (${valHF}) doit être entre ${HEURE_MIN} et ${HEURE_MAX}`);
+                return; // On arrête tout si c'est faux
+            }
+
+            // B. Vérification chronologique (Date + Heure)
+            const debutFull = new Date(dDeb.value + 'T' + valHD);
+            const finFull = new Date(dFin.value + 'T' + valHF);
+
+            if (finFull <= debutFull) {
+                e.preventDefault();
+                alert("Erreur : La fin doit être strictement après le début !");
+            }
+        });
+    });
+</script>
 {% endblock %}

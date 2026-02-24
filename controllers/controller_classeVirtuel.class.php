@@ -7,14 +7,15 @@ class ControllerClasseVirtuel extends Controller
         parent::__construct($loader, $twig);
     }
 
-    public function salle()
-    {
+    public function salle() {
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
 
         $idClasse = $_GET['id'] ?? null;
+        $user = $_SESSION['user'];
+        $nomAffichage = $user->getPrenom() . ' ' . $user->getNom();
 
         if (!$idClasse) {
             header('Location: index.php?controleur=joinClass&methode=render');
@@ -22,7 +23,8 @@ class ControllerClasseVirtuel extends Controller
         }
 
         echo $this->getTwig()->render('classeVirtuel.html.twig', [
-            'idClasse' => $idClasse
+            'idClasse' => $idClasse,
+            'userName' => $nomAffichage
         ]);
     }
 }

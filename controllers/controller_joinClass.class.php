@@ -24,11 +24,6 @@ class ControllerJoinClass extends Controller {
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
-        /* @brief Récupération de l'utilisateur connecté. */
-        $utilisateurConnecte = $_SESSION['user'];
-        /* @brief Récupération de l'ID de l'étudiant. */
-        $idEtudiant = is_array($utilisateurConnecte) ? $utilisateurConnecte['id'] : $utilisateurConnecte->getId();
-        /* @brief Récupération de la liste des classes de l'étudiant. */
         
         $user = $_SESSION['user'];
         $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
@@ -37,8 +32,6 @@ class ControllerJoinClass extends Controller {
         /* @brief Initialisation du DAO de classe. */
         $classeDAO = new ClasseDAO($pdo);
         /* @brief Recherche des classes de l'étudiant. */
-        $listeDesClasses = $classeDAO->findPerso($idEtudiant);
-        /* @brief Rendu du template Twig avec la liste des classes. */
         
         $listeDesClasses = $classeDAO->findInscrites($idEtudiant);
 
