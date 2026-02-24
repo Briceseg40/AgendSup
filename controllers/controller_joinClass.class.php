@@ -30,7 +30,7 @@ class ControllerJoinClass extends Controller {
 
         $pdo = Bd::getInstance()->getConnection();
         /* @brief Initialisation du DAO de classe. */
-        $classeDAO = new ClasseDAO($pdo);
+        $classeDAO = new ClasseVirtuelDAO($pdo);
         /* @brief Recherche des classes de l'étudiant. */
         
         $listeDesClasses = $classeDAO->findInscrites($idEtudiant);
@@ -57,7 +57,7 @@ class ControllerJoinClass extends Controller {
 
             if ($idClasse) {
                 $pdo = Bd::getInstance()->getConnection();
-                $classeDAO = new ClasseDAO($pdo);
+                $classeDAO = new ClasseVirtuelDAO($pdo);
 
                 if ($typeAction === 'supprimer') {
                     $classeDAO->delete($idEtudiant, $idClasse); 
@@ -83,7 +83,7 @@ class ControllerJoinClass extends Controller {
                 $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
 
                 $pdo = Bd::getInstance()->getConnection();
-                $classeDAO = new ClasseDAO($pdo);
+                $classeDAO = new ClasseVirtuelDAO($pdo);
                 $classe = $classeDAO->findCode($code);
 
                 if ($classe) {
