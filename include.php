@@ -48,3 +48,7 @@ require_once 'controllers/controller_paramClasse.class.php';
 require_once 'controllers/controller_factory.php';
 
 require_once 'modeles/validator.class.php';
+
+require_once 'controllers/controller_chat.class.php';
+
+require_once 'modeles/chat.dao.php';

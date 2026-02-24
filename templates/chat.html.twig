@@ -1,0 +1,84 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="container py-4">
+    <!-- Conteneur principal style Instagram / AgendSup -->
+    <div class="row g-0 border border-dark rounded-5 shadow bg-white overflow-hidden" style="height: 80vh;">
+        
+        <!-- SIDEBAR GAUCHE : LISTE DES CHATS -->
+        <div class="col-4 d-flex flex-column border-end border-dark h-100 bg-white">
+            <div class="p-3 border-bottom border-dark text-center bg-light">
+                <h5 class="fw-bold mb-0">Messages</h5>
+            </div>
+            
+            <div class="overflow-auto flex-grow-1">
+                {% for chat in chats %}
+                <a href="?controleur=chat&methode=lister&id_chat={{ chat.id }}" class="text-decoration-none text-dark">
+                    <div class="d-flex align-items-center p-3 border-bottom border-dark {{ idActive == chat.id ? 'bg-light' : '' }}">
+                        
+                        <div class="bg-dark rounded-circle me-3 d-flex align-items-center justify-content-center text-white" style="width: 45px; height: 45px; min-width: 45px;">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="text-nowrap overflow-hidden">
+                            <div class="fw-bold text-truncate">{{ chat.nom }}</div>
+                        </div>
+                    </div>
+                </a>
+                {% else %}
+                <p class="text-center mt-3 text-muted small">Aucune conversation</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ZONE DE DROITE : MESSAGES -->
+        <div class="col-8 d-flex flex-column h-100">
+            {% if activeChat %}
+                <!-- Header discussion -->
+                <div class="p-3 border-bottom border-dark d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-dark rounded-circle me-2" style="width: 35px; height: 35px;"></div>
+                        <h6 class="fw-bold mb-0">{{ activeChat.nom }}</h6>
+                    </div>
+                </div>
+
+                <!-- Fenêtre de messages -->
+                <div class="p-4 flex-grow-1 overflow-auto bg-light d-flex flex-column gap-3" id="chat-window">
+                    {% for msg in messages %}
+                        <div class="p-3 rounded-4 border border-dark shadow-sm {{ msg.est_moi ? 'bg-dark text-white align-self-end' : 'bg-white align-self-start' }}" style="max-width: 75%;">
+                            {{ msg.contenu }}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Formulaire d'envoi -->
+                <div class="p-3 border-top border-dark bg-white">
+                    <form action="?controleur=chat&methode=envoyer" method="POST" class="d-flex gap-2 align-items-center">
+                        <input type="hidden" name="id_chat" value="{{ idActive }}">
+                        <input type="text" name="message" class="form-control rounded-pill border-dark shadow-sm px-4" placeholder="Écrivez votre message..." required>
+                        <button type="submit" class="btn btn-light border border-dark rounded-circle shadow-sm" style="width: 45px; height: 45px;">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <!-- Message d'accueil si rien n'est sélectionné -->
+                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-muted">
+                    <div class="p-4 border border-dark rounded-circle mb-3">
+                        <i class="fa-solid fa-message fa-3x"></i>
+                    </div>
+                    <h5>Vos messages</h5>
+                    <p>Sélectionnez une discussion pour commencer.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Scroll auto vers le bas
+    var chatWindow = document.getElementById("chat-window");
+    if (chatWindow) {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+</script>
+{% endblock %}

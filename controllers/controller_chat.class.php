@@ -5,11 +5,11 @@
 * @version 0.1
 * @date    19/12/2025
 */
-class controllerChat extends Controller
+class ControllerChat extends Controller
 {
     // Constructeur
     /**
-     * @brief Constructeur de la classe controllerChat.
+     * @brief Constructeur de la classe ControllerChat.
      * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
      * @param \Twig\Environment $twig Environnement Twig.
      */
@@ -27,7 +27,7 @@ class controllerChat extends Controller
         $chats = $manager->findAll();
 
         // Chargement du template
-        $template = $this->getTwig()->load('chat.twig');
+        $template = $this->getTwig()->load('chat.html.twig');
 
         // Affichage du template et transmission des données
         echo $template->render([

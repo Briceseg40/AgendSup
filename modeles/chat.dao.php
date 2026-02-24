@@ -50,7 +50,7 @@ class ChatDAO
         foreach ($results as $row) {
             $chats[] = new Chat(
                 $row['id'],
-                $row['nom']
+                $row['Nom']
             );
         }
 
@@ -76,7 +76,7 @@ class ChatDAO
     }
 
     /** Récupère les chats où un des utilisateurs a parlé */
-    public function findChatsOuUtilisateurAParle(array $userIds): array
+    /*public function findChatsOuUtilisateurAParle(array $userIds): array
     {
         $userIds = array_values(array_unique($userIds));
         if (empty($userIds)) {
@@ -108,7 +108,7 @@ class ChatDAO
         }
 
         return $chats;
-    }
+    }*/
 
     /** Ajoute un nouveau chat */
     public function ajouter(Chat $chat): bool
