@@ -110,15 +110,14 @@ class ChatDAO
         return $chats;
     }*/
 
-    /** Ajoute un nouveau chat */
+        /** Ajoute un nouveau chat */
     public function ajouter(Chat $chat): bool
     {
-        $sql = "INSERT INTO chat (id, nom) VALUES (:id, :nom)";
+        // On n'insère QUE le nom, l'ID se génère tout seul
+        $sql = "INSERT INTO chat (nom) VALUES (:nom)";
         $stmt = $this->pdo->prepare($sql);
-        $id = $chat->getId();
-        $nom = $chat->getNom();
         
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $nom = $chat->getNom();
         $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
         
         return $stmt->execute();

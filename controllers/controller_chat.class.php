@@ -76,7 +76,7 @@ class ControllerChat extends Controller
      */
     public function creer(): void
     {
-        $template = $this->getTwig()->load('chat/creer.twig');
+        $template = $this->getTwig()->load('chat.creer.html.twig');
 
         echo $template->render([
             "titre" => "Créer un chat"
@@ -105,5 +105,25 @@ class ControllerChat extends Controller
         echo $template->render([
             "titre" => "Supprimer un chat"
         ]);
+    }
+
+    public function enregistrer(): void
+    {
+        // 1. On vérifie que le champ 'nom' n'est pas vide
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nom_chat'])) {
+            
+            // 2. On crée une instance de l'objet Chat (ID est null car auto-incrémenté)
+            $nouveauChat = new Chat(null, $_POST['nom_chat']);
+            
+            // 3. On demande au DAO de l'ajouter en base de données
+            $manager = new ChatDAO($this->getPdo());
+            $success = $manager->ajouter($nouveauChat);
+
+            if ($success) {
+                // 4. On redirige vers la liste des chats
+                header("Location: ?controleur=chat&methode=lister");
+                exit();
+            }
+        }
     }
 }

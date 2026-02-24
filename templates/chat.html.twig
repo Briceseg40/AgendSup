@@ -2,30 +2,39 @@
 
 {% block body %}
 <div class="container py-4">
-    <!-- Conteneur principal style Instagram / AgendSup -->
+    <!-- Fenêtre principale : Hauteur fixée à 80% de l'écran, coins très arrondis, bordure noire -->
     <div class="row g-0 border border-dark rounded-5 shadow bg-white overflow-hidden" style="height: 80vh;">
         
-        <!-- SIDEBAR GAUCHE : LISTE DES CHATS -->
+        <!-- SIDEBAR GAUCHE -->
         <div class="col-4 d-flex flex-column border-end border-dark h-100 bg-white">
-            <div class="p-3 border-bottom border-dark text-center bg-light">
+            <!-- Header Sidebar avec bouton Nouveau Chat -->
+            <div class="p-3 border-bottom border-dark d-flex justify-content-between align-items-center bg-light">
                 <h5 class="fw-bold mb-0">Messages</h5>
+                <a href="?controleur=chat&methode=creer" class="btn btn-dark btn-sm rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 35px; height: 35px;">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
             </div>
             
-            <div class="overflow-auto flex-grow-1">
+            <!-- Liste des conversations (Scrollable) -->
+            <div class="overflow-auto flex-grow-1 list-group list-group-flush">
                 {% for chat in chats %}
-                <a href="?controleur=chat&methode=lister&id_chat={{ chat.id }}" class="text-decoration-none text-dark">
-                    <div class="d-flex align-items-center p-3 border-bottom border-dark {{ idActive == chat.id ? 'bg-light' : '' }}">
-                        
-                        <div class="bg-dark rounded-circle me-3 d-flex align-items-center justify-content-center text-white" style="width: 45px; height: 45px; min-width: 45px;">
-                            <i class="fa-solid fa-user"></i>
+                    <a href="?controleur=chat&methode=lister&id_chat={{ chat.id }}" 
+                       class="list-group-item list-group-item-action d-flex align-items-center p-3 border-bottom border-dark {{ idActive == chat.id ? 'bg-light active text-dark' : '' }}"
+                       style="border: 0;">
+                        <!-- Avatar : Initiale du nom -->
+                        <div class="bg-dark text-white rounded-circle me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 45px; height: 45px; min-width: 45px;">
+                            <span class="fw-bold">{{ chat.nom|slice(0, 1)|upper }}</span>
                         </div>
                         <div class="text-nowrap overflow-hidden">
                             <div class="fw-bold text-truncate">{{ chat.nom }}</div>
+                            <small class="text-muted text-truncate d-block">Cliquer pour discuter</small>
                         </div>
-                    </div>
-                </a>
+                    </a>
                 {% else %}
-                <p class="text-center mt-3 text-muted small">Aucune conversation</p>
+                    <div class="p-5 text-center text-muted">
+                        <i class="fa-solid fa-ghost fa-2x mb-2"></i>
+                        <p class="small">Aucun chat</p>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -34,17 +43,28 @@
         <div class="col-8 d-flex flex-column h-100">
             {% if activeChat %}
                 <!-- Header discussion -->
-                <div class="p-3 border-bottom border-dark d-flex align-items-center justify-content-between">
+                <div class="p-3 border-bottom border-dark d-flex align-items-center justify-content-between bg-white shadow-sm">
                     <div class="d-flex align-items-center">
-                        <div class="bg-dark rounded-circle me-2" style="width: 35px; height: 35px;"></div>
+                        <div class="bg-dark text-white rounded-circle me-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                            <small>{{ activeChat.nom|slice(0, 1)|upper }}</small>
+                        </div>
                         <h6 class="fw-bold mb-0">{{ activeChat.nom }}</h6>
                     </div>
+                    <!-- Menu options -->
+                    <a href="?controleur=chat&methode=supprimer&id={{ activeChat.id }}" class="btn btn-sm btn-outline-danger border-0 rounded-circle">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
                 </div>
 
-                <!-- Fenêtre de messages -->
+                <!-- Fenêtre de messages (Fond gris clair Bootstrap) -->
                 <div class="p-4 flex-grow-1 overflow-auto bg-light d-flex flex-column gap-3" id="chat-window">
                     {% for msg in messages %}
-                        <div class="p-3 rounded-4 border border-dark shadow-sm {{ msg.est_moi ? 'bg-dark text-white align-self-end' : 'bg-white align-self-start' }}" style="max-width: 75%;">
+                        <!-- Bulles avec arrondis différenciés (Bootstrap 5.3+ classes) -->
+                        <div class="p-3 shadow-sm border border-dark 
+                            {{ msg.est_moi ? 
+                                'bg-dark text-white align-self-end rounded-4 rounded-bottom-0' : 
+                                'bg-white text-dark align-self-start rounded-4 rounded-bottom-0' 
+                            }}" style="max-width: 75%;">
                             {{ msg.contenu }}
                         </div>
                     {% endfor %}
@@ -54,20 +74,27 @@
                 <div class="p-3 border-top border-dark bg-white">
                     <form action="?controleur=chat&methode=envoyer" method="POST" class="d-flex gap-2 align-items-center">
                         <input type="hidden" name="id_chat" value="{{ idActive }}">
-                        <input type="text" name="message" class="form-control rounded-pill border-dark shadow-sm px-4" placeholder="Écrivez votre message..." required>
-                        <button type="submit" class="btn btn-light border border-dark rounded-circle shadow-sm" style="width: 45px; height: 45px;">
+                        
+                        <!-- Champ texte Style AgendSup (Pill, Border Dark) -->
+                        <input type="text" name="message" class="form-control rounded-pill border-dark shadow-sm px-4 py-2" placeholder="Écrivez votre message..." required autocomplete="off">
+                        
+                        <!-- Bouton envoyer (Cercle noir) -->
+                        <button type="submit" class="btn btn-dark rounded-circle shadow d-flex align-items-center justify-content-center" style="width: 45px; height: 45px; min-width: 45px;">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </form>
                 </div>
             {% else %}
-                <!-- Message d'accueil si rien n'est sélectionné -->
-                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-muted">
-                    <div class="p-4 border border-dark rounded-circle mb-3">
-                        <i class="fa-solid fa-message fa-3x"></i>
+                <!-- Écran vide (Center) -->
+                <div class="h-100 d-flex flex-column align-items-center justify-content-center text-muted text-center p-5">
+                    <div class="p-4 border border-dark rounded-circle mb-3 bg-white shadow-sm">
+                        <i class="fa-solid fa-paper-plane fa-3x text-dark"></i>
                     </div>
-                    <h5>Vos messages</h5>
-                    <p>Sélectionnez une discussion pour commencer.</p>
+                    <h4 class="fw-bold text-dark">Vos messages</h4>
+                    <p>Sélectionnez un camarade pour démarrer une discussion ou créez un nouveau groupe.</p>
+                    <a href="?controleur=chat&methode=creer" class="btn btn-dark rounded-pill px-4 shadow-sm fw-bold">
+                        Démarrer une discussion
+                    </a>
                 </div>
             {% endif %}
         </div>
