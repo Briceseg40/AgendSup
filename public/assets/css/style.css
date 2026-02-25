@@ -15,10 +15,6 @@ body {
     background-color: #00000033;
 }
 
-#imgBg{
-    opacity: 0.5;
-}
-
 .w-10 { width: 10%; }
 .w-15 { width: 15%; }
 .w-20 { width: 20%; }
@@ -28,6 +24,11 @@ body {
 .w-90 { width: 90%; }
 
 .top-30px { top: 30px; }
+.top-40px { top: 40px; }
+
+.bottom-0 { top: 0; }
+
+.right-30px{ right: 30px;}
 .mt-40 { margin-top: 40px; }
 .fs-20 { font-size: 20px !important; }
 .fs-50 { font-size: 50px; }
@@ -237,17 +238,19 @@ header i { font-size: 20px; }
 }
 
 .check-badge {
-    /* CORRECTION ICI : Pas de display: none par défaut dans le CSS, on laisse le HTML/Bootstrap gérer avec d-none */
+    position: absolute;
+    display: none;
     width: 25px;
     height: 25px;
-    top: -8px;
-    right: -8px;
+    top: 5px;
+    right: -5px;
     z-index: 10;
     font-size: 14px;
 }
 
 .image-option-container.selected .check-badge {
     display: flex !important;
+   
 }
 
 .custom-scroll::-webkit-scrollbar { width: 10px; height: 10px; }
