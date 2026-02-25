@@ -229,4 +229,36 @@ public function updateAnnee(int $id, int $annee): void
         ':id' => $id
     ]);
 }
+
+/**
+ * @brief Supprime complètement un compte étudiant
+ */
+public function supprimerCompte(int $id): bool
+{
+    try {
+        $this->pdo->beginTransaction();
+
+        // Supprimer d'abord les dépendances si nécessaire
+        $stmt = $this->pdo->prepare("DELETE FROM devoir WHERE idEtudiant = :id");
+        $stmt->execute([':id' => $id]);
+
+        $stmt = $this->pdo->prepare("DELETE FROM messageGlobal WHERE idEtudiant = :id");
+        $stmt->execute([':id' => $id]);
+        
+        $stmt = $this->pdo->prepare("DELETE FROM signalement WHERE idEtudiant = :id");
+        $stmt->execute([':id' => $id]);
+        
+        // Puis supprimer l'étudiant
+        $stmt = $this->pdo->prepare("DELETE FROM etudiant WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+
+        $this->pdo->commit();
+        return true;
+
+    } catch (Exception $e) {
+        $this->pdo->rollBack();
+        return false;
+    }
+}
+
 }

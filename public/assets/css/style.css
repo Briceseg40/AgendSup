@@ -268,3 +268,7 @@ header i { font-size: 20px; }
     transform: translateY(-6px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
+
+a.text-muted:hover {
+    color: #dc3545 !important;
+}
