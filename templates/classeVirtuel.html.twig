@@ -5,7 +5,7 @@
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
-<div class="position-absolute bottom-0 w-100 d-flex p-3" style="z-index:1000;">
+<div class="position-absolute bottom-30px left-10px w-100 d-flex p-3" style="z-index:2; ">
     <button onclick="history.back()" 
         class="btn btn-dark rounded-3 shadow-sm px-4 py-2">
         <i class="fa-solid fa-arrow-left me-2"></i>
@@ -17,12 +17,16 @@
         <div class="row h-100 g-3">
             
             <!-- COLONNE GAUCHE : TABLEAU -->
-            <div class="col-md-11 h-100">
+            <div class="h-100">
                 <div class="card h-100 border-2 border-black rounded-4 overflow-hidden position-relative shadow-lg">
-                    <div class="position-absolute top-0 start-0 bg-black text-white px-3 py-1 rounded-bottom-end" style="z-index: 10;">
-                        <i class="fa-solid fa-pen-to-square me-2"></i> Tableau Blanc
-                    </div>
-                    
+                <div class="position-absolute top-0 end-0 m-3" style="z-index:20;">
+                       <!-- BTN VOCAL -->
+    <button class="btn btn-primary rounded-circle shadow"
+            style="width:45px; height:45px;"
+            onclick="toggleVocal()">
+        <i class="fa-solid fa-microphone"></i>
+    </button>
+</div>
                     <iframe 
                         src="https://wbo.ophir.dev/boards/AgendSup_Classe_{{ idClasse }}" 
                         style="width: 100%; height: 100%; border: none;">
@@ -30,13 +34,7 @@
                 </div>
             </div>
 
-            <!-- COLONNE DROITE : VOCAL -->
-            <div class="position-fixed top-0 end-0 p-3" style="z-index:1000;">
-    <button class="btn btn-primary shadow" onclick="toggleVocal()">
-        <i class="fa-solid fa-microphone"></i>
-    </button>
-</div>
-
+            
         </div>
     </div>
     <div id="vocalOverlay" 
@@ -56,7 +54,92 @@
         allow="camera; microphone; autoplay; encrypted-media; display-capture">
     </iframe>
 </div>
+
+<div class="modal fade" id="rulesModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 shadow">
+
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">
+          🎓 Bienvenue dans la classe virtuelle
+        </h5>
+      </div>
+
+      <div class="modal-body px-4 py-3">
+
+        <p class="mb-4">
+          Avant de commencer, voici quelques règles simples pour que tout se passe bien 👇
+        </p>
+
+        <!-- Carte 1 -->
+        <div class="p-3 mb-3 rounded-3 bg-light border">
+          <h6 class="fw-bold mb-3">📌 Respect & Collaboration</h6>
+          <p class="mb-2">🤝 Soyez respectueux et constructif.</p>
+          <p class="mb-2">🧽 Ne supprimez pas le travail des autres sans accord.</p>
+          <p class="mb-0">📚 Utilisez le tableau uniquement à des fins pédagogiques.</p>
+        </div>
+
+        <!-- Carte 2 -->
+        <div class="p-3 mb-3 rounded-3 bg-light border">
+          <h6 class="fw-bold mb-3">🎤 Salon vocal</h6>
+          <p class="mb-2">🎙 Activez votre micro uniquement pour parler.</p>
+          <p class="mb-2">🔇 Coupez-le en cas de bruit parasite.</p>
+          <p class="mb-0">🗣 Respectez les tours de parole.</p>
+        </div>
+
+        <!-- Carte 3 -->
+        <div class="p-3 mb-3 rounded-3 bg-light border">
+          <h6 class="fw-bold mb-3">⚙️ Bon fonctionnement</h6>
+          <p class="mb-2">🌐 Une connexion stable est recommandée.</p>
+          <p class="mb-2">📝 Les contenus doivent rester liés au cours.</p>
+          <p class="mb-0">⚠️ Un comportement inapproprié peut entraîner une exclusion.</p>
+        </div>
+
+        <!-- Petit GIF sympa -->
+        <div class="text-center my-3">
+          <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" 
+               alt="Good vibes"
+               style="max-width:120px; border-radius:12px;">
+        </div>
+
+        <div class="form-check mb-3">
+    <input class="form-check-input" type="checkbox" id="dontShow">
+    <label class="form-check-label text-muted small" for="dontShow">
+      Ne plus afficher ce message pendant cette session
+    </label>
+  </div>
+
+      </div>
+
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-dark px-4" data-bs-dismiss="modal">
+          C'est parti 🚀
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (!localStorage.getItem("hideRulesModal")) {
+        let modal = new bootstrap.Modal(document.getElementById('rulesModal'));
+        modal.show();
+    }
+
+    document.getElementById("dontShow").addEventListener("change", function() {
+        if (this.checked) {
+            localStorage.setItem("hideRulesModal", "true");
+        } else {
+            localStorage.removeItem("hideRulesModal");
+        }
+    });
+
+});
+
 document.addEventListener("wheel", function(e) {
     if (e.ctrlKey) {
         e.preventDefault();

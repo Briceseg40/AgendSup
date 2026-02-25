@@ -69,6 +69,12 @@ class EtudiantDAO {
         return $etudiant;
     }
 
+    public function countAll() {
+        $sql = "SELECT COUNT(*) as total FROM etudiant";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetch()['total'];
+    }
+
     
     /**
      * @brief Recherche un étudiant par son ID
@@ -190,4 +196,37 @@ class EtudiantDAO {
             ':Parcour' => $etudiant->getParcour()
         ]);
     }
+
+    /**
+ * @brief Supprime un étudiant
+ */
+public function delete(int $id): void
+{
+    $stmt = $this->pdo->prepare("DELETE FROM etudiant WHERE id = :id");
+    $stmt->execute([':id' => $id]);
+}
+
+/**
+ * @brief Modifier le rôle d’un étudiant
+ */
+public function updateRole(int $id, string $role): void
+{
+    $stmt = $this->pdo->prepare("UPDATE etudiant SET role = :role WHERE id = :id");
+    $stmt->execute([
+        ':role' => $role,
+        ':id' => $id
+    ]);
+}
+
+/**
+ * @brief Modifier l’année
+ */
+public function updateAnnee(int $id, int $annee): void
+{
+    $stmt = $this->pdo->prepare("UPDATE etudiant SET Annee = :annee WHERE id = :id");
+    $stmt->execute([
+        ':annee' => $annenee,
+        ':id' => $id
+    ]);
+}
 }
