@@ -38,6 +38,13 @@
 {% block title %}AgendSup - Création de devoirs{% endblock %}
 
 {% block body %}
+<style>
+   #contenu {
+        min-height: 201px;
+        resize: none;
+    }
+</style>
+
     <div class="container mt-3"> {# mt-3 pour remonter le formulaire #}
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -93,7 +100,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="heure_fin" class="form-label small fw-bold">Heure de fin *</label>
-                                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" required>
+                                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" min="8:00" max="18:30" required>
                                 </div>
                             </div>
 
@@ -101,7 +108,7 @@
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
                                     <label for="contenu" class="form-label small fw-bold">Consignes / Contenu</label>
-                                    <small id="char-count" class="text-muted">0 / 1000</small>
+                                    
                                 </div>
                                 <textarea 
                                     class="form-control" 
@@ -111,6 +118,7 @@
                                     maxlength="1000" 
                                     placeholder="Description du travail à faire..."
                                     required></textarea>
+                                <small id="char-count" class="text-muted">0 / 1000</small>
                             </div>
 
                             {# Couleur de priorité #}
