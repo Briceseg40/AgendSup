@@ -26,14 +26,12 @@ class ClasseVirtuelDAO {
     
 /**
      * @brief Crée une nouvelle classe dans la base de données.
-     * @param Classe $classe Objet Classe à insérer.
+     * @param ClasseVirtuel $classe Objet Classe à insérer.
      */
     public function create(classeVirtuel $classe): void {
-
-        $user = $_SESSION['user'];
+         $user = $_SESSION['user'];
         // 1. Créer la classe
-        $sql = "INSERT INTO classeVirtuel (img, titre, description, idCreateur, idClasse, code) 
-        VALUES (:img, :titre, :description, :idCreateur, :idClasse, :code)";
+        $sql = "INSERT INTO classeVirtuel (img, titre, description, idClasse, idCreateur, code) VALUES (:img, :titre, :description, :idClasse, :idCreateur,:code)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':img' => $classe->getImage(),
@@ -57,7 +55,7 @@ class ClasseVirtuelDAO {
         $stmt->execute([':ide' => $idEtudiant, ':idc' => $idClasse]);
     }
 
-    // Nouvelle méthode pour se désinscrire
+    // Nouvelle méthode pour se désinscrire (au lieu de tout supprimer)
     public function delete(int $idEtudiant, int $idClasse): void {
         $sql = "DELETE FROM inscription WHERE id_etudiant = :ide AND id_classe = :idc";
         $stmt = $this->pdo->prepare($sql);
@@ -68,16 +66,15 @@ class ClasseVirtuelDAO {
         $sql = "SELECT c.*, e.Nom as nomCreateur, e.Prenom as prenomCreateur
                 FROM classeVirtuel c 
                 JOIN inscription i ON c.id = i.id_classe 
-                JOIN etudiant e ON e.id = c.idCreateur
+                JOIN etudiant e ON c.idCreateur = e.id
                 WHERE i.id_etudiant = :id";
         
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id' => $idEtudiant]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
         $classes = [];
         foreach ($rows as $row) {
-            // 1. Créer l'objet d'abord
             $classeObj = new ClasseVirtuel(
                 $row['id'],
                 $row['img'],
@@ -85,10 +82,9 @@ class ClasseVirtuelDAO {
                 $row['description'],
                 $row['idClasse'],
                 $row['idCreateur'],
-                $row['code']
+                $row['code'],
             );
-    
-            $classeObj->nomCreateur = $row['nomCreateur'] ?? 'Inconnu';
+            $classeObj->nomCreateur = $row['nomCreateur'] ?? 'inconnu';
             $classeObj->prenomCreateur = $row['prenomCreateur'] ?? '';
     
             $classes[] = $classeObj;
@@ -101,7 +97,7 @@ class ClasseVirtuelDAO {
      * @return array Liste de toutes les classes.
      */
     public function findAll() {
-        $sql = "SELECT * FROM classeVirtuel "; 
+        $sql = "SELECT * FROM classeVirtuel"; 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -114,35 +110,11 @@ class ClasseVirtuelDAO {
                 $row['titre'],
                 $row['description'],
                 $row['idClasse'],
-                $row['idCreateur'],                
+                $row['idCreateur'],
                 $row['code']
+           
             );
-        }
-        return $classes;
-    }
 
-    /**
-     * @brief Trouve toutes les classes associées à un étudiant donné.
-     * @param int $idEtudiant Identifiant de l'étudiant.
-     * @return array Liste des classes associées à l'étudiant.
-     */
-    public function findPerso(int $idEtudiant): array {
-        $sql = "SELECT * FROM classeVirtuel WHERE idCreateur = :id"; 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $idEtudiant]);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $classes = [];
-        foreach ($rows as $row) {
-            $classes[] = new ClasseVirtuel(
-                $row['id'],
-                $row['img'],
-                $row['titre'],
-                $row['description'],
-                $row['idClasse'],
-                $row['idCreateur'],                
-                $row['code']
-            );
         }
         return $classes;
     }
@@ -150,7 +122,7 @@ class ClasseVirtuelDAO {
     /**
      * @brief Trouve une classe par son code unique.
      * @param string $code Code unique de la classe.
-     * @return Classe|null La classe trouvée ou null si elle n'existe pas.
+     * @return ClasseVirtuel|null La classe trouvée ou null si elle n'existe pas.
      */
     public function findCode(string $code): ?ClasseVirtuel {
         $sql = "SELECT * FROM classeVirtuel WHERE code = :code";
@@ -159,19 +131,16 @@ class ClasseVirtuelDAO {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            return new ClasseVirtuel(
+            return new classeVirtuel(
                 $row['id'],
                 $row['img'],
                 $row['titre'],
                 $row['description'],
                 $row['idClasse'],
-                $row['idCreateur'],                
+                $row['idCreateur'],
                 $row['code']
             );
         }
         return null;
     }
-
-    
-    
 }
