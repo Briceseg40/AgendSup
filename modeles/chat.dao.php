@@ -68,11 +68,35 @@ class ChatDAO
         if ($row) {
             return new Chat(
                 $row['id'],
-                $row['nom']
+                $row['Nom']
             );
         }
 
         return null;
+    }
+    public function findChatsByEtudiant(int $idEtudiant): array
+    {
+        // On cherche les chats où l'étudiant apparaît soit dans Envoyer, soit dans recevoir
+        $sql = "SELECT DISTINCT c.id, c.Nom 
+                FROM chat c
+                WHERE c.id IN (SELECT idChat FROM Envoyer WHERE idEtudiant = :id1)
+                OR c.id IN (SELECT idChat FROM recevoir WHERE idEtudiant = :id2)
+                ORDER BY c.id DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':id1' => $idEtudiant,
+            ':id2' => $idEtudiant
+        ]);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $chats = [];
+        foreach ($results as $row) {
+            $chats[] = new Chat($row['id'], $row['Nom']);
+        }
+
+        return $chats;
     }
 
     /** Récupère les chats où un des utilisateurs a parlé */
@@ -145,5 +169,53 @@ class ChatDAO
         $stmt->bindParam(':id', $id_chat, PDO::PARAM_INT);
         
         return $stmt->execute();
+    }
+
+    public function ajouterEtRecupererId(Chat $chat): int|bool
+    {
+        $sql = "INSERT INTO chat (nom) VALUES (:nom)";
+        $stmt = $this->pdo->prepare($sql);
+        $nom = $chat->getNom();
+        $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+        
+        if ($stmt->execute()) {
+            return (int)$this->pdo->lastInsertId();
+        }
+        return false;
+    }
+
+    public function getParticipantsIds(int $idChat): array
+    {
+        // On récupère tous les étudiants liés à ce chat (dans Envoyer ou recevoir)
+        $sql = "SELECT DISTINCT idEtudiant FROM Envoyer WHERE idChat = :id1
+                UNION
+                SELECT DISTINCT idEtudiant FROM recevoir WHERE idChat = :id2";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id1' => $idChat, ':id2' => $idChat]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getMessagesByChat(int $idChat, int $idMoi): array
+    {
+        // On ne récupère que ce qui concerne PERSONNELLEMENT l'utilisateur connecté
+        $sql = "
+            SELECT contenu, date_message as dte, (1) as est_moi 
+            FROM Envoyer 
+            WHERE idChat = :c1 AND idEtudiant = :idMoi1
+            
+            UNION ALL
+            
+            SELECT contenu, dateMessage as dte, (0) as est_moi 
+            FROM recevoir 
+            WHERE idChat = :c2 AND idEtudiant = :idMoi2
+            
+            ORDER BY dte ASC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':idMoi1' => $idMoi, ':c1' => $idChat,
+            ':idMoi2' => $idMoi, ':c2' => $idChat
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

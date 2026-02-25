@@ -8,12 +8,10 @@
         <!-- SIDEBAR GAUCHE -->
         <div class="col-4 d-flex flex-column border-end border-dark h-100 bg-white">
             <!-- Header Sidebar avec bouton Nouveau Chat -->
-            <div class="p-3 border-bottom border-dark d-flex justify-content-between align-items-center bg-light">
-                <h5 class="fw-bold mb-0">Messages</h5>
-                <a href="?controleur=chat&methode=creer" class="btn btn-dark btn-sm rounded-circle d-flex align-items-center justify-content-center shadow" style="width: 35px; height: 35px;">
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-            </div>
+            <button type="button" class="btn btn-dark btn-sm rounded-circle d-flex align-items-center justify-content-center shadow" 
+                    style="width: 35px; height: 35px;" data-bs-toggle="modal" data-bs-target="#modalNouveauChat">
+                <i class="fa-solid fa-plus"></i>
+            </button>
             
             <!-- Liste des conversations (Scrollable) -->
             <div class="overflow-auto flex-grow-1 list-group list-group-flush">
@@ -98,6 +96,35 @@
                 </div>
             {% endif %}
         </div>
+    </div>
+</div>
+<!-- INSERTION DE LA MODALE ICI -->
+<div class="modal fade" id="modalNouveauChat" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="?controleur=chat&methode=enregistrer" method="POST" class="modal-content rounded-5 border-dark shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="fw-bold px-2">Nouveau Chat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="nom_chat" class="form-control rounded-pill border-dark mb-3 px-3" placeholder="Nom du groupe..." required>
+                
+                <label class="small fw-bold mb-2 px-2 text-muted text-uppercase">Participants</label>
+                <div class="list-group border-dark rounded-4 overflow-auto shadow-sm" style="max-height: 200px;">
+                    {% for e in etudiants %}
+                        <label class="list-group-item d-flex align-items-center border-0 border-bottom p-2 px-3">
+                            <input class="form-check-input me-3 border-dark" type="checkbox" name="participants[]" value="{{ e.id }}">
+                            <span class="small fw-bold">{{ e.prenom }} {{ e.nom }}</span>
+                        </label>
+                    {% else %}
+                        <div class="p-3 text-center small text-muted">Aucun étudiant trouvé</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="submit" class="btn btn-dark w-100 rounded-pill py-2 fw-bold">CRÉER LA DISCUSSION</button>
+            </div>
+        </form>
     </div>
 </div>
 

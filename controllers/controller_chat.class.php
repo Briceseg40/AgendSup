@@ -23,15 +23,40 @@ class ControllerChat extends Controller
      */
     public function lister(): void
     {
+        // 1. Récupérer l'ID de l'utilisateur connecté (depuis l'objet en session)
+        if (isset($_SESSION['user']) && is_object($_SESSION['user'])) {
+            $idMoi = $_SESSION['user']->getId();
+        } else {
+            header("Location: ?controleur=connecter&methode=connexion");
+            exit();
+        }
+
         $manager = new ChatDAO($this->getPdo());
-        $chats = $manager->findAll();
+        
+        // 2. On récupère UNIQUEMENT les chats de cet utilisateur
+        $chats = $manager->findChatsByEtudiant($idMoi);
 
-        // Chargement du template
+        // 3. Récupérer tous les étudiants pour la modale de création
+        $etudiantManager = new EtudiantDAO($this->getPdo());
+        $etudiants = $etudiantManager->findAll();
+
+        // 4. Gestion du chat actif (si un ID est passé en URL)
+        $idActive = $_GET['id_chat'] ?? null;
+        $activeChat = null;
+        $messages = [];
+
+        if ($idActive) {
+            $activeChat = $manager->findById((int)$idActive);
+            $messages = $manager->getMessagesByChat((int)$idActive, $idMoi);
+        }
+
         $template = $this->getTwig()->load('chat.html.twig');
-
-        // Affichage du template et transmission des données
         echo $template->render([
             'chats' => $chats,
+            'etudiants' => $etudiants,
+            'activeChat' => $activeChat,
+            'idActive' => $idActive,
+            'messages' => $messages
         ]);
     }
 
@@ -107,22 +132,132 @@ class ControllerChat extends Controller
         ]);
     }
 
-    public function enregistrer(): void
+   public function enregistrer(): void
     {
-        // 1. On vérifie que le champ 'nom' n'est pas vide
+        // 1. Vérification du formulaire
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['nom_chat'])) {
+            $pdo = $this->getPdo();
             
-            // 2. On crée une instance de l'objet Chat (ID est null car auto-incrémenté)
-            $nouveauChat = new Chat(null, $_POST['nom_chat']);
-            
-            // 3. On demande au DAO de l'ajouter en base de données
-            $manager = new ChatDAO($this->getPdo());
-            $success = $manager->ajouter($nouveauChat);
+            // 2. Récupération de l'ID de l'utilisateur (depuis l'objet en session)
+            if (isset($_SESSION['user']) && is_object($_SESSION['user'])) {
+                $idMoi = $_SESSION['user']->getId(); 
+            } else {
+                die("Erreur : Vous n'êtes pas connecté.");
+            }
 
-            if ($success) {
-                // 4. On redirige vers la liste des chats
-                header("Location: ?controleur=chat&methode=lister");
+            $nomChat = $_POST['nom_chat'];
+            $nouveauChat = new Chat(null, $nomChat);
+            $manager = new ChatDAO($pdo);
+            
+            // 3. Création du chat et récupération de l'ID auto-incrémenté
+            $idChat = $manager->ajouterEtRecupererId($nouveauChat);
+
+            if ($idChat) {
+                try {
+                    $pdo->beginTransaction();
+
+                    // --- 4. INSERTION DANS 'Envoyer' (Le créateur / Toi) ---
+                    // Colonnes confirmées : idEtudiant, idChat, date_message, contenu
+                    $sqlEnv = "INSERT INTO Envoyer (idEtudiant, idChat, date_message, contenu) 
+                            VALUES (:idEtudiant, :idChat, NOW(), :contenu)";
+                    $stmtEnv = $pdo->prepare($sqlEnv);
+                    $stmtEnv->execute([
+                        ':idEtudiant' => $idMoi,
+                        ':idChat'     => $idChat,
+                        ':contenu'    => "Discussion créée : " . $nomChat
+                    ]);
+
+                    // --- 5. INSERTION DANS 'recevoir' (Les participants / Eux) ---
+                    // Colonnes confirmées : idEtudiant, idChat, dateMessage, contenu
+                    if (!empty($_POST['participants']) && is_array($_POST['participants'])) {
+                        $sqlRec = "INSERT INTO recevoir (idEtudiant, idChat, dateMessage, contenu) 
+                                VALUES (:idEtudiant, :idChat, NOW(), :contenu)";
+                        $stmtRec = $pdo->prepare($sqlRec);
+
+                        foreach ($_POST['participants'] as $idParticipant) {
+                            $stmtRec->execute([
+                                ':idEtudiant' => (int)$idParticipant,
+                                ':idChat'     => $idChat,
+                                ':contenu'    => "Vous avez été ajouté au groupe."
+                            ]);
+                        }
+                    }
+
+                    $pdo->commit();
+                    
+                    // Redirection vers la liste des chats
+                    header("Location: ?controleur=chat&methode=lister");
+                    exit();
+
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    // Affiche l'erreur exacte si un nom de colonne manque encore
+                    die("Erreur lors de l'enregistrement : " . $e->getMessage());
+                }
+            } else {
+                die("Erreur : Impossible de créer le chat dans la table principale.");
+            }
+        } else {
+            header("Location: ?controleur=chat&methode=lister");
+            exit();
+        }
+    }
+
+    public function envoyer(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['message']) && !empty($_POST['id_chat'])) {
+            $pdo = $this->getPdo();
+            $idChat = (int)$_POST['id_chat'];
+            $contenu = $_POST['message'];
+
+            // 1. Récupérer ton ID
+            if (isset($_SESSION['user']) && is_object($_SESSION['user'])) {
+                $idMoi = $_SESSION['user']->getId();
+            } else {
+                die("Erreur : Non connecté.");
+            }
+
+            try {
+                $pdo->beginTransaction();
+
+                // 2. Enregistrer ton message dans 'Envoyer'
+                $sqlEnv = "INSERT INTO Envoyer (idEtudiant, idChat, date_message, contenu) 
+                        VALUES (:u, :c, NOW(), :msg)";
+                $stmtEnv = $pdo->prepare($sqlEnv);
+                $stmtEnv->execute([
+                    ':u'   => $idMoi,
+                    ':c'   => $idChat,
+                    ':msg' => $contenu
+                ]);
+
+                // 3. Récupérer tous les participants du chat pour leur envoyer
+                $manager = new ChatDAO($pdo);
+                $participants = $manager->getParticipantsIds($idChat);
+
+                // 4. Enregistrer dans 'recevoir' pour tous les autres
+                $sqlRec = "INSERT INTO recevoir (idEtudiant, idChat, dateMessage, contenu) 
+                        VALUES (:u, :c, NOW(), :msg)";
+                $stmtRec = $pdo->prepare($sqlRec);
+
+                foreach ($participants as $idParticipant) {
+                    if ((int)$idParticipant !== (int)$idMoi) { 
+                        $stmtRec->execute([
+                            ':u'   => $idParticipant,
+                            ':c'   => $idChat,
+                            ':msg' => $contenu
+                        ]);
+                    }
+                }
+
+                $pdo->commit();
+                
+                // Rediriger pour vider le formulaire et voir le message
+                header("Location: ?controleur=chat&methode=lister&id_chat=" . $idChat);
                 exit();
+
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                die("Erreur lors de l'envoi : " . $e->getMessage());
             }
         }
     }
