@@ -119,6 +119,11 @@ class ClasseVirtuelDAO {
         return $classes;
     }
 
+    public function countAll() {
+        $sql = "SELECT COUNT(*) as total FROM classeVirtuel";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetch()['total'];
+    }
     /**
      * @brief Trouve une classe par son code unique.
      * @param string $code Code unique de la classe.
