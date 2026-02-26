@@ -260,5 +260,49 @@ public function supprimerCompte(int $id): bool
         return false;
     }
 }
+// Rechercher tous les utilisateurs en fonction de leur role année ou barre de recherche
+public function findWithFilters($search, $role, $annee) {
+
+    $sql = "SELECT * FROM etudiant WHERE 1=1";
+    $params = [];
+
+    if ($search) {
+        $sql .= " AND (nom LIKE :search OR prenom LIKE :search OR mail LIKE :search)";
+        $params['search'] = "%$search%";
+    }
+
+    if ($role) {
+        $sql .= " AND role = :role";
+        $params['role'] = $role;
+    }
+
+    if ($annee) {
+        $sql .= " AND annee = :annee";
+        $params['annee'] = $annee;
+    }
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+public function update($id, $nom, $prenom, $mail, $role) {
+
+    $sql = "UPDATE etudiant 
+            SET nom = :nom,
+                prenom = :prenom,
+                mail = :mail,
+                role = :role
+            WHERE id = :id";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([
+        'id' => $id,
+        'nom' => $nom,
+        'prenom' => $prenom,
+        'mail' => $mail,
+        'role' => $role
+    ]);
+}
 
 }
