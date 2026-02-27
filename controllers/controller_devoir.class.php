@@ -85,7 +85,7 @@ class ControllerDevoir extends Controller {
             
             /* @brief Si la date de fin est antérieure ou égale à la date de début */
 
-            $contenuproteger = htmlentities($_POST['contenu']);
+            $contenuproteger = $_POST['contenu'];
 
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
                 // En cas d'erreur, on ne sauvegarde pas et on renvoie un message
@@ -160,7 +160,7 @@ class ControllerDevoir extends Controller {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
         $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
-        $contenuproteger = htmlentities($_POST['contenu']);
+        $contenuproteger = $_POST['contenu'];
 
         // Récupération de l'ID du cours (sans le s)
         $idCoursRecu = $_POST['idCour'] ?? null; 
@@ -178,7 +178,6 @@ class ControllerDevoir extends Controller {
             $error = "La date et l'heure de fin doivent être supérieures au début.";
         } else {
             /* * On crée l'objet Devoir. 
-             * IMPORTANT : Vérifiez que 'Couleur' a bien une majuscule dans votre HTML
              */
             $devoirModifie = new Devoir(
                 (int)$idDevoir,
@@ -284,37 +283,58 @@ class ControllerDevoir extends Controller {
      */
     public function api_events(): void
     {
-        if (ob_get_length()) ob_clean();
         if (!isset($_SESSION['user'])) {
-            echo json_encode([]);
-            exit;
-        }
-        /* @brief Récupération de l'utilisateur en session */
-        $user = $_SESSION['user'];
-        /* @brief Récupération de l'ID de la classe de l'utilisateur */
-        $idClasse = $user->getIdClasse(); 
-        /* @brief Si l'ID de la classe n'est pas défini, retourner un tableau vide */
-        if (!$idClasse) {
-            echo json_encode([]);
-            exit;
-        }
-        /* @brief Initialisation du gestionnaire de devoirs */
-        $manager = new DevoirDAO($this->getPdo());
-        /* @brief Récupération des devoirs pour la classe de l'utilisateur */
-        $devoirs = $manager->findByClasse($idClasse); 
-        /* @brief Préparation des événements au format attendu par FullCalendar */
-        $events = [];
-        /* @brief Boucle sur chaque devoir pour formater les données */
-        foreach ($devoirs as $d) {
-            $events[] = [
-                'id'    => $d->getId(),
-                'title' => $d->getLibelle(),
-                'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb(),
-                'end'   => $d->getDatefin() . 'T' . $d->getHeureFin(),
-                'extendedProps' => ['description' => $d->getContenu()],
-                'color' => $d->getCouleur()
-            ];
-        }
+        echo json_encode([]);
+        exit;
+    }
+
+    $user = $_SESSION['user'];
+    $idClasse = $user->getIdClasse();
+
+    if (!$idClasse) {
+        echo json_encode([]);
+        exit;
+    }
+
+    $events = [];
+
+    // --- 1. RÉCUPÉRATION DES DEVOIRS ---
+    $devoirDAO = new DevoirDAO($this->getPdo());
+    $devoirs = $devoirDAO->findByClasse($idClasse); 
+
+    foreach ($devoirs as $d) {
+        $events[] = [
+            'id'    => 'dev_' . $d->getId(), // Préfixe pour éviter les doublons d'ID
+            'title' => '📝 ' . $d->getLibelle(),
+            'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb(),
+            'end'   => $d->getDatefin() . 'T' . $d->getHeureFin(),
+            'color' => $d->getCouleur() ?: '#e74c3c', // Rouge par défaut
+            'extendedProps' => [
+                'type' => 'devoir',
+                'description' => $d->getContenu()
+            ]
+        ];
+    }
+
+    // --- 2. RÉCUPÉRATION DES COURS PRÉVUS ---
+    $coursDAO = new CoursPrevueDAO($this->getPdo());
+    // On récupère les cours pour cette classe
+    $listeCours = $coursDAO->findByClasse($idClasse); 
+
+    foreach ($listeCours as $c) {
+        // Si findByClasse renvoie des objets CoursPrevue :
+        $events[] = [
+            'id'    => 'crs_' . $c->getId(),
+            'title' => '🎓 ' . $c->getLibelle(),
+            'start' => $c->getDateDeb() . 'T' . $c->getHeureDeb(),
+            'end'   => $c->getDateFin() . 'T' . $c->getHeureFin(),
+            'color' => $c->getCouleur() ?: '#3498db', // Bleu par défaut
+            'extendedProps' => [
+                'type' => 'cours',
+                'description' => $c->getDescription()
+            ]
+        ];
+    }
         /* @brief Envoi de la réponse JSON */
         header('Content-Type: application/json');
         echo json_encode($events);
