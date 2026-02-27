@@ -29,7 +29,7 @@ require_once 'controllers/controller_index.php';
 
 require_once "controllers/controller_connecter.php";
 
-require_once "controllers/controller_admin.class.php";
+//require_once "controllers/controller_admin.class.php";
 
 require_once 'controllers/controller_cours.class.php';
 
