@@ -34,6 +34,34 @@
 	<div>
 		<h3 class="mt-3 text-center">Rejoindre une classe</h3>
 		<div class="position-relative section-class bg-gray w-100 d-flex flex-column justify-content-center border-black border-1 align-items-center border p-5 mt-1">
+		{% if error_message or success_message %}
+    <div class="position-absolute w-50 text-center" style="top: 0; z-index: 20;">
+        
+        {% if error_message %}
+            <div class="text-danger fw-semibold">
+                                {{ error_message }}
+            </div>
+        {% endif %}
+
+        {% if success_message %}
+     <div id="successMessage" class="text-success fw-semibold">
+            {{ success_message }}
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const msg = document.getElementById('successMessage');
+            if (msg) {
+                msg.style.transition = "opacity 0.5s ease";
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 500);
+            }
+        }, 5000);
+    </script>
+{% endif %}
+
+    </div>
+{% endif %}
 
             <form method="post" action="?controleur=joinClass&methode=rejoindreParCode" class="input-group w-50 position-absolute mb-4 top-30px" style="z-index: 10;">
                 <span class="input-group-text">
@@ -44,7 +72,7 @@
 				<i class="bi bi-plus-circle"></i> Ajouter</button>
             </form>
 
-            <form method="post" action="?controleur=joinClass&methode=action" class="w-100 d-flex flex-column align-items-center">
+            <form id="actionForm" method="post" action="?controleur=joinClass&methode=action" class="w-100 d-flex flex-column align-items-center">
 
 				<input type="hidden" name="id_classe" id="selectedClassId" required>
 				<div class="w-50 d-flex flex-column gap-2 overflow-auto mt-40 custom-scroll mh-45vh">
@@ -186,7 +214,7 @@ function openUnsubscribeModal() {
 
 function confirmUnsubscribe() {
 
-    const form = document.querySelector('form[action*="joinClass"]');
+    const form = document.getElementById('actionForm');
 
     const inputAction = document.createElement('input');
     inputAction.type = 'hidden';

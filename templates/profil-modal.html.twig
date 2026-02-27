@@ -13,6 +13,11 @@
 
 				{% if user %}
 					<div class="text-center mb-4 position-relative">
+					<a href="#"
+   class="position-absolute top-0 end-0 text-danger small text-decoration-underline"
+   onclick="openDeleteAccountModal()">
+   Supprimer mon compte
+</a>
 						<div class="d-inline-block p-1 bg-white rounded-circle border border-2 border-black shadow-sm">
 							<img src="public/assets/img/agendboyquisait.png" alt="Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: contain;">
 						</div>
@@ -92,10 +97,12 @@
 			</div>
 
 			<div class="modal-footer border-top border-black bg-white justify-content-center gap-3 p-3">
-				<a href="?controleur=connecter&methode=deconnexion" class="btn btn-danger border border-black shadow text-uppercase font-love px-4 py-2 rounded-3">
-					Se déconnecter
-					<i class="fa-solid fa-power-off ms-2"></i>
-				</a>
+				<button type="button"
+        class="btn btn-danger border border-black shadow text-uppercase font-love px-4 py-2 rounded-3"
+        onclick="openLogoutModal()">
+    Se déconnecter
+    <i class="fa-solid fa-power-off ms-2"></i>
+</button>
 				<button type="button" class="btn btn-secondary border border-black shadow text-uppercase font-love px-4 py-2 rounded-3" data-bs-dismiss="modal">
 					Fermer
 				</button>
@@ -103,4 +110,81 @@
 
 		</div>
 	</div>
+	<!-- Modal Déconnexion -->
+<div class="modal fade" id="logoutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow">
+
+            <div class="modal-body text-center pt-4 pb-3">
+
+                <i class="fa-solid fa-arrow-right-from-bracket text-danger fs-1 mb-3"></i>
+
+                <h5 class="fw-bold mb-3">
+                    Se déconnecter ?
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Vous devrez vous reconnecter pour accéder à votre espace personnel.
+                </p>
+
+            </div>
+
+            <div class="modal-footer border-0 justify-content-center gap-3 pb-4">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    Annuler
+                </button>
+
+                <a href="?controleur=connecter&methode=deconnexion"
+                   class="btn btn-danger px-4">
+                    Oui, se déconnecter
+                </a>
+            </div>
+
+        </div>
+    </div>
 </div>
+<!-- Modal Suppression Compte -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow">
+
+            <div class="modal-body text-center pt-4 pb-3">
+
+                <i class="fa-solid fa-triangle-exclamation text-danger fs-1 mb-3"></i>
+
+                <h5 class="fw-bold mb-3">
+                    Supprimer définitivement votre compte ?
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Cette action est irréversible. Toutes vos données seront supprimées.
+                </p>
+
+            </div>
+
+            <div class="modal-footer border-0 justify-content-center gap-3 pb-4">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    Annuler
+                </button>
+
+                <a href="?controleur=etudiant&methode=supprimerCompte"
+   class="btn btn-danger px-4">
+    Oui, supprimer
+</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+<script>
+function openLogoutModal() {
+    const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+    modal.show();
+}
+
+function openDeleteAccountModal() {
+    const modal = new bootstrap.Modal(document.getElementById('deleteAccountModal'));
+    modal.show();
+}
+</script>
