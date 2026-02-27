@@ -19,30 +19,35 @@ class ControllerConnecter extends Controller {
      * @brief Gère la connexion des utilisateurs.
      */
     public function connexion() {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
             $email = $_POST['loginName'] ?? '';
             $password = $_POST['password'] ?? '';
     
-            // 1. Initialiser le DAO (assurez-vous d'avoir accès à $pdo ici)
-            // Si votre architecture le permet, récupérez l'instance PDO existante
-            $etudiantDAO = new EtudiantDAO($this->getPdo()); 
-    
-            // 2. Chercher l'étudiant par son mail
+            $etudiantDAO = new EtudiantDAO($this->getPdo());
             $etudiant = $etudiantDAO->findByEmail($email);
     
-            // 3. Vérifier si l'étudiant existe ET si le mot de passe est correct
             if ($etudiant && password_verify($password, $etudiant->getMdp())) {
+    
                 $_SESSION['authentifie'] = true;
-                
-                // REMPLACEZ VOTRE TABLEAU PAR L'OBJET COMPLET
-                $_SESSION['user'] = $etudiant; 
-            
+                $_SESSION['user'] = $etudiant;
+                $_SESSION['role'] = $etudiant->getRole();
+    
+                if ($etudiant->getRole() === 'admin') {
+                    header('Location: ?controleur=admin&methode=dashboard');
+                    exit();
+                }
+    
                 header('Location: index.php?controleur=connecter&methode=render');
                 exit();
-            }else {
-                // Si l'étudiant n'existe pas ou mdp incorrect
-                echo $this->getTwig()->render('login.html.twig', ['erreur' => 'Email ou mot de passe incorrect.']);
+    
+            } else {
+                echo $this->getTwig()->render('login.html.twig', [
+                    'erreur' => 'Email ou mot de passe incorrect.'
+                ]);
             }
+    
         } else {
             echo $this->getTwig()->render('login.html.twig');
         }

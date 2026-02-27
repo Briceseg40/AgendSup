@@ -1,8 +1,8 @@
 db:
   host: localhost
-  user: root
-  password: root
-  name: AgendSup
+  user: bseguert_bd
+  password: 
+  name: bseguret
 website:
   title: AgendSup
   url: http://localhost/agendsup

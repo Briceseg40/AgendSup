@@ -19,24 +19,30 @@ class ControllerJoinClass extends Controller {
      * @brief Rendu de la page de rejoindre une classe.
      */
     public function render() {
-        /* @brief Vérification de la session utilisateur. */
+
+        // Vérification session
         if (!isset($_SESSION['user'])) {
             header('Location: index.php?controleur=connecter&methode=connexion');
             exit();
         }
-        
+            
         $user = $_SESSION['user'];
         $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
-
+    
         $pdo = Bd::getInstance()->getConnection();
-        /* @brief Initialisation du DAO de classe. */
         $classeDAO = new ClasseVirtuelDAO($pdo);
-        /* @brief Recherche des classes de l'étudiant. */
-        
+    
         $listeDesClasses = $classeDAO->findInscrites($idEtudiant);
-
+    
+        $error = $_SESSION['error_message'] ?? null;
+        $success = $_SESSION['success_message'] ?? null;
+    
+        unset($_SESSION['error_message'], $_SESSION['success_message']);
+    
         echo $this->getTwig()->render('joinClass.html.twig', [
-            'classes' => $listeDesClasses
+            'classes' => $listeDesClasses,
+            'error_message' => $error,
+            'success_message' => $success
         ]);
     }
 
@@ -75,22 +81,33 @@ class ControllerJoinClass extends Controller {
     }
 
     public function rejoindreParCode() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $code = $_POST['code_classe'] ?? '';
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+            $code = trim($_POST['code_classe'] ?? '');
+    
             if (!empty($code)) {
+    
                 $user = $_SESSION['user'];
                 $idEtudiant = is_array($user) ? $user['id'] : $user->getId();
-
+    
                 $pdo = Bd::getInstance()->getConnection();
                 $classeDAO = new ClasseVirtuelDAO($pdo);
                 $classe = $classeDAO->findCode($code);
-
+    
                 if ($classe) {
+    
                     $classeDAO->rejoindre($idEtudiant, $classe->getId());
+                    $_SESSION['success_message'] = "Vous avez rejoint la classe avec succés";
+    
+                } else {
+    
+                    $_SESSION['error_message'] = "Aucune classe ne correspond à ce code.";
+    
                 }
             }
         }
+    
         header('Location: index.php?controleur=joinClass&methode=render');
         exit();
     }

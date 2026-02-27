@@ -90,4 +90,25 @@ echo $template->render([
 "titre" => "Supprimer un étudiant"
 ]);
 }
+public function supprimerCompte()
+{
+    if (!isset($_SESSION['id'])) {
+        header("Location: ?controleur=index");
+        exit();
+    }
+
+    $id = $_SESSION['id'];
+
+    $dao = new EtudiantDAO($this->pdo);
+    $success = $dao->supprimerCompte($id);
+
+    if ($success) {
+        session_destroy();
+        header("Location: ?controleur=index&message=compteSupprime");
+        exit();
+    } else {
+        header("Location: ?controleur=etudiant&message=erreurSuppression");
+        exit();
+    }
+}
 }
