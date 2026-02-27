@@ -218,4 +218,30 @@ class ChatDAO
         ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function findChatsRecents(int $idEtudiant): array
+    {
+        // Cette requête récupère les chats, fusionne Envoyer/recevoir et prend le dernier message
+        $sql = "
+            SELECT c.id, c.Nom, m.contenu as dernier_message, m.dte as date_dernier
+            FROM chat c
+            JOIN (
+                SELECT idChat, contenu, date_message as dte FROM Envoyer
+                UNION ALL
+                SELECT idChat, contenu, dateMessage as dte FROM recevoir
+            ) m ON c.id = m.idChat
+            WHERE c.id IN (SELECT idChat FROM Envoyer WHERE idEtudiant = :id1 UNION SELECT idChat FROM recevoir WHERE idEtudiant = :id2)
+            AND m.dte = (
+                SELECT MAX(date_message) FROM Envoyer WHERE idChat = c.id
+                UNION
+                SELECT MAX(dateMessage) FROM recevoir WHERE idChat = c.id
+                ORDER BY 1 DESC LIMIT 1
+            )
+            GROUP BY c.id
+            ORDER BY m.dte DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id1' => $idEtudiant, ':id2' => $idEtudiant]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -56,11 +56,9 @@
 
     <img id="imgBg" src="public/assets/img/background.png" alt="Fond d'AgendSup">
     <header class="btn-message">
-    <a href="?controleur=chat&methode=lister">
-        <button class="w-auto btn p-2 border btn-light rounded-circle">
-            <i class="fa-solid fa-message"></i>
-        </button>
-        </a>
+    <button class="btn btn-dark rounded-pill shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMessages">
+        <i class="fa-solid fa-comments me-2"></i> Messages
+    </button>
         <div class="header-right">
         <button type="button" class="w-auto btn p-2 border btn-light rounded-circle" data-bs-toggle="modal" data-bs-target="#profilModal">
             <i class="fa-solid fa-user"></i>
@@ -77,6 +75,45 @@
         {% block body %}{% endblock %}
     </main>
 
+    <div class="offcanvas offcanvas-end border-start border-dark rounded-start-5 shadow" tabindex="-1" id="offcanvasMessages" style="width: 400px;">
+        <div class="offcanvas-header border-bottom border-dark bg-light">
+            <h5 class="offcanvas-title fw-bold">MES DISCUSSIONS</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush">
+                {# On boucle sur les chats récents envoyés par le contrôleur #}
+                {% for chat in chatsRecents %}
+                    <a href="?controleur=chat&methode=lister&id_chat={{ chat.id }}" class="list-group-item list-group-item-action p-3 border-bottom d-flex align-items-center gap-3">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 45px; height: 45px; min-width: 45px;">
+                            {{ chat.Nom|slice(0, 1)|upper }}
+                        </div>
+                        <div class="overflow-hidden w-100">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-bold">{{ chat.Nom }}</h6>
+                                <small class="text-muted" style="font-size: 0.7rem;">{{ chat.date_dernier|slice(11, 5) }}</small>
+                            </div>
+                            <p class="mb-0 text-muted text-truncate small">
+                                {{ chat.dernier_message|default('Pas encore de message') }}
+                            </p>
+                        </div>
+                    </a>
+                {% else %}
+                    <div class="p-5 text-center text-muted small">
+                        <i class="fa-solid fa-message mb-2 fa-2x"></i><br>
+                        Aucune discussion pour le moment.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="p-3 border-top border-dark bg-light text-center">
+            <a href="?controleur=chat&methode=lister" class="btn btn-outline-dark rounded-pill btn-sm px-4">
+                Voir toute la messagerie
+            </a>
+        </div>
+    </div>
 
     {% include 'profil-modal.html.twig' %}
 </body>
