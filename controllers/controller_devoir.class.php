@@ -85,7 +85,7 @@ class ControllerDevoir extends Controller {
             
             /* @brief Si la date de fin est antérieure ou égale à la date de début */
 
-            $contenuproteger = htmlentities($_POST['contenu']);
+            $contenuproteger = $_POST['contenu'];
 
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
                 // En cas d'erreur, on ne sauvegarde pas et on renvoie un message
@@ -160,7 +160,7 @@ class ControllerDevoir extends Controller {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dateHeureDebut = $_POST['date_deb'] . ' ' . $_POST['heure_deb'];
         $dateHeureFin = $_POST['date_fin'] . ' ' . $_POST['heure_fin'];
-        $contenuproteger = htmlentities($_POST['contenu']);
+        $contenuproteger = $_POST['contenu'];
 
         // Récupération de l'ID du cours (sans le s)
         $idCoursRecu = $_POST['idCour'] ?? null; 
