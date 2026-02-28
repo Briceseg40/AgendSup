@@ -39,7 +39,7 @@
 {% block body %}
 	<div class="container d-flex flex-column align-items-center justify-content-center mt-5">
 
-		<form method="post" action="?controleur=paramClasse&methode=creer" class="w-75">
+		<form method="post" action="?controleur=paramClasse&methode=creer" class="w-75 ">
 
 			<ul class="nav nav-tabs border-0 justify-content-center" id="myTab" role="tablist">
 				<li class="nav-item" role="presentation">
@@ -165,10 +165,10 @@
 					<div class="tab-pane fade" id="params-pane" role="tabpanel" tabindex="0">
 
 						<div class="mb-5 w-100">
-							<div class="volume-container">
+							<div class="volume-container btn btn-light border border-black shadow fs-4 px-4 py-2 rounded-3 bg-white w-100 fw-bold">
 								<div class="volume-text">
-									Volume Sonore :
-									<span id="volumeValue">80</span>
+									Volume Sonore : 
+									<span id="volumeValue"> 80</span>
 								</div>
 								<input type="range" class="full-height-range" id="volumeRange" min="0" max="100" value="80" name="volume">
 							</div>

@@ -284,3 +284,32 @@ header i { font-size: 20px; }
 a.text-muted:hover {
     color: #dc3545 !important;
 }
+
+/* Volume de la classe */
+.volume-text {
+    position: relative;
+    z-index: 2;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    text-align: center;
+}
+
+.full-height-range {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    background: transparent;
+    z-index: 1;
+}
+
+.full-height-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 12px;
+    height: 100%;
+    background: rgba(200, 200, 200, 0.868);
+    cursor: pointer;
+    border-radius: 4px;
+}
