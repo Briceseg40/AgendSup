@@ -182,14 +182,14 @@ class ControllerDevoir extends Controller {
              */
             $devoirModifie = new Devoir(
                 (int)$idDevoir,
-                $libelleMatiere,    // Le libellé récupéré via la boucle
+                $libelleMatiere,
                 $_POST['date_deb'],
                 $_POST['date_fin'],
                 $_POST['heure_deb'],
                 $_POST['heure_fin'],
                 $contenuproteger,
-                $_POST['Couleur'],  // Utilisation de la clé avec majuscule
-                (int)$idCoursRecu,  // L'ID sans le s
+                $_POST['Couleur'], 
+                (int)$idCoursRecu,  
                 $user->getIdClasse(),
                 $user->getId()
             );
