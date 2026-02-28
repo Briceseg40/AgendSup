@@ -1,36 +1,56 @@
 {#
-/**
- * @file inscription_reussie.html
- * @brief Page de confirmation d'inscription réussie
- *
- * Cette page est affichée après la création réussie
- * d'un compte utilisateur sur l'application AgendSup.
- *
- * Elle informe l'utilisateur que son inscription
- * s'est correctement déroulée et lui propose
- * un lien pour accéder à la page de connexion.
- *
- * Technologies utilisées :
- * - HTML5
- * - Bootstrap 5 (via CDN)
- *
- * @see connecterController
- * @see connexion.html.twig
- * @version 1.0
- */
+    @file inscription_reussie.html.twig
+    Page de confirmation d'inscription - version design AgendSup
 #}
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Inscription réussie</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inscription réussie - AgendSup</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Styles globaux -->
+    <link rel="stylesheet" href="public/assets/css/style.css">
+    <link rel="stylesheet" href="public/assets/css/login.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
 </head>
+
 <body>
-<div class="container d-flex flex-column justify-content-center align-items-center" style="height:100vh;">
-    <h2 class="mb-4 text-success">Inscription réussie !</h2>
-    <a href="index.php?controleur=connecter&methode=connexion" class="btn btn-primary">Se connecter</a>
+
+<img id="imgBg" src="public/assets/img/background.png" alt="Fond AgendSup">
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+
+    <div class="card shadow-lg rounded-4 text-center p-5 success-card">
+
+        <div class="mb-3" style="font-size: 60px;">🎉</div>
+
+        <h2 class="fw-bold mb-4 fs-50">
+            Inscription réussie !
+        </h2>
+
+        <p class="text-muted mb-4">
+            Votre compte a été créé avec succès.<br>
+            Vous pouvez maintenant vous connecter.
+        </p>
+
+        <a href="index.php?controleur=connecter&methode=connexion"
+           class="text-btn btn-normal btn w-100 fs-5 rounded-3 shadow border-black p-3 fw-bold">
+            Se connecter
+        </a>
+
+    </div>
+
 </div>
+
 </body>
 </html>

@@ -31,6 +31,7 @@ body {
 .left-10px { left: 10px; }
 .right-30px{ right: 30px;}
 .mt-40 { margin-top: 40px; }
+.fs-13 { font-size: 13px !important; }
 .fs-20 { font-size: 20px !important; }
 .fs-50 { font-size: 50px; }
 .p-20 { padding: 20px; }
@@ -40,6 +41,16 @@ body {
 .text-btn {
     font-size: 24px !important;
     text-transform: uppercase;
+}
+
+.btn-normal:hover {
+    background-color:rgba(209, 209, 209, 1) !important;
+}
+
+.btn-danger:hover {
+    background-color:rgba(220, 53, 69, 0.8) !important;
+
+
 }
 
 .titre {
@@ -109,6 +120,7 @@ header i { font-size: 20px; }
     background-color: rgba(200, 200, 200, 0.9) !important; 
     color: black !important;
 }
+
 
 .btn-tab.active {
     background-color: rgba(200, 200, 200, 0.9) !important;
