@@ -244,4 +244,12 @@ class ChatDAO
         $stmt->execute([':id1' => $idEtudiant, ':id2' => $idEtudiant]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function countUnreadMessages(int $idEtudiant): int
+    {
+        $sql = "SELECT COUNT(*) FROM recevoir WHERE idEtudiant = :id AND is_read = 0";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $idEtudiant]);
+        return (int)$stmt->fetchColumn();
+    }
 }

@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<div class="container py-4">
+<div class="container mt-5 pt-5">
     <div class="row g-0 border border-2 border-black rounded-5 shadow-lg bg-white overflow-hidden" style="height: 80vh;">
         
         <!-- SIDEBAR GAUCHE : Liste des discussions -->
@@ -44,8 +44,13 @@
                         </div>
                         <h6 class="fw-bold mb-0 font-love">{{ activeChat.nom }}</h6>
                     </div>
-                    <a href="?controleur=chat&methode=supprimer&id={{ activeChat.id }}" class="btn btn-sm btn-outline-danger border-0"><i class="fa-solid fa-trash"></i></a>
-                </div>
+                    <!-- Menu options : Poubelle -->
+                    <button type="button" 
+                            class="btn btn-sm btn-outline-danger border-0 rounded-circle" 
+                            onclick="openDeleteChatModal({{ activeChat.id }})">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                    </div>
 
                 <div class="p-4 flex-grow-1 overflow-auto d-flex flex-column gap-3" id="chat-window">
                     {% for msg in messages %}
@@ -112,19 +117,77 @@
         </div>
     </div>
 </div>
+<!-- Modal Suppression Chat -->
+<div class="modal fade" id="deleteChatModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-gray border border-2 border-black rounded-4 shadow-lg p-0 overflow-hidden">
+            
+            <div class="modal-body text-center pt-4 pb-3">
+                <div class="mb-3">
+                    <i class="fa-solid fa-trash-can text-danger" style="font-size: 3rem;"></i>
+                </div>
+                <h3 class="fw-bold mb-3 font-love">Supprimer la discussion ?</h3>
+                <p class="text-muted mb-0 px-4">
+                    Cette action est irréversible. Tous les messages de ce groupe seront définitivement supprimés pour tous les participants.
+                </p>
+            </div>
+
+            <div class="modal-footer border-top border-black bg-white justify-content-center gap-3 p-3">
+                <button type="button" class="btn btn-light border border-black shadow font-love px-4 py-2 rounded-3 fw-bold" data-bs-dismiss="modal">
+                    ANNULER
+                </button>
+                <a href="#" id="confirmDeleteChatBtn" class="btn btn-danger border border-black shadow font-love px-4 py-2 rounded-3 fw-bold">
+                    OUI, SUPPRIMER
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <script>
-    // 1. Scroll auto vers le bas
-    var chatWindow = document.getElementById("chat-window");
-    if (chatWindow) { chatWindow.scrollTop = chatWindow.scrollHeight; }
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchMemberInput');
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                // 1. On récupère ce que l'utilisateur tape (en minuscule et sans espaces inutiles)
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                // 2. On récupère toutes les lignes de la liste
+                const memberItems = document.querySelectorAll('.member-item');
 
-    // 2. Recherche dynamique des membres
-    document.getElementById('searchMemberInput').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        document.querySelectorAll('.member-item').forEach(item => {
-            const name = item.querySelector('.member-name').textContent.toLowerCase();
-            item.style.display = name.includes(searchTerm) ? 'flex' : 'none';
-        });
+                memberItems.forEach(item => {
+                    // 3. On récupère le nom à l'intérieur de cette ligne
+                    const nameElement = item.querySelector('.member-name');
+                    
+                    if (nameElement) {
+                        const nameText = nameElement.textContent.toLowerCase();
+                        
+                        // 4. Si le nom contient le texte recherché
+                        if (nameText.includes(searchTerm)) {
+                            // On affiche : on retire 'd-none' et on remet 'd-flex'
+                            item.classList.remove('d-none');
+                            item.classList.add('d-flex');
+                        } else {
+                            // On cache : on retire 'd-flex' et on ajoute 'd-none'
+                            item.classList.add('d-none');
+                            item.classList.remove('d-flex');
+                        }
+                    }
+                });
+            });
+        }
     });
+
+    function openDeleteChatModal(chatId) {
+    // On met à jour le lien du bouton de confirmation avec l'ID du chat actuel
+    const deleteBtn = document.getElementById('confirmDeleteChatBtn');
+    deleteBtn.href = "?controleur=chat&methode=supprimer&id=" + chatId;
+    
+    // On affiche la modale
+    const modal = new bootstrap.Modal(document.getElementById('deleteChatModal'));
+    modal.show();
+}
 </script>
 {% endblock %}

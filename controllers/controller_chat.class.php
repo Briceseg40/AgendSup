@@ -19,63 +19,66 @@ class ControllerChat extends Controller
     }
         
     /**
-     * @brief Liste tous les chats.
+     * @brief Liste les chats de l'utilisateur et gère l'affichage de la discussion active.
      */
     public function lister(): void
     {
-        // 1. Sécurité : on récupère l'ID de l'utilisateur connecté
-        if (!isset($_SESSION['user'])) {
+        // 1. Sécurité : Vérifier que l'utilisateur est connecté
+        if (!isset($_SESSION['user']) || !is_object($_SESSION['user'])) {
             header("Location: ?controleur=connecter&methode=render");
             exit();
         }
+
         $idMoi = $_SESSION['user']->getId();
         $pdo = $this->getPdo();
-        $manager = new ChatDAO($pdo);
-
-        // 2. Récupérer les chats de l'utilisateur
-        $chats = $manager->findChatsByEtudiant($idMoi);
-
-        // 3. Récupérer tous les étudiants pour la modale de création
+        $chatManager = new ChatDAO($pdo);
         $etudiantManager = new EtudiantDAO($pdo);
+
+        // 2. Récupérer l'ID du chat sélectionné dans l'URL (si présent)
+        $idActive = $_GET['id_chat'] ?? null;
+
+        // --- LOGIQUE DES NOTIFICATIONS : MARQUER COMME LU ---
+        if ($idActive) {
+            // Dès qu'on clique sur un chat, on passe tous les messages reçus de ce chat à "lu" (is_read = 1)
+            // Cela fera disparaître ou diminuer le chiffre dans la bulle rouge
+            $sqlRead = "UPDATE recevoir SET is_read = 1 WHERE idChat = ? AND idEtudiant = ? AND is_read = 0";
+            $stmtRead = $pdo->prepare($sqlRead);
+            $stmtRead->execute([(int)$idActive, $idMoi]);
+        }
+
+        // 3. Récupérer les données pour la Sidebar (Liste des discussions de l'étudiant)
+        $chats = $chatManager->findChatsByEtudiant($idMoi);
+
+        // 4. Récupérer tous les étudiants pour la modale de création de groupe
         $etudiants = $etudiantManager->findAll();
 
-        // 4. Gérer le chat actif et ses messages
-        $idActive = $_GET['id_chat'] ?? null;
+        // --- LOGIQUE DES NOTIFICATIONS : COMPTER LE TOTAL ---
+        // On compte combien de messages l'utilisateur n'a pas encore lus au total (tous chats confondus)
+        // Cette variable sera utilisée dans base.html.twig pour la bulle rouge
+        $unreadCount = $chatManager->countUnreadMessages($idMoi);
+
+        // 5. Gérer le chat actif et charger ses messages
         $messages = [];
         $activeChat = null;
 
         if ($idActive) {
-            $activeChat = $manager->findById((int)$idActive);
-            $messages = $manager->getMessagesByChat((int)$idActive, $idMoi);
+            $activeChat = $chatManager->findById((int)$idActive);
+            
+            // Si le chat existe bien, on charge la conversation complète
+            if ($activeChat) {
+                $messages = $chatManager->getMessagesByChat((int)$idActive, $idMoi);
+            }
         }
 
-        // 5. Affichage
+        // 6. Affichage du template Twig avec toutes les variables nécessaires
         $template = $this->getTwig()->load('chat.html.twig');
         echo $template->render([
-            'chats' => $chats,
-            'etudiants' => $etudiants,
-            'messages' => $messages,
-            'activeChat' => $activeChat,
-            'idActive' => $idActive
-        ]);
-    }
-
-    /**
-     * @brief Liste les chats où un utilisateur spécifique a parlé.
-     * @param int $id_utilisateur Identifiant de l'utilisateur.
-     */
-    public function listerByUtilisateur(int $id_utilisateur): void
-    {
-        $manager = new ChatDAO($this->getPdo());
-        // la méthode attend un tableau d'ids, on passe un tableau avec 1 id
-        $chats = $manager->findChatsOuUtilisateurAParle([$id_utilisateur]);
-
-        $template = $this->getTwig()->load('chat.twig');
-
-        echo $template->render([
-            'chats' => $chats,
-            'menu' => 'chat_by_user',
-            'userId' => $id_utilisateur
+            'chats'       => $chats,        // Liste des chats à gauche
+            'etudiants'   => $etudiants,    // Liste pour la modale de création
+            'messages'    => $messages,     // Bulles de messages au centre
+            'activeChat'  => $activeChat,   // Infos du chat sélectionné (nom, etc.)
+            'idActive'    => $idActive,     // ID pour mettre en surbrillance le chat dans la liste
+            'unreadCount' => $unreadCount   // Nombre pour la bulle rouge style Apple
         ]);
     }
 
@@ -124,13 +127,37 @@ class ControllerChat extends Controller
      * @brief Supprime un chat existant.
      */
     public function supprimer(): void
-    {
-        $template = $this->getTwig()->load('chat/supprimer.twig');
+{
+    if (isset($_GET['id'])) {
+        $idChat = (int)$_GET['id'];
+        $pdo = $this->getPdo();
 
-        echo $template->render([
-            "titre" => "Supprimer un chat"
-        ]);
+        try {
+            $pdo->beginTransaction();
+
+            // 1. Supprimer les messages liés dans 'Envoyer'
+            $stmt1 = $pdo->prepare("DELETE FROM Envoyer WHERE idChat = ?");
+            $stmt1->execute([$idChat]);
+
+            // 2. Supprimer les messages liés dans 'recevoir'
+            $stmt2 = $pdo->prepare("DELETE FROM recevoir WHERE idChat = ?");
+            $stmt2->execute([$idChat]);
+
+            // 3. Supprimer le chat lui-même
+            $stmt3 = $pdo->prepare("DELETE FROM chat WHERE id = ?");
+            $stmt3->execute([$idChat]);
+
+            $pdo->commit();
+        } catch (Exception $e) {
+            $pdo->rollBack();
+            die("Erreur lors de la suppression : " . $e->getMessage());
+        }
     }
+
+    // Redirection vers la page principale des chats
+    header("Location: ?controleur=chat&methode=lister");
+    exit();
+}
 
    public function enregistrer(): void
     {
