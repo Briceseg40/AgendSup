@@ -25,22 +25,27 @@
 
 
 {% block body %}
+<link rel="stylesheet" href="public/assets/css/agenda.css">
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'fr',
             initialView: 'timeGridWeek',
+            firstDay: 1,
             slotDuration: '00:15', 
             slotMinTime: '08:00:00',
             slotMaxTime: '19:00:00',
+            allDaySlot: false,  
             nowIndicator: true,
-            contentHeight: 450,
-            locale: 'fr',
-            backgoundColor: '#808080',
+            buttonText: {
+                today: "Aujourd'hui"
+            },
+            contentHeight: 525,
             headerToolbar: {
                 left: '',
-                center: 'title prev next today',
+                center: 'title prev today next',
                 right: ''
             },
              
@@ -76,7 +81,7 @@
 {% if app.user and app.user.role == 'délégué' %}
     <div class="mb-3 text-end">
         <a href="index.php?controleur=devoir&methode=lister" 
-           class="btn btn-primary shadow" 
+           class="btn btn-normal btn-light border border-black shadow fs-4 px-4 py-2 rounded-3 bg-white w-auto fw-bold" 
            style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; border-radius: 50px; padding: 10px 20px;">
             Liste des devoirs
         </a>
@@ -85,7 +90,7 @@
 {% elseif app.user.role == 'ressource' %}
     <div class="mb-3 text-end">
         <a href="index.php?controleur=devoir&methode=lister" 
-           class="btn btn-primary shadow" 
+           class="btn btn-normal btn-light border border-black shadow fs-4 px-4 py-2 rounded-3 bg-white w-auto fw-bold" 
            style="position: fixed; bottom: 40px; right: 20px; z-index: 1000; border-radius: 50px; padding: 10px 20px;">
             Liste des cours
         </a>

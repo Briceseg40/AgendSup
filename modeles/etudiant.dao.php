@@ -68,6 +68,12 @@ class EtudiantDAO {
         return $etudiant;
     }
 
+    public function countAll() {
+        $sql = "SELECT COUNT(*) as total FROM etudiant";
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetch()['total'];
+    }
+
     
     /**
      * @brief Recherche un étudiant par son ID
@@ -120,15 +126,16 @@ class EtudiantDAO {
         $etudiant = [];
         foreach ($results as $row) {
             $etudiant[] = new EtudiantDAO(
-                $row['id'],
-                $row['nom'],
-                $row['prenom'],
-                $row['role'],
-                $row['Annee'],
-                $row['idClasse'],
-                $row['td'],
-                $row['tp'],
-                $row['Parcour'],
+                $row['id'],        // 1: id
+                $row['Nom'],       // 2: Nom
+                $row['Prenom'],    // 3: Prenom
+                $row['role'],      // 4: role
+                $row['Annee'],     // 5: Annee
+                $row['idClasse'],  // 6: idClasse (DOIT ÊTRE ICI)
+                $row['mail'],      // 7: mail
+                $row['mdp'],       // 8: mdp
+                $row['Parcour']    // 9: Parcour
+                
             );
         }
 
@@ -187,4 +194,113 @@ class EtudiantDAO {
             ':Parcour' => $etudiant->getParcour()
         ]);
     }
+
+    /**
+ * @brief Supprime un étudiant
+ */
+public function delete(int $id): void
+{
+    $stmt = $this->pdo->prepare("DELETE FROM etudiant WHERE id = :id");
+    $stmt->execute([':id' => $id]);
+}
+
+/**
+ * @brief Modifier le rôle d’un étudiant
+ */
+public function updateRole(int $id, string $role): void
+{
+    $stmt = $this->pdo->prepare("UPDATE etudiant SET role = :role WHERE id = :id");
+    $stmt->execute([
+        ':role' => $role,
+        ':id' => $id
+    ]);
+}
+
+/**
+ * @brief Modifier l’année
+ */
+public function updateAnnee(int $id, int $annee): void
+{
+    $stmt = $this->pdo->prepare("UPDATE etudiant SET Annee = :annee WHERE id = :id");
+    $stmt->execute([
+        ':annee' => $annenee,
+        ':id' => $id
+    ]);
+}
+
+/**
+ * @brief Supprime complètement un compte étudiant
+ */
+public function supprimerCompte(int $id): bool
+{
+    try {
+        $this->pdo->beginTransaction();
+
+        // Supprimer d'abord les dépendances si nécessaire
+        $stmt = $this->pdo->prepare("DELETE FROM devoir WHERE idEtudiant = :id");
+        $stmt->execute([':id' => $id]);
+
+        $stmt = $this->pdo->prepare("DELETE FROM messageGlobal WHERE idEtudiant = :id");
+        $stmt->execute([':id' => $id]);
+        
+        $stmt = $this->pdo->prepare("DELETE FROM signalement WHERE idEtudiant = :id");
+        $stmt->execute([':id' => $id]);
+        
+        // Puis supprimer l'étudiant
+        $stmt = $this->pdo->prepare("DELETE FROM etudiant WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+
+        $this->pdo->commit();
+        return true;
+
+    } catch (Exception $e) {
+        $this->pdo->rollBack();
+        return false;
+    }
+}
+// Rechercher tous les utilisateurs en fonction de leur role année ou barre de recherche
+public function findWithFilters($search, $role, $annee) {
+
+    $sql = "SELECT * FROM etudiant WHERE 1=1";
+    $params = [];
+
+    if ($search) {
+        $sql .= " AND (nom LIKE :search OR prenom LIKE :search OR mail LIKE :search)";
+        $params['search'] = "%$search%";
+    }
+
+    if ($role) {
+        $sql .= " AND role = :role";
+        $params['role'] = $role;
+    }
+
+    if ($annee) {
+        $sql .= " AND annee = :annee";
+        $params['annee'] = $annee;
+    }
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+public function update($id, $nom, $prenom, $mail, $role) {
+
+    $sql = "UPDATE etudiant 
+            SET nom = :nom,
+                prenom = :prenom,
+                mail = :mail,
+                role = :role
+            WHERE id = :id";
+
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->execute([
+        'id' => $id,
+        'nom' => $nom,
+        'prenom' => $prenom,
+        'mail' => $mail,
+        'role' => $role
+    ]);
+}
+
 }

@@ -1,0 +1,22 @@
+/* On grise le fond du samedi (sat) et dimanche (sun) */
+.fc-day-sat, .fc-day-sun {
+        background-color: rgba(149, 6, 238, 0) !important; /* Gris léger */
+}
+/* On change la couleur du texte de l'en-tête pour le week-end */
+.fc-col-header-cell.fc-day-sat, 
+.fc-col-header-cell.fc-day-sun {
+    background-color: #fdfeff; /* Un gris un peu plus prononcé pour l'en-tête */
+}
+
+ /* 1. Change la couleur de TOUS les jours de la semaine (Lundi au Dimanche) */
+.fc-col-header-cell .fc-col-header-cell-cushion {
+        color: #010306 !important; /* Bleu Bootstrap par exemple */
+        text-decoration: none !important; /* Enlève le soulignement si c'est un lien */
+        font-weight: bold;
+}
+
+/* 2. OPTIONNEL : Si vous voulez une couleur différente spécifiquement pour le week-end */
+.fc-day-sat .fc-col-header-cell-cushion, 
+.fc-day-sun .fc-col-header-cell-cushion {
+    color: #6c757d !important; /* Gris pour le week-end */
+}
