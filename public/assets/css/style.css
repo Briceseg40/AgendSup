@@ -1,5 +1,10 @@
 * {
-    font-family: 'Love Ya Like A Sister', cursive;
+    font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 body {
     width: 100%;
@@ -31,8 +36,9 @@ body {
 .left-10px { left: 10px; }
 .right-30px{ right: 30px;}
 .mt-40 { margin-top: 40px; }
-.fs-13 { font-size: 13px !important; }
+.fs-19 { font-size: 19px !important; }
 .fs-20 { font-size: 20px !important; }
+.fs-120 { font-size: 120px !important; }
 .fs-50 { font-size: 50px; }
 .p-20 { padding: 20px; }
 .w-110px { width: 110px; }
@@ -43,14 +49,8 @@ body {
     text-transform: uppercase;
 }
 
-.btn-normal:hover {
-    background-color:rgba(209, 209, 209, 1) !important;
-}
-
-.btn-danger:hover {
-    background-color:rgba(220, 53, 69, 0.8) !important;
-
-
+.text-btn:hover {
+    background-color: rgba(128, 128, 128, 0.5);
 }
 
 .titre {
@@ -66,7 +66,8 @@ body {
 }
 h1 {
     font-family: 'Love Ya Like A Sister', cursive;
-    font-size: 130px;
+    font-size: 200px;
+
 }
 #imgBg {
     height: 96vh;
