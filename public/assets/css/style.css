@@ -49,6 +49,10 @@ body {
     text-transform: uppercase;
 }
 
+.text-btn:hover {
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
 .titre {
     font-family: 'Love Ya Like A Sister';
     font-size: 128px;
@@ -61,7 +65,7 @@ body {
     max-width: 750px;
 }
 h1 {
-  font-family: "Roboto", sans-serif;
+    font-family: "Monotype Corsiva", "Apple Chancery", "Zapf Chancery", cursive;
 
     font-size: 200px;
 
@@ -322,5 +326,3 @@ a.text-muted:hover {
     cursor: pointer;
     border-radius: 4px;
 }
-
-.btn-normal
