@@ -56,9 +56,9 @@
 
     <img id="imgBg" src="public/assets/img/background.png" alt="Fond d'AgendSup">
     <header class="btn-message">
-    <button class="btn border btn-light rounded-circles shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMessages">
+    <a href="?controleur=chat&methode=lister" class="w-auto btn p-2 border btn-light rounded-border">
         <i class="fa-solid fa-comments me-2"></i> Messages
-    </button>
+    </a>
         <div class="header-right">
         <button type="button" class="w-auto btn p-2 border btn-light rounded-circle" data-bs-toggle="modal" data-bs-target="#profilModal">
             <i class="fa-solid fa-user"></i>
@@ -74,125 +74,4 @@
     <main>
         {% block body %}{% endblock %}
     </main>
-
-    {# --- VOLET MESSAGERIE (OFFCANVAS GAUCHE) --- #}
-<div class="offcanvas offcanvas-start border-end border-2 border-black rounded-end-4 shadow-lg" tabindex="-1" id="offcanvasMessages" style="width: 380px; background-color: #f8f9fa;">
-    
-    <div class="offcanvas-header border-bottom border-black bg-white p-3">
-        <h3 class="offcanvas-title w-100 text-center font-love fw-bold mb-0">Mes Messages</h3>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    
-    <div class="offcanvas-body p-0 d-flex flex-column">
-        
-        <!-- LE BOUTON DE CRÉATION (Style AgendSup) -->
-        <div class="p-3 bg-gray border-bottom border-black">
-            <button class="btn btn-dark w-100 rounded-pill fw-bold shadow font-love py-2" data-bs-toggle="modal" data-bs-target="#modalNouveauChat">
-                <i class="fa-solid fa-plus me-2"></i> NOUVELLE DISCUSSION
-            </button>
-        </div>
-
-        <!-- Liste des discussions existantes -->
-        <div class="list-group list-group-flush overflow-auto flex-grow-1">
-            {% for chat in chatsRecents %}
-                <a href="?controleur=chat&methode=lister&id_chat={{ chat.id }}" class="list-group-item list-group-item-action p-3 border-bottom border-black d-flex align-items-center gap-3">
-                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 50px; height: 50px; min-width: 50px;">
-                        {{ chat.Nom|slice(0, 1)|upper }}
-                    </div>
-                    <div class="overflow-hidden w-100">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0 fw-bold text-truncate font-love">{{ chat.Nom }}</h6>
-                            <small class="text-muted" style="font-size: 0.7rem;">{{ chat.date_dernier|slice(11, 5) }}</small>
-                        </div>
-                        <p class="mb-0 text-muted text-truncate small fst-italic">
-                            {{ chat.dernier_message|default('Aucun message') }}
-                        </p>
-                    </div>
-                </a>
-            {% else %}
-                <div class="p-5 text-center text-muted font-love">
-                    <i class="fa-regular fa-face-smile d-block fs-1 mb-2"></i>
-                    Aucune discussion.
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
-        {# --- LA MODALE DE CRÉATION (Celle qui s'ouvre quand on clique sur le bouton) --- #}
-        <div class="modal fade" id="modalNouveauChat" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-gray border border-2 border-black rounded-4 shadow-lg p-0 overflow-hidden">
-                    <div class="modal-header border-bottom border-black bg-white p-3">
-                        <h3 class="modal-title w-100 text-center font-love fw-bold">Nouveau Groupe</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <form action="?controleur=chat&methode=enregistrer" method="POST">
-                        {# --- Dans chat-offcanvas.html.twig, à l'intérieur de la modale #modalNouveauChat --- #}
-
-        <div class="modal-body p-4">
-            <div class="mb-4">
-                <label class="text-muted small fst-italic font-love mb-1 px-2">Nom de la discussion</label>
-                <input type="text" name="nom_chat" class="form-control border border-black rounded-pill p-2 px-3 shadow-sm" placeholder="Ex: Projet Web..." required>
-            </div>
-
-            <label class="text-muted small fst-italic font-love mb-2 px-2">Sélectionner les membres</label>
-            
-            <!-- BARRE DE RECHERCHE AJOUTÉE -->
-            <div class="input-group mb-3 shadow-sm">
-                <span class="input-group-text bg-white border border-black border-end-0 rounded-start-pill">
-                    <i class="fa-solid fa-magnifying-glass text-muted"></i>
-                </span>
-                <input type="text" id="searchMemberInput" class="form-control border border-black border-start-0 rounded-end-pill p-2" placeholder="Rechercher un nom...">
-            </div>
-
-            <!-- LISTE DES MEMBRES -->
-            <div class="bg-white border border-black rounded-3 shadow-sm overflow-auto" style="max-height: 250px;" id="memberListContainer">
-                {% for e in etudiants %}
-                    <label class="list-group-item d-flex align-items-center p-3 border-bottom border-secondary-subtle member-item">
-                        <input class="form-check-input me-3 border-black" type="checkbox" name="participants[]" value="{{ e.id }}">
-                        <div class="fw-bold member-name">{{ e.prenom }} {{ e.nom|upper }}</div>
-                    </label>
-                {% endfor %}
-            </div>
-        </div>
-
-                <div class="modal-footer border-top border-black bg-white justify-content-center p-3">
-                    <button type="submit" class="btn btn-dark border border-black shadow text-uppercase font-love px-5 py-2 rounded-3">
-                        Lancer le chat <i class="fa-solid fa-paper-plane ms-2"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-    {% include 'profil-modal.html.twig' %}
-</body>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchMemberInput');
-    const memberItems = document.querySelectorAll('.member-item');
-
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-
-            memberItems.forEach(item => {
-                const memberName = item.querySelector('.member-name').textContent.toLowerCase();
-                
-                if (memberName.includes(searchTerm)) {
-                    item.classList.add('d-flex'); // On utilise d-flex car c'est la classe de base Bootstrap
-                    item.style.display = 'flex';
-                } else {
-                    item.classList.remove('d-flex');
-                    item.style.display = 'none';
-                }
-            });
-        });
-    }
-});
-</script>
 </html>

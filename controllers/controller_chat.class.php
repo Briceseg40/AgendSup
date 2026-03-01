@@ -23,13 +23,23 @@ class ControllerChat extends Controller
      */
     public function lister(): void
     {
+        // 1. Sécurité : on récupère l'ID de l'utilisateur connecté
+        if (!isset($_SESSION['user'])) {
+            header("Location: ?controleur=connecter&methode=render");
+            exit();
+        }
         $idMoi = $_SESSION['user']->getId();
-        $manager = new ChatDAO($this->getPdo());
+        $pdo = $this->getPdo();
+        $manager = new ChatDAO($pdo);
 
-        // 1. Liste pour l'Offcanvas (dernier message)
-        $chatsRecents = $manager->findChatsRecents($idMoi);
+        // 2. Récupérer les chats de l'utilisateur
+        $chats = $manager->findChatsByEtudiant($idMoi);
 
-        // 2. Si un chat est sélectionné, on récupère toute la conversation
+        // 3. Récupérer tous les étudiants pour la modale de création
+        $etudiantManager = new EtudiantDAO($pdo);
+        $etudiants = $etudiantManager->findAll();
+
+        // 4. Gérer le chat actif et ses messages
         $idActive = $_GET['id_chat'] ?? null;
         $messages = [];
         $activeChat = null;
@@ -39,13 +49,14 @@ class ControllerChat extends Controller
             $messages = $manager->getMessagesByChat((int)$idActive, $idMoi);
         }
 
+        // 5. Affichage
         $template = $this->getTwig()->load('chat.html.twig');
         echo $template->render([
-            'chatsRecents' => $chatsRecents,
+            'chats' => $chats,
+            'etudiants' => $etudiants,
             'messages' => $messages,
             'activeChat' => $activeChat,
-            'idActive' => $idActive,
-            'etudiants' => (new EtudiantDAO($this->getPdo()))->findAll()
+            'idActive' => $idActive
         ]);
     }
 

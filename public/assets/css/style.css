@@ -31,7 +31,9 @@ body {
 
 .top-30px { top: 30px; }
 .mt-40 { margin-top: 40px; }
+.fs-19 { font-size: 19px !important; }
 .fs-20 { font-size: 20px !important; }
+.fs-120 { font-size: 120px !important; }
 .fs-50 { font-size: 50px; }
 .p-20 { padding: 20px; }
 .w-110px { width: 110px; }
@@ -40,6 +42,10 @@ body {
 .text-btn {
     font-size: 24px !important;
     text-transform: uppercase;
+}
+
+.text-btn:hover {
+    background-color: rgba(128, 128, 128, 0.5);
 }
 
 .titre {
@@ -55,7 +61,8 @@ body {
 }
 h1 {
     font-family: 'Love Ya Like A Sister', cursive;
-    font-size: 130px;
+    font-size: 200px;
+
 }
 #imgBg {
     height: 96vh;
