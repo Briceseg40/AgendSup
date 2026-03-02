@@ -81,7 +81,7 @@ class ControllerDevoir extends Controller {
             
             /* @brief Si la date de fin est antérieure ou égale à la date de début */
 
-            $contenuproteger = htmlentities($_POST['contenu']);
+            $contenuproteger = $_POST['contenu'];
 
             if (strtotime($dateHeureFin) <= strtotime($dateHeureDebut)) {
                 // En cas d'erreur, on ne sauvegarde pas et on renvoie un message

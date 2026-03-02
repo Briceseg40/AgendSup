@@ -50,11 +50,11 @@
                     <thead class="table-light">
                         <tr>
                             <th class="ps-4" style="width: 25%;">Matière</th>
-                            <th style="width: 15%;">Dates</th>
-                            <th style="width: 12%;">Horaires</th>
                             <th style="width: 18%;">Description</th>
+                            <th style="width: 15%;">cours</th>
+                            <th style="width: 15%;">date rendu</th>
                             <th class="text-center" style="width: 10%;">Couleur</th>
-                            <th class="text-center" style="width: 20%;">Actions</th>
+                            <th class="text-center" style="width: 20%;">    </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,23 +64,23 @@
                                 <span class="fw-bold text-dark">{{ devoir.libelle }}</span>
                             </td>
 
-                            <td>
-                                <div class="small">
-                                    <div class="text-nowrap mb-1">{{ devoir.dateDeb|date("d/m/Y") }}</div>
-                                    <div class="text-nowrap text-danger fw-semibold">{{ devoir.datefin|date("d/m/Y") }}</div>
-                                </div>
-                            </td>
-
-                            <td>
-                                <div class="small">
-                                    <div class="text-nowrap text-muted mb-1">{{ devoir.heureDeb }}</div>
-                                    <div class="text-nowrap text-danger">{{ devoir.heureFin }}</div>
-                                </div>
-                            </td>
-
-                            <td>
+                                                        <td>
                                 <div class="text-muted small text-truncate" style="max-width: 150px;" title="{{ devoir.contenu }}">
                                     {{ devoir.contenu|default('...') }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="small">
+                                    <div class="text-nowrap mb-1 text-primary fw-semibold">{{ devoir.dateDeb|date("d/m/Y") }}</div>
+                                    <div class="text-nowrap text-primary">{{ devoir.heureDeb }}</div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="small">
+                                <div class="text-nowrap text-danger fw-semibold">{{ devoir.datefin|date("d/m/Y") }}</div>
+                                <div class="text-nowrap text-danger">{{ devoir.heureFin }}</div>
                                 </div>
                             </td>
                             
