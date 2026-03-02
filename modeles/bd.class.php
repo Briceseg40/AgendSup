@@ -10,13 +10,14 @@ class Bd
         $config = Config::getConfig();
         
         $dbHost = $config['db']['host'];
+        $dpPort = $config['db']['port'] ?? 3306;
         $dbName = $config['db']['name']; 
         $dbUser = $config['db']['user'];
         $dbPass = $config['db']['password'] ?? ''; 
 
         try
         {
-            $dsn = "mysql:host=$dbHost;dbname=$dbName;charset=utf8mb4";
+            $dsn = "mysql:host=$dbHost;port=$dpPort;dbname=$dbName;charset=utf8mb4";
             
             $this->pdo = new PDO($dsn, $dbUser, $dbPass);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

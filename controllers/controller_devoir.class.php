@@ -50,10 +50,6 @@ class ControllerDevoir extends Controller {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
-        elseif ( $_SESSION['user']->getRole() === 'ressource') {
-            header('Location: index.php?controleur=connecter&methode=render');
-            exit;
-        }
         
         /* @brief Récupération des cours correspondant à l'année et au parcours de l'utilisateur */
         $coursManager = new CoursDao($this->getPdo());
@@ -140,15 +136,6 @@ class ControllerDevoir extends Controller {
         header('Location: index.php?controleur=connecter&methode=render');
         exit;
     }
-    elseif ( $_SESSION['user']->getRole() === 'ressource') {
-        header('Location: index.php?controleur=connecter&methode=render');
-        exit;
-    }
-
-    if (!$idDevoir) {
-        header("Location: index.php?controleur=devoir&methode=lister");
-        exit();
-    }
 
     $devoirManager = new DevoirDAO($this->getPdo());
     $coursManager = new CoursDao($this->getPdo());
@@ -221,10 +208,6 @@ class ControllerDevoir extends Controller {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
-        elseif ( $_SESSION['user']->getRole() === 'ressource') {
-            header('Location: index.php?controleur=connecter&methode=render');
-            exit;
-        }
 
         /* @brief Récupération de l'ID du devoir à supprimer depuis l'URL */
         $id = $_GET['id'] ?? null;
@@ -254,10 +237,6 @@ class ControllerDevoir extends Controller {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
-        elseif ( $_SESSION['user']->getRole() === 'ressource') {
-            header('Location: index.php?controleur=connecter&methode=render');
-            exit;
-        }
 
         /* @brief Initialisation du gestionnaire de devoirs */
         $manager = new DevoirDAO($this->getPdo());
@@ -267,8 +246,6 @@ class ControllerDevoir extends Controller {
         // Correction : On nomme la variable $devoirs
         $devoirs = $manager->findByEtudiant($user->getId()); 
         
-        
-
     
         /* @brief Affichage de la liste des devoirs */
         echo $this->getTwig()->render('listerDevoir.twig', [
