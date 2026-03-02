@@ -66,7 +66,7 @@
                     <form action="?controleur=chat&methode=envoyer" method="POST" class="d-flex gap-2 align-items-center">
                         <input type="hidden" name="id_chat" value="{{ idActive }}">
                         <input type="text" name="message" class="form-control rounded-pill border-black px-4 py-2" placeholder="Écrivez votre message..." required autocomplete="off">
-                        <button type="submit" class="btn btn-dark rounded-circle shadow" style="width: 45px; height: 45px;"><i class="fa-solid fa-paper-plane"></i></button>
+                        <button type="submit" class="btn rounded-circle shadow btn-normal border border-black shadow rounded-3 bg-white fw-bold" style="width: 45px; height: 45px;"><i class="fa-solid fa-paper-plane"></i></button>
                     </form>
                 </div>
             {% else %}
