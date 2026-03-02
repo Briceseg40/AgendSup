@@ -31,7 +31,7 @@
 {% block body %}
 <style>
    #contenu {
-        min-height: 201px;
+        min-height: 120px;
         resize: none;
     }
 </style>
@@ -40,11 +40,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow border-0">
-                <div class="card-header bg-white text-dark d-flex justify-content-between align-items-center py-2">
-                    <h3 class="mb-0 h6"><i class="bi bi-pencil-square"></i> {{ titre }}</h3>    
+                <div class="card-header text-dark d-flex justify-content-between align-items-center py-2 bg-white">
+                    <h3 class="mb-0 h6"><i class="bi bi-pencil-square"></i> {{ titre }}</h3>
+                    <a href="index.php?controleur=devoir&methode=lister" class="btn bg-white rounded-3 shadow border-black fw-bold">Retour</a>
                 </div>
                 
-                <div class="card-body p-4"> {# Padding ajusté #}
+                <div class="card-body p-4 "> {# Padding ajusté #}
                     
                     {# Affichage de l'erreur serveur bien visible en haut #}
                     {% if error %}
@@ -57,7 +58,7 @@
                         
                         {# Sélection de la matière #}
                         <div class="mb-3">
-                            <label for="idCour" class="form-label small fw-bold">Matière / ReSSource</label>
+                            <label for="idCour" class="form-label small fw-bold">Ressource</label>
                             <select name="idCour" id="idCour" class="form-select" required>
                                 <option value="" disabled>-- Sélectionnez une matière --</option>
                                 {% set currentSemestre = "" %}
@@ -76,23 +77,23 @@
                         </div>
 
                         <div class="row g-3">
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="date_deb" class="form-label small fw-bold text-primary">Date de début</label>
                                 <input type="date" class="form-control" id="date_deb" name="date_deb" 
                                        value="{{ devoir.dateDeb|date('Y-m-d') }}" required>
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="heure_deb" class="form-label small fw-bold text-primary">Heure de début</label>
+                                <input type="time" class="form-control" id="heure_deb" name="heure_deb" 
+                                       value="{{ devoir.heureDeb }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
                                 <label for="date_fin" class="form-label small fw-bold text-danger">Date de rendu (fin)</label>
                                 <input type="date" class="form-control" id="date_fin" name="date_fin" 
                                        value="{{ devoir.datefin|date('Y-m-d') }}" required>
                             </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="heure_deb" class="form-label small fw-bold">Heure de début</label>
-                                <input type="time" class="form-control" id="heure_deb" name="heure_deb" 
-                                       value="{{ devoir.heureDeb }}" required>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="heure_fin" class="form-label small fw-bold">Heure de fin</label>
+                            <div class="col-md-6 mb-3">
+                                <label for="heure_fin" class="form-label small fw-bold text-danger">Heure de fin</label>
                                 <input type="time" class="form-control" id="heure_fin" name="heure_fin" 
                                        value="{{ devoir.heureFin }}" required>
                             </div>
@@ -100,21 +101,20 @@
 
                         <div class="mb-3">
                             <label for="contenu" class="form-label small fw-bold">Description du travail</label>
-                            <small id="char-count" class="text-muted">          0 / 1000</small>
                             <textarea class="form-control" id="contenu" name="contenu" rows="3" maxlength="1000">{{ devoir.contenu }}</textarea>
+                            <small id="char-count" class="text-muted">0 / 1000</small>
                         </div>
 
                         <div class="mb-4">
-                            <label for="Couleur" class="form-label small fw-bold">Couleur de priorité</label>
-                            <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
+                            <label for="Couleur" class="form-label small fw-bold ">Couleur</label>
+                            <input type="color" class="form-control form-control-color w-100 " id="Couleur" name="Couleur" 
                                    value="{{ devoir.couleur|default('#4e73df') }}">
                         </div>
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn bg-white rounded-3 shadow border-black fw-bold">
-                                <i class="bi bi-check-circle"></i> Enregistrer les modifications
+                             Sauvegarder les modifications
                             </button>
-                            <a href="index.php?controleur=devoir&methode=lister" class="btn bg-white rounded-3 shadow border-black fw-bold">Annuler</a>
                         </div>
                     </form>
                 </div>
