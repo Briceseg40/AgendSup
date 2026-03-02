@@ -31,7 +31,7 @@ class ClasseVirtuelDAO {
     public function create(classeVirtuel $classe): void {
          $user = $_SESSION['user'];
         // 1. Créer la classe
-        $sql = "INSERT INTO classeVirtuel (img, titre, description, idClasse, idCreateur, code) VALUES (:img, :titre, :description, :idClasse, :idCreateur,:code)";
+        $sql = "INSERT INTO classevirtuel (img, titre, description, idClasse, idCreateur, code) VALUES (:img, :titre, :description, :idClasse, :idCreateur,:code)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':img' => $classe->getImage(),
@@ -64,7 +64,7 @@ class ClasseVirtuelDAO {
 
     public function findInscrites(int $idEtudiant): array {
         $sql = "SELECT c.*, e.Nom as nomCreateur, e.Prenom as prenomCreateur
-                FROM classeVirtuel c 
+                FROM classevirtuel c 
                 JOIN inscription i ON c.id = i.id_classe 
                 JOIN etudiant e ON c.idCreateur = e.id
                 WHERE i.id_etudiant = :id";
@@ -97,7 +97,7 @@ class ClasseVirtuelDAO {
      * @return array Liste de toutes les classes.
      */
     public function findAll() {
-        $sql = "SELECT * FROM classeVirtuel"; 
+        $sql = "SELECT * FROM classevirtuel"; 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -120,7 +120,7 @@ class ClasseVirtuelDAO {
     }
 
     public function countAll() {
-        $sql = "SELECT COUNT(*) as total FROM classeVirtuel";
+        $sql = "SELECT COUNT(*) as total FROM classevirtuel";
         $stmt = $this->pdo->query($sql);
         return $stmt->fetch()['total'];
     }
@@ -130,7 +130,7 @@ class ClasseVirtuelDAO {
      * @return ClasseVirtuel|null La classe trouvée ou null si elle n'existe pas.
      */
     public function findCode(string $code): ?ClasseVirtuel {
-        $sql = "SELECT * FROM classeVirtuel WHERE code = :code";
+        $sql = "SELECT * FROM classevirtuel WHERE code = :code";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':code' => $code]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
