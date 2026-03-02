@@ -38,16 +38,22 @@
 {% block title %}AgendSup - Création de devoirs{% endblock %}
 
 {% block body %}
+<style>
+   #contenu {
+        min-height: 120px;
+        resize: none;
+    }
+</style>
+
     <div class="container mt-3"> {# mt-3 pour remonter le formulaire #}
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card shadow border-0">
-                    <div class="card-header bg-white text-dark d-flex justify-content-between align-items-center py-2">
+                    <div class="card-header bg-gray text-dark d-flex justify-content-between align-items-center py-2">
                         <h3 class="mb-0 h6"><i class="bi bi-plus-circle"></i> Création d'un Devoir</h3>
-                        <a href="index.php?controleur=devoir&methode=lister" class="btn btn-normal btn-light border border-black shadow fs-5 px-4 py-2 rounded-3 bg-white w-auto fw-bold">Retour</a>
                     </div>
                     
-                    <div class="card-body p-4">
+                    <div class="card-body p-4 ">
                         {# Message d'erreur serveur #}
                         {% if error %}
                             <div class="alert alert-danger alert-dismissible fade show shadow-sm py-2" role="alert">
@@ -61,7 +67,7 @@
 
                             {# Sélection de la matière #}
                             <div class="mb-3">
-                                <label for="idCour" class="form-label small fw-bold">Matière / Ressource</label>
+                                <label for="idCour" class="form-label small fw-bold">Ressource</label>
                                 <select name="idCour" id="idCour" class="form-select" required>
                                     <option value="" selected disabled>-- Sélectionnez une matière --</option>
                                     {% set currentSemestre = "" %}
@@ -78,30 +84,32 @@
                             </div>
 
                             {# Dates et Heures #}
-                            <div class="row g-3">
-                                <div class="col-md-3 mb-3">
+                            <div class="row g-6">
+                                <div class="col-md-6 mb-3">
                                     <label for="date_deb" class="form-label small fw-bold text-primary">Date de début *</label>
                                     <input type="date" class="form-control" id="date_deb" name="date_deb" required>
                                 </div>
-                                <div class="col-md-3 mb-3">
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="heure_deb" class="form-label small fw-bold text-primary">Heure de début *</label>
+                                    <input type="time" class="form-control" id="heure_deb" name="heure_deb" min="8:00" max="18:30" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
                                     <label for="date_fin" class="form-label small fw-bold text-danger">Date de fin *</label>
                                     <input type="date" class="form-control" id="date_fin" name="date_fin" required>
                                 </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="heure_deb" class="form-label small fw-bold">Heure de début *</label>
-                                    <input type="time" class="form-control" id="heure_deb" name="heure_deb" min="8:00" max="18:30" required>
-                                </div>
-                                <div class="col-md-3 mb-3">
-                                    <label for="heure_fin" class="form-label small fw-bold">Heure de fin *</label>
-                                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" required>
+                                <div class="col-md-6 mb-3">
+                                    <label for="heure_fin" class="form-label small fw-bold text-danger">Heure de fin *</label>
+                                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" min="8:00" max="18:30" required>
                                 </div>
                             </div>
 
                             {# Description avec Compteur #}
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between">
-                                    <label for="contenu" class="form-label small fw-bold">Consignes / Contenu</label>
-                                    <small id="char-count" class="text-muted">0 / 1000</small>
+                                    <label for="contenu" class="form-label small fw-bold">Description du travail</label>
+                                    
                                 </div>
                                 <textarea 
                                     class="form-control" 
@@ -111,19 +119,21 @@
                                     maxlength="1000" 
                                     placeholder="Description du travail à faire..."
                                     required></textarea>
+                                <small id="char-count" class="text-muted">0 / 1000</small>
                             </div>
 
                             {# Couleur de priorité #}
                             <div class="mb-4">
-                                <label for="Couleur" class="form-label small fw-bold">Couleur de priorité</label>
+                                <label for="Couleur" class="form-label small fw-bold ">Couleur</label>
                                 <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
                                        value="#4e73df" title="Choisir une couleur">
                             </div>
 
-                            <button type="submit" class="btn btn-normal btn-light border border-black shadow fs-5 px-4 py-2 rounded-3 bg-white w-100 fw-bold">
+                            <button type="submit" class="btn bg-white rounded-3 w-100 shadow border-black fw-bold">
                                 <i class="bi bi-check-lg"></i> Enregistrer le devoir
                             </button>
-                        </form>
+                            
+                        </div>
                     </div>
                 </div>
             </div>
