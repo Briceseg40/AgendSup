@@ -12,7 +12,7 @@ class ControllerDevoir extends Controller {
         $user = $_SESSION['user'];
 
         // Sécurité : Rôles autorisés
-        if ($user->getRole() !== 'delegue') {
+        if ($user->getRole() !== 'ressource') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
@@ -47,7 +47,7 @@ class ControllerDevoir extends Controller {
 
             $contenuproteger = $_POST['contenu'];
 
-            $nouveauDevoir = new Devoir(
+            $nouveauCours = new CoursPrevue(
                 null,
                 $libelleMatiere,
                 $_POST['date_deb'],
@@ -61,15 +61,15 @@ class ControllerDevoir extends Controller {
                 $user->getId()
             );
 
-            $devoirDAO = new DevoirDAO($this->getPdo());
-            if ($devoirDAO->create($nouveauDevoir)) {
-                header('Location: index.php?controleur=devoir&methode=afficher');
+            $coursPrevusDAO = new CoursPrevueDAO($this->getPdo());
+            if ($coursPrevusDAO->create($nouveauCours)) {
+                header('Location: index.php?controleur=coursPrevue&methode=afficher');
                 exit();
             }
         }
 
-        echo $this->getTwig()->render('creerDevoir.twig', [
-            "titre" => "Créer un devoir",
+        echo $this->getTwig()->render('creerCoursPrevue.twig', [
+            "titre" => "Créer un cours prévus",
             "lesCours" => $listeDesCours 
         ]);
     }
@@ -77,7 +77,7 @@ class ControllerDevoir extends Controller {
     public function lister(): void
     {
         $user = $_SESSION['user'];
-        if ($user->getRole() !== 'delegue') {
+        if ($user->getRole() !== 'ressource') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }

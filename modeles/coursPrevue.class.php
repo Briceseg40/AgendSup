@@ -52,25 +52,72 @@ class CoursPrevue
         return $this->heure_fin; 
     
     }
-    public function getLibelle(): ?string { return $this->libelle; }
-    public function getDescription(): ?string { return $this->description; }
-    public function getCouleur(): ?string { return $this->couleur; }
-    public function getIdEtudiant(): ?int { return $this->idEtudiant; }
-    public function getIdClasseVirtuel(): ?int { return $this->idClasseVirtuel; }
-    public function getIdCours(): ?int { return $this->idCours; }
+    public function getLibelle(): ?string { 
+        return $this->libelle; 
+    }
+
+    public function getDescription(): ?string { 
+        return $this->description; 
+    }
+
+    public function getCouleur(): ?string { 
+        return $this->couleur; 
+    }
+
+    public function getIdEtudiant(): ?int { 
+        return $this->idEtudiant; 
+    }
+
+    public function getIdClasseVirtuel(): ?int {
+         return $this->idClasseVirtuel; 
+    }
+
+    public function getIdCours(): ?int {
+         return $this->idCours; 
+    }
 
     // --- SETTERS ---
     public function setId(?int $id): void { 
         $this->id = $id; 
-        }
-    public function setDateDeb(?string $date_deb): void { $this->date_deb = $date_deb; }
-    public function setDateFin(?string $date_fin): void { $this->date_fin = $date_fin; }
-    public function setHeureDeb(?string $heure_deb): void { $this->heure_deb = $heure_deb; }
-    public function setHeureFin(?string $heure_fin): void { $this->heure_fin = $heure_fin; }
-    public function setLibelle(?string $libelle): void { $this->libelle = $libelle; }
-    public function setDescription(?string $description): void { $this->description = $description; }
-    public function setCouleur(?string $couleur): void { $this->couleur = $couleur; }
-    public function setIdEtudiant(?int $idEtudiant): void { $this->idEtudiant = $idEtudiant; }
-    public function setIdClasseVirtuel(?int $idClasseVirtuel): void { $this->idClasseVirtuel = $idClasseVirtuel; }
-    public function setIdCours(?int $idCours): void { $this->idCours = $idCours; }
+    }
+
+    public function setDateDeb(?string $date_deb): void { 
+        $this->date_deb = $date_deb; 
+    }
+
+    public function setDateFin(?string $date_fin): void { 
+        $this->date_fin = $date_fin; 
+    }
+
+    public function setHeureDeb(?string $heure_deb): void { 
+        $this->heure_deb = $heure_deb; 
+    }
+
+    public function setHeureFin(?string $heure_fin): void { 
+        $this->heure_fin = $heure_fin; 
+    }
+
+    public function setLibelle(?string $libelle): void { 
+        $this->libelle = $libelle; 
+    }
+
+    public function setDescription(?string $description): void { 
+        $this->description = $description; 
+    }
+    
+    public function setCouleur(?string $couleur): void { 
+        $this->couleur = $couleur; 
+    }
+
+    public function setIdEtudiant(?int $idEtudiant): void { 
+        $this->idEtudiant = $idEtudiant; 
+    }
+
+    public function setIdClasseVirtuel(?int $idClasseVirtuel): void { 
+        $this->idClasseVirtuel = $idClasseVirtuel; 
+    }
+
+    public function setIdCours(?int $idCours): void { 
+        $this->idCours = $idCours; 
+    }
 }
