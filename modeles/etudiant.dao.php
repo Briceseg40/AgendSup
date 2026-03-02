@@ -53,16 +53,15 @@ class EtudiantDAO {
         $etudiant = [];
         foreach ($results as $row) {
             $etudiant[] = new Etudiant(
-                $row['id'],        // 1: id
-                $row['Nom'],       // 2: Nom
-                $row['Prenom'],    // 3: Prenom
-                $row['role'],      // 4: role
-                $row['Annee'],     // 5: Annee
-                $row['idClasse'],  // 6: idClasse (DOIT ÊTRE ICI)
-                $row['mail'],      // 7: mail
-                $row['mdp'],       // 8: mdp
-                $row['Parcour']    // 9: Parcour
-                
+                $row['id'],
+                $row['Nom'],
+                $row['Prenom'],
+                $row['role'],
+                $row['Annee'],
+                $row['idClasse'],
+                $row['mail'],
+                $row['mdp'],
+                $row['Parcour'],
             );
         }
 
@@ -90,16 +89,15 @@ class EtudiantDAO {
 
         if ($row) {
             return new Etudiant(
-                $row['id'],        // 1: id
-                $row['Nom'],       // 2: Nom
-                $row['Prenom'],    // 3: Prenom
-                $row['role'],      // 4: role
-                $row['Annee'],     // 5: Annee
-                $row['idClasse'],  // 6: idClasse (DOIT ÊTRE ICI)
-                $row['mail'],      // 7: mail
-                $row['mdp'],       // 8: mdp
-                $row['Parcour']    // 9: Parcour
-                
+                $row['id'],
+                $row['Nom'],
+                $row['Prenom'],
+                $row['role'],
+                $row['Annee'],
+                $row['idClasse'],
+                $row['mail'],
+                $row['mdp'],
+                $row['Parcour'],
             );
         }
 
@@ -162,7 +160,7 @@ class EtudiantDAO {
                 $row['Prenom'],    // 3: Prenom
                 $row['role'],      // 4: role
                 $row['Annee'],     // 5: Annee
-                $row['idClasse'],  // 6: idClasse (DOIT ÊTRE ICI)
+                $row['idClasse'],  // 6: idClasse
                 $row['mail'],      // 7: mail
                 $row['mdp'],       // 8: mdp
                 $row['Parcour']    // 9: Parcour

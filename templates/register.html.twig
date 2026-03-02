@@ -82,12 +82,46 @@
                 <input type="email" name="email" class="form-control w-100 border-black mb-3 rounded-pill fs-20 p-20" placeholder="Email de l'établissement (nom@iutbayonne.univ-pau.fr)" required
                     title="Entrez une adresse email valide, comme pierre@iutbayonne.univ-pau.fr" value="{{ form_data.email ?? '' }}">
                 <div class="row g-2 mb-3">
-                    <select name="role" class="form-select w-100 border-black rounded-pill fs-20 p-20" style="cursor: pointer;" required>
-                                <option value="" disabled selected>Role</option>
-                                <option value="1" >Etudiant lambda</option>
-                                <option value="2" >Etudiant delegue</option>
-                                <option value="3" >Etudiant ressource</option>
-                    </select>
+                    <!-- Sélecteur de Rôle sous forme de boutons -->
+                    <div class="mb-3">
+                        <label class="d-block mb-2 text-center fs-20">Choisissez votre rôle :</label>
+                        <div class="d-flex gap-2 justify-content-center" id="role-container">
+                            <input type="hidden" name="role" id="role_input" value="{{ form_data.role ?? '' }}" required>
+                            
+                            <!-- Bouton Étudiant -->
+                            <button type="button" class="btn btn-light border-black flex-fill rounded-pill role-btn d-flex align-items-center justify-content-center gap-2 {% if form_data.role == '1' %}active{% endif %}" data-value="1">
+                                Étudiant
+                            </button>
+                            <i class="fa-solid fa-circle-question text-muted" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="focus" 
+                                title="Rôle Étudiant" 
+                                data-bs-content="Accès standard pour consulter l'emploi du temps de votre groupe."
+                                tabindex="0" role="button"></i>
+
+                            <!-- Bouton Délégué -->
+                            <button type="button" class="btn btn-light border-black flex-fill rounded-pill role-btn d-flex align-items-center justify-content-center gap-2 {% if form_data.role == '2' %}active{% endif %}" data-value="2">
+                                Délégué
+                            </button>
+                            <i class="fa-solid fa-circle-question text-muted" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="focus" 
+                                title="Rôle Délégué" 
+                                data-bs-content="Étudiant délégué de son TD/TP ayant les droits pour créer et gérer les devoirs de son groupe.(Uniquement 1 par TP)"
+                                tabindex="0" role="button"></i>
+
+                            <!-- Bouton Ressource -->
+                            <button type="button" class="btn btn-light border-black flex-fill rounded-pill role-btn d-flex align-items-center justify-content-center gap-2 {% if form_data.role == '3' %}active{% endif %}" data-value="3">
+                                Ressource
+                            </button>
+                            <i class="fa-solid fa-circle-question text-muted" 
+                                data-bs-toggle="popover" 
+                                data-bs-trigger="focus" 
+                                title="Rôle Ressource" 
+                                data-bs-content="Rôle réservé aux étudiants en charge de ressources, peut créer des horaires de révisions lié à sa ressource."
+                                tabindex="0" role="button"></i>
+                        </div>
+                    </div>
                 </div>
                 <!-- Nom & prenom -->
                 <div class="row g-2 mb-3">
@@ -96,7 +130,7 @@
                             maxlength="15" minlength="2" title="Entrez un nom de 2 à 15 caractères." value="{{ form_data.name ?? '' }}">
                     </div>
                     <div class="col-6">
-                        <input type="text" name="first_name" class="form-control w-100 border-black mb-3 rounded-pill fs-20 p-20" placeholder="Prenom" required
+                        <input type="text" name="first_name" class="form-control w-100 border-black mb-3 rounded-pill fs-20 p-20" placeholder="Prénom" required
                             maxlength="15" minlength="2" title="Entrez un prénom de 2 à 15 caractères." value="{{ form_data.first_name ?? '' }}">
                     </div>
                 </div>
@@ -104,7 +138,8 @@
                 <!-- Mdp -->
                 <div class="row g-2 mb-3">
                         <input type="password" name="password" class="form-control w-100 border-black rounded-pill fs-20 p-20" placeholder="Mot de passe" pattern= '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.].+$'
-                            required maxlength="20" minlength="4" title="Entrez un mot de passe de 4 à 20 caractères avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial.">
+                            required maxlength="20" minlength="8" title="Entrez un mot de passe de 4 à 20 caractères avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial.">
+                            <label class="form-text text-muted">Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</label>
                 </div>
 
                 <!-- Promo & TD  -->
@@ -112,9 +147,9 @@
                     <div class="col-6">
                         <select name="promo" id="promo_group" class="form-select w-100 border-black rounded-pill fs-20 p-20" style="cursor: pointer;" required>
                             <option value="" disabled selected>Promo</option>
-                            <option value="1" >1ère année</option>
-                            <option value="2" >2ème année</option>
-                            <option value="3" >3ème année</option>
+                            <option value="1" >1re année</option>
+                            <option value="2" >2e année</option>
+                            <option value="3" >3e année</option>
                         </select>
                     </div>
                     <div class="col-6">
@@ -186,8 +221,8 @@
     // Gestion dynamique des parcours en fonction de la promo
     const parcoursOptions = {
         1 : [{value: 'N', label: 'Aucun'}],
-        2 : [{value: 'A', label: 'IAMSI A'}, {value: 'D', label: 'IAMSI D'}],
-        3 : [{value: 'A', label: 'IAMSI A'}, {value: 'D', label: 'IAMSI D'}]
+        2 : [{value: 'A', label: 'RACDV (A)'}, {value: 'D', label: 'IAMSI (D)'}],
+        3 : [{value: 'A', label: 'RACDV (A)'}, {value: 'D', label: 'IAMSI (D)'}]
     };
 
     const promoSelect = document.getElementById('promo_group');
@@ -205,6 +240,40 @@
             });
         }
     });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    });
+    // Gestion de la sélection du rôle par boutons
+    const roleButtons = document.querySelectorAll('.role-btn');
+    const roleInput = document.getElementById('role_input');
+
+    roleButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 1. Retirer la classe 'active' de tous les boutons
+            roleButtons.forEach(btn => btn.classList.remove('active', 'btn-dark', 'text-white'));
+            roleButtons.forEach(btn => btn.classList.add('btn-light'));
+
+            // 2. Ajouter la classe 'active' au bouton cliqué
+            this.classList.add('active', 'btn-dark', 'text-white');
+            this.classList.remove('btn-light');
+
+            // 3. Mettre à jour la valeur de l'input caché
+            roleInput.value = this.getAttribute('data-value');
+        });
+    });
+
+    // Si une valeur existe déjà (rechargement de page), on l'active visuellement
+    const currentValue = roleInput.value;
+    if (currentValue) {
+        const activeBtn = document.querySelector(`.role-btn[data-value="${currentValue}"]`);
+        if (activeBtn) activeBtn.click();
+    }
 </script>
   
 
