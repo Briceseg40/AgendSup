@@ -49,10 +49,6 @@ body {
     text-transform: uppercase;
 }
 
-.text-btn:hover {
-    background-color: rgba(128, 128, 128, 0.5);
-}
-
 .titre {
     font-family: 'Love Ya Like A Sister';
     font-size: 128px;
