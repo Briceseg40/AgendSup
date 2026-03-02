@@ -106,7 +106,7 @@ class ControllerRegister extends Controller {
         }
 
         // SUCCÈS 
-        header('Location: index.php?controleur=register&methode=success');
+        $this->success();
         exit();
     }
 
