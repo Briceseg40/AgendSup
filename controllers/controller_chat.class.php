@@ -136,7 +136,7 @@ class ControllerChat extends Controller
             $pdo->beginTransaction();
 
             // 1. Supprimer les messages liés dans 'Envoyer'
-            $stmt1 = $pdo->prepare("DELETE FROM Envoyer WHERE idChat = ?");
+            $stmt1 = $pdo->prepare("DELETE FROM envoyer WHERE idChat = ?");
             $stmt1->execute([$idChat]);
 
             // 2. Supprimer les messages liés dans 'recevoir'
@@ -185,7 +185,7 @@ class ControllerChat extends Controller
 
                     // --- 4. INSERTION DANS 'Envoyer' (Le créateur / Toi) ---
                     // Colonnes confirmées : idEtudiant, idChat, date_message, contenu
-                    $sqlEnv = "INSERT INTO Envoyer (idEtudiant, idChat, date_message, contenu) 
+                    $sqlEnv = "INSERT INTO envoyer (idEtudiant, idChat, date_message, contenu) 
                             VALUES (:idEtudiant, :idChat, NOW(), :contenu)";
                     $stmtEnv = $pdo->prepare($sqlEnv);
                     $stmtEnv->execute([
@@ -248,7 +248,7 @@ class ControllerChat extends Controller
                 $pdo->beginTransaction();
 
                 // 2. Enregistrer ton message dans 'Envoyer'
-                $sqlEnv = "INSERT INTO Envoyer (idEtudiant, idChat, date_message, contenu) 
+                $sqlEnv = "INSERT INTO envoyer (idEtudiant, idChat, date_message, contenu) 
                         VALUES (:u, :c, NOW(), :msg)";
                 $stmtEnv = $pdo->prepare($sqlEnv);
                 $stmtEnv->execute([

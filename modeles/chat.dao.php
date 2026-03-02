@@ -79,7 +79,7 @@ class ChatDAO
         // On cherche les chats où l'étudiant apparaît soit dans Envoyer, soit dans recevoir
         $sql = "SELECT DISTINCT c.id, c.Nom 
                 FROM chat c
-                WHERE c.id IN (SELECT idChat FROM Envoyer WHERE idEtudiant = :id1)
+                WHERE c.id IN (SELECT idChat FROM envoyer WHERE idEtudiant = :id1)
                 OR c.id IN (SELECT idChat FROM recevoir WHERE idEtudiant = :id2)
                 ORDER BY c.id DESC";
 
@@ -187,7 +187,7 @@ class ChatDAO
     public function getParticipantsIds(int $idChat): array
     {
         // On récupère tous les étudiants liés à ce chat (dans Envoyer ou recevoir)
-        $sql = "SELECT DISTINCT idEtudiant FROM Envoyer WHERE idChat = :id1
+        $sql = "SELECT DISTINCT idEtudiant FROM envoyer WHERE idChat = :id1
                 UNION
                 SELECT DISTINCT idEtudiant FROM recevoir WHERE idChat = :id2";
         $stmt = $this->pdo->prepare($sql);
@@ -200,7 +200,7 @@ class ChatDAO
         // On ne récupère que ce qui concerne PERSONNELLEMENT l'utilisateur connecté
         $sql = "
             SELECT contenu, date_message as dte, (1) as est_moi 
-            FROM Envoyer 
+            FROM envoyer 
             WHERE idChat = :c1 AND idEtudiant = :idMoi1
             
             UNION ALL
@@ -226,13 +226,13 @@ class ChatDAO
             SELECT c.id, c.Nom, m.contenu as dernier_message, m.dte as date_dernier
             FROM chat c
             JOIN (
-                SELECT idChat, contenu, date_message as dte FROM Envoyer
+                SELECT idChat, contenu, date_message as dte FROM envoyer
                 UNION ALL
                 SELECT idChat, contenu, dateMessage as dte FROM recevoir
             ) m ON c.id = m.idChat
-            WHERE c.id IN (SELECT idChat FROM Envoyer WHERE idEtudiant = :id1 UNION SELECT idChat FROM recevoir WHERE idEtudiant = :id2)
+            WHERE c.id IN (SELECT idChat FROM envoyer WHERE idEtudiant = :id1 UNION SELECT idChat FROM recevoir WHERE idEtudiant = :id2)
             AND m.dte = (
-                SELECT MAX(date_message) FROM Envoyer WHERE idChat = c.id
+                SELECT MAX(date_message) FROM envoyer WHERE idChat = c.id
                 UNION
                 SELECT MAX(dateMessage) FROM recevoir WHERE idChat = c.id
                 ORDER BY 1 DESC LIMIT 1
