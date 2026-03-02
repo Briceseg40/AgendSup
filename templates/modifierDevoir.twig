@@ -29,16 +29,22 @@
 {% block title %}AgendSup - Modifier un devoir{% endblock %}
 
 {% block body %}
+<style>
+   #contenu {
+        min-height: 120px;
+        resize: none;
+    }
+</style>
+
 <div class="container mt-3"> {# Marges réduites ici pour remonter #}
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow border-0">
-                <div class="card-header bg-white text-dark d-flex justify-content-between align-items-center py-2">
+                <div class="card-header text-dark d-flex justify-content-between align-items-center py-2 bg-white">
                     <h3 class="mb-0 h6"><i class="bi bi-pencil-square"></i> {{ titre }}</h3>
-                    <a href="index.php?controleur=devoir&methode=lister" class="btn bg-white rounded-3 shadow border-black fw-bold">Retour</a>
                 </div>
                 
-                <div class="card-body p-4"> {# Padding ajusté #}
+                <div class="card-body p-4 "> {# Padding ajusté #}
                     
                     {# Affichage de l'erreur serveur bien visible en haut #}
                     {% if error %}
@@ -51,7 +57,7 @@
                         
                         {# Sélection de la matière #}
                         <div class="mb-3">
-                            <label for="idCour" class="form-label small fw-bold">Matière / ReSSource</label>
+                            <label for="idCour" class="form-label small fw-bold">Ressource</label>
                             <select name="idCour" id="idCour" class="form-select" required>
                                 <option value="" disabled>-- Sélectionnez une matière --</option>
                                 {% set currentSemestre = "" %}
@@ -69,27 +75,24 @@
                             </select>
                         </div>
 
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-6 mb-3">
                                 <label for="date_deb" class="form-label small fw-bold text-primary">Date de début</label>
                                 <input type="date" class="form-control" id="date_deb" name="date_deb" 
                                        value="{{ devoir.dateDeb|date('Y-m-d') }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="date_fin" class="form-label small fw-bold text-danger">Date de rendu (fin)</label>
-                                <input type="date" class="form-control" id="date_fin" name="date_fin" 
-                                       value="{{ devoir.datefin|date('Y-m-d') }}" required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="heure_deb" class="form-label small fw-bold">Heure de début</label>
+                                <label for="heure_deb" class="form-label small fw-bold text-primary">Heure de début</label>
                                 <input type="time" class="form-control" id="heure_deb" name="heure_deb" 
                                        value="{{ devoir.heureDeb }}" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="heure_fin" class="form-label small fw-bold">Heure de fin</label>
+                                <label for="date_fin" class="form-label small fw-bold text-danger">Date de rendu (fin)</label>
+                                <input type="date" class="form-control" id="date_fin" name="date_fin" 
+                                       value="{{ devoir.datefin|date('Y-m-d') }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="heure_fin" class="form-label small fw-bold text-danger">Heure de fin</label>
                                 <input type="time" class="form-control" id="heure_fin" name="heure_fin" 
                                        value="{{ devoir.heureFin }}" required>
                             </div>
@@ -97,20 +100,25 @@
 
                         <div class="mb-3">
                             <label for="contenu" class="form-label small fw-bold">Description du travail</label>
-                            <textarea class="form-control" id="contenu" name="contenu" rows="3">{{ devoir.contenu }}</textarea>
+                            <textarea class="form-control" id="contenu" name="contenu" rows="3" maxlength="1000">{{ devoir.contenu }}</textarea>
+                            <small id="char-count" class="text-muted">0 / 1000</small>
                         </div>
 
                         <div class="mb-4">
-                            <label for="Couleur" class="form-label small fw-bold">Couleur de priorité</label>
-                            <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
+                            <label for="Couleur" class="form-label small fw-bold ">Couleur</label>
+                            <input type="color" class="form-control form-control-color w-100 " id="Couleur" name="Couleur" 
                                    value="{{ devoir.couleur|default('#4e73df') }}">
                         </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn bg-white rounded-3 shadow border-black fw-bold">
-                                <i class="bi bi-check-circle"></i> Enregistrer les modifications
+                        <div class="d-flex gap-3"> 
+                            <a href="index.php?controleur=devoir&methode=lister" class="btn btn-normal bg-white rounded-3 w-50 shadow border-black fw-bold d-flex align-items-center justify-content-center">
+                                Retour
+                            </a>
+
+                            <button type="submit" class="btn btn-normal bg-white rounded-3 w-50 shadow border-black fw-bold">
+                                Sauvegarder les modifications
                             </button>
-                            <a href="index.php?controleur=devoir&methode=lister" class="btn bg-white rounded-3 shadow border-black fw-bold">Annuler</a>
+                            
                         </div>
                     </form>
                 </div>
@@ -120,6 +128,20 @@
 </div>
 
 <script>
+        const txt = document.getElementById('contenu');
+        const cnt = document.getElementById('char-count');
+
+    // Initialisation au chargement de la page (pour afficher le compte existant)
+        const initLen = txt.value.length;
+        cnt.textContent = `${initLen} / 1000`;
+
+     // 3. Compteur de caractères
+        txt.addEventListener('input', () => {
+            const len = txt.value.length;
+            cnt.textContent = `${len} / 1000`;
+            cnt.classList.toggle('text-danger', len >= 950);
+        });
+
     // Sécurité JS pour bloquer les dates incohérentes sans recharger
     const dDeb = document.getElementById('date_deb');
     const dFin = document.getElementById('date_fin');
@@ -143,5 +165,7 @@
             alert("L'heure/date de fin doit être après le début.");
         }
     });
+
+
 </script>
 {% endblock %}

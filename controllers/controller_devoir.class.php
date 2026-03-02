@@ -46,11 +46,7 @@ class ControllerDevoir extends Controller {
         /* @brief Récupération de l'utilisateur en session */
         $user = $_SESSION['user'];
 
-        if ($_SESSION['user']->getRole() !== 'delegue') {
-            header('Location: index.php?controleur=connecter&methode=render');
-            exit;
-        }
-        elseif ( $_SESSION['user']->getRole() === 'ressource') {
+        if ($_SESSION['user']->getRole() !== 'délégué') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
@@ -136,18 +132,9 @@ class ControllerDevoir extends Controller {
     $user = $_SESSION['user'];
     $idDevoir = $_GET['id'] ?? null;
 
-    if ($_SESSION['user']->getRole() !== 'delegue') {
+    if ($_SESSION['user']->getRole() !== 'délégué') {
         header('Location: index.php?controleur=connecter&methode=render');
         exit;
-    }
-    elseif ( $_SESSION['user']->getRole() === 'ressource') {
-        header('Location: index.php?controleur=connecter&methode=render');
-        exit;
-    }
-
-    if (!$idDevoir) {
-        header("Location: index.php?controleur=devoir&methode=lister");
-        exit();
     }
 
     $devoirManager = new DevoirDAO($this->getPdo());
@@ -216,11 +203,7 @@ class ControllerDevoir extends Controller {
      */
     public function supprimer(): void
     {
-        if ($_SESSION['user']->getRole() !== 'delegue') {
-            header('Location: index.php?controleur=connecter&methode=render');
-            exit;
-        }
-        elseif ( $_SESSION['user']->getRole() === 'ressource') {
+        if ($_SESSION['user']->getRole() !== 'délégué') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
@@ -249,11 +232,7 @@ class ControllerDevoir extends Controller {
         /* @brief Si l'utilisateur n'est pas connecté, redirection vers la page de connexion */
         $user = $_SESSION['user'];
 
-        if ($_SESSION['user']->getRole() !== 'delegue') {
-            header('Location: index.php?controleur=connecter&methode=render');
-            exit;
-        }
-        elseif ( $_SESSION['user']->getRole() === 'ressource') {
+        if ($_SESSION['user']->getRole() !== 'délégué') {
             header('Location: index.php?controleur=connecter&methode=render');
             exit;
         }
@@ -266,8 +245,6 @@ class ControllerDevoir extends Controller {
         // Correction : On nomme la variable $devoirs
         $devoirs = $manager->findByEtudiant($user->getId()); 
         
-        
-
     
         /* @brief Affichage de la liste des devoirs */
         echo $this->getTwig()->render('listerDevoir.twig', [

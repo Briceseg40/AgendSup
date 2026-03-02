@@ -72,7 +72,7 @@ class ControllerRegister extends Controller {
         /* @brief Utilisation de match pour déterminer le rôle. */
         $role = match ($roleCode) {
             1 => 'normal',
-            2 => 'delegue',
+            2 => 'délégué',
             3 => 'ressource',
             default => 'normal', // valeur par défaut
         };
@@ -106,7 +106,7 @@ class ControllerRegister extends Controller {
         }
 
         // SUCCÈS 
-        header('Location: index.php?controleur=register&methode=success');
+        $this->success();
         exit();
     }
 

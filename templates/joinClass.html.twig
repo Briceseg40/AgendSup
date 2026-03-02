@@ -33,7 +33,7 @@
 {% block body %}
 	<div>
 		<h3 class="mt-3 text-center">Rejoindre une classe</h3>
-		<div class="position-relative section-class bg-gray w-100 d-flex flex-column justify-content-center border-black border-1 align-items-center border p-5 mt-1">
+		<div class="position-relative section-class mt-4 bg-gray w-90 mx-auto d-flex flex-column justify-content-center border-black border-1 align-items-center border p-5">
 		{% if error_message or success_message %}
     <div class="position-absolute w-50 text-center" style="top: 0; z-index: 20;">
         
@@ -101,10 +101,7 @@
 										Connexion stable
 										<i class="fa-solid fa-signal ms-1"></i>
 									</span>
-									<div class="fw-bold small">
-										TD{{ classe.getTD() }}
-										- TP{{ classe.getTP() }}
-									</div>
+									
 									<div class="fw-bold text-muted small">
 										Crée par : {{ classe.nomCreateur|default('Inconnu') }} {{ classe.prenomCreateur }}
 									</div>
@@ -129,13 +126,12 @@
 
 				<div class="btn-right d-flex flex-column justify-content-end align-items-left">
 					<a href="?controleur=paramclasse&methode=render" class="btn text-btn btn-light w-100 rounded-3 shadow border-black p-3 mt-4 w-auto fw-bold">Créer une classe</a>
-					<a href="?controleur=connecter&methode=render" class="btn text-btn btn-light w-110px rounded-3 shadow border-black p-3 mt-4 fw-bold">Retour</a>
+					<a href="?controleur=connecter&methode=render" class="btn text-btn btn-light w-110px rounded-3 shadow border-black p-3 px-2 mt-4 fw-bold">Retour</a>
 				</div>
 			</div>
 
 		</form>
 	</div>
-<!-- Modal Désinscription -->
 <!-- Modal Désinscription -->
 <div class="modal fade" id="unsubscribeModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
