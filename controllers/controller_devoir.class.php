@@ -261,17 +261,13 @@ class ControllerDevoir extends Controller {
     public function api_events(): void
     {
         if (!isset($_SESSION['user'])) {
+        header('Content-Type: application/json');
         echo json_encode([]);
         exit;
     }
 
     $user = $_SESSION['user'];
     $idClasse = $user->getIdClasse();
-
-    if (!$idClasse) {
-        echo json_encode([]);
-        exit;
-    }
 
     $events = [];
 
@@ -281,11 +277,12 @@ class ControllerDevoir extends Controller {
 
     foreach ($devoirs as $d) {
         $events[] = [
-            'id'    => 'dev_' . $d->getId(), // Préfixe pour éviter les doublons d'ID
+            'id'    => 'dev_' . $d->getId(),
             'title' => '📝 ' . $d->getLibelle(),
+            // Attention à la casse des getters (getDateFin avec un F majuscule)
             'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb(),
-            'end'   => $d->getDatefin() . 'T' . $d->getHeureFin(),
-            'color' => $d->getCouleur() ?: '#e74c3c', // Rouge par défaut
+            'end'   => $d->getDateFin() . 'T' . $d->getHeureFin(),
+            'color' => $d->getCouleur() ?: '#e74c3c', // Rouge
             'extendedProps' => [
                 'type' => 'devoir',
                 'description' => $d->getContenu()
@@ -295,26 +292,24 @@ class ControllerDevoir extends Controller {
 
     // --- 2. RÉCUPÉRATION DES COURS PRÉVUS ---
     $coursDAO = new CoursPrevueDAO($this->getPdo());
-    // On récupère les cours pour cette classe
     $listeCours = $coursDAO->findByClasse($idClasse); 
 
     foreach ($listeCours as $c) {
-        // Si findByClasse renvoie des objets CoursPrevue :
         $events[] = [
             'id'    => 'crs_' . $c->getId(),
             'title' => '🎓 ' . $c->getLibelle(),
             'start' => $c->getDateDeb() . 'T' . $c->getHeureDeb(),
             'end'   => $c->getDateFin() . 'T' . $c->getHeureFin(),
-            'color' => $c->getCouleur() ?: '#3498db', // Bleu par défaut
+            'color' => $c->getCouleur() ?: '#3498db', // Bleu
             'extendedProps' => [
                 'type' => 'cours',
-                'description' => $c->getDescription()
+                'description' => $c->getContenu() // Vérifiez si c'est getDescription() ou getContenu()
             ]
         ];
     }
-        /* @brief Envoi de la réponse JSON */
-        header('Content-Type: application/json');
-        echo json_encode($events);
-        exit;
+
+    header('Content-Type: application/json');
+    echo json_encode($events);
+    exit;
     }    
 }
