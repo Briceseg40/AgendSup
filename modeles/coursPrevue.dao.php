@@ -75,6 +75,31 @@ class CoursPrevueDAO
         return $events;
     }
 
+    public function findByID(int $id): ?CoursPrevue
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM coursprevue WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+        return null;
+        }
+
+        return new CoursPrevue(
+            $row['id'],
+            $row['date_deb'],
+            $row['date_fin'],
+            $row['heure_deb'],
+            $row['heure_fin'],
+            $row['libelle'],
+            $row['description'],
+            $row['Couleur'],
+            $row['idEtudiant'],
+            $row['idClasseVirtuel'],
+            $row['idCours']
+            );
+    }
+
 
     /**
      * @brief Crée un nouveau cours prévu.

@@ -278,8 +278,7 @@ class ControllerDevoir extends Controller {
     foreach ($devoirs as $d) {
         $events[] = [
             'id'    => 'dev_' . $d->getId(),
-            'title' => '📝 ' . $d->getLibelle(),
-            // Attention à la casse des getters (getDateFin avec un F majuscule)
+            'title' => $d->getLibelle(),
             'start' => $d->getDateDeb() . 'T' . $d->getHeureDeb(),
             'end'   => $d->getDateFin() . 'T' . $d->getHeureFin(),
             'color' => $d->getCouleur() ?: '#e74c3c', // Rouge
@@ -297,13 +296,13 @@ class ControllerDevoir extends Controller {
     foreach ($listeCours as $c) {
         $events[] = [
             'id'    => 'crs_' . $c->getId(),
-            'title' => '🎓 ' . $c->getLibelle(),
+            'title' => 'cours - ' . $c->getLibelle(),
             'start' => $c->getDateDeb() . 'T' . $c->getHeureDeb(),
             'end'   => $c->getDateFin() . 'T' . $c->getHeureFin(),
             'color' => $c->getCouleur() ?: '#3498db', // Bleu
             'extendedProps' => [
                 'type' => 'cours',
-                'description' => $c->getContenu() // Vérifiez si c'est getDescription() ou getContenu()
+                'description' => $c->getDescription() // Vérifiez si c'est getDescription() ou getContenu()
             ]
         ];
     }

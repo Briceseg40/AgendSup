@@ -1,0 +1,125 @@
+{#
+/**
+ * @file liste_devoirs.html.twig
+ * @brief Vue de gestion et d'affichage de la liste des devoirs.
+ *
+ * @details Cette page permet aux utilisateurs (étudiants ou enseignants) de visualiser 
+ * l'ensemble des devoirs enregistrés dans l'application AgendSup.
+ *
+ * Elle offre une interface complète pour :
+ * - Consulter les détails (matière, dates, horaires, contenu).
+ * - Distinguer les devoirs par un code couleur personnalisé.
+ * - Accéder aux formulaires de modification et de création.
+ * - Supprimer un devoir avec une demande de confirmation.
+ *
+ * Technologies utilisées :
+ * - Twig (Moteur de rendu)
+ * - Bootstrap 5 & Bootstrap Icons
+ * - CSS Inline pour le rendu dynamique des couleurs
+ *
+ * @see DevoirController::afficher()
+ * @see DevoirController::modifier()
+ * @version 1.0
+ */
+#}
+
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Liste des cours prévus{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    {# En-tête simplifié avec le titre uniquement #}
+    {# Zone d'actions : Bouton Retour et Ajouter côte à côte #}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 text-secondary mb-0">Liste des cours prévus</h2>
+        <div class="d-flex gap-2">
+            <a href="?controleur=devoir&methode=afficher" class="btn btn-normal btn-light border border-black shadow fs-5 px-4 py-2 rounded-3 bg-white w-auto fw-bold">
+                <i class="bi bi-arrow-left-circle"></i> Retour
+            </a>
+            <a href="?controleur=coursPrevue&methode=creer" class="btn btn-normal btn-light border border-black shadow fs-5 px-4 py-2 rounded-3 bg-white w-auto fw-bold">
+                <i class="bi bi-plus-circle-fill"></i> Ajouter un cours prévus
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4" style="width: 25%;">Matière</th>
+                            <th style="width: 18%;">Description</th>
+                            <th style="width: 15%;">cours</th>
+                            <th style="width: 15%;">date rendu</th>
+                            <th class="text-center" style="width: 10%;">Couleur</th>
+                            <th class="text-center" style="width: 20%;">    </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cour in cours %}
+                        <tr>
+                            <td class="ps-4">
+                                <span class="fw-bold text-dark">{{ cour.libelle }}</span>
+                            </td>
+
+                                                        <td>
+                                <div class="text-muted small text-truncate" style="max-width: 150px;" title="{{ cour.contenu }}">
+                                    {{ cour.description|default('Aucune description') }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="small">
+                                    <div class="text-nowrap mb-1 text-primary fw-semibold">{{ cour.dateDeb|date("d/m/Y") }}</div>
+                                    <div class="text-nowrap text-primary">{{ cour.heureDeb }}</div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="small">
+                                <div class="text-nowrap text-danger fw-semibold">{{ cour.dateFin|date("d/m/Y") }}</div>
+                                <div class="text-nowrap text-danger">{{ cour.heureFin }}</div>
+                                </div>
+                            </td>
+                            
+                            <td class="text-center">
+                                <span class="d-inline-block rounded-circle shadow-sm" 
+                                      style="width: 20px; height: 20px; background-color: {{ cour.couleur|default('#4e73df') }}; border: 2px solid white; outline: 1px solid #dee2e6;">
+                                </span>
+                            </td>
+
+                            <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="index.php?controleur=coursPrevue&methode=modifier&id={{ cour.id }}" 
+                                class="btn btn-sm btn-link text-dark p-1 btn-normal" 
+                                title="Modifier">
+                                <i class="bi bi-pencil-square fs-5"></i>
+                                </a>
+
+                                <a href="index.php?controleur=coursPrevue&methode=supprimer&id={{ cour.id }}" 
+                                class="btn btn-sm btn-link text-dark p-1 btn-normal" 
+                                title="Supprimer"
+                                onclick="return confirm('Voulez-vous supprimer ce cours ?')">
+                                    <i class="bi bi-trash3 fs-5 text-danger"></i>
+                                </a>
+                            </div>
+                        </td>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                <p class="text-muted mb-0">Aucun cours à afficher.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
