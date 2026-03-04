@@ -1,0 +1,176 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Création de Cours{% endblock %}
+
+{% block body %}
+<style>
+   #contenu {
+        min-height: 120px;
+        resize: none;
+    }
+</style>
+
+    <div class="container mt-3"> {# mt-3 pour remonter le formulaire #}
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow border-0">
+                    <div class="card-header bg-gray text-dark d-flex justify-content-between align-items-center py-2">
+                        <h3 class="mb-0 h6"><i class="bi bi-plus-circle"></i> Création d'un Cours</h3>
+                    </div>
+                    
+                    <div class="card-body p-4 ">
+                        {# Message d'erreur serveur #}
+                        {% if error %}
+                            <div class="alert alert-danger alert-dismissible fade show shadow-sm py-2" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <strong>Erreur :</strong> {{ error }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+                        
+                        <form action="index.php?controleur=coursPrevue&methode=creer" method="post" id="formCreer">
+
+                            {# Sélection de la matière #}
+                            <div class="mb-3">
+                                <label for="idCour" class="form-label small fw-bold">Ressource</label>
+                                <select name="idCour" id="idCour" class="form-select" required>
+                                    <option value="" selected disabled>-- Sélectionnez une matière --</option>
+                                    {% set currentSemestre = "" %}
+                                    {% for cours in lesCours %}
+                                        {% if cours.semestre != currentSemestre %}
+                                            {% if currentSemestre != "" %}</optgroup>{% endif %}
+                                            <optgroup label="Semestre {{ cours.semestre }}">
+                                            {% set currentSemestre = cours.semestre %}
+                                        {% endif %}
+                                        <option value="{{ cours.id }}">{{ cours.libelle }}</option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            {# Dates et Heures #}
+                            <div class="row g-6">
+                                <div class="col-md-6 mb-3">
+                                    <label for="date_deb" class="form-label small fw-bold text-primary">Date de début *</label>
+                                    <input type="date" class="form-control" id="date_deb" name="date_deb" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="heure_deb" class="form-label small fw-bold text-primary">Heure de début *</label>
+                                    <input type="time" class="form-control" id="heure_deb" name="heure_deb" min="8:00" max="18:30" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="date_fin" class="form-label small fw-bold text-danger">Date de fin *</label>
+                                    <input type="date" class="form-control" id="date_fin" name="date_fin" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="heure_fin" class="form-label small fw-bold text-danger">Heure de fin *</label>
+                                    <input type="time" class="form-control" id="heure_fin" name="heure_fin" min="8:00" max="18:30" required>
+                                </div>
+                            </div>
+
+                            {# Description avec Compteur #}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <label for="contenu" class="form-label small fw-bold">Description du travail</label>
+                                    
+                                </div>
+                                <textarea 
+                                    class="form-control" 
+                                    id="contenu" 
+                                    name="contenu" 
+                                    rows="4" 
+                                    maxlength="1000" 
+                                    placeholder="Description du travail à faire..."
+                                    required></textarea>
+                                <small id="char-count" class="text-muted">0 / 1000</small>
+                            </div>
+
+                            {# Couleur de priorité #}
+                            <div class="mb-4">
+                                <label for="Couleur" class="form-label small fw-bold ">Couleur</label>
+                                <input type="color" class="form-control form-control-color w-100" id="Couleur" name="Couleur" 
+                                       value="#4e73df" title="Choisir une couleur">
+                            </div>
+
+                        <div class="d-flex gap-3"> 
+                            <a href="index.php?controleur=coursPrevue&methode=lister" class="btn btn-normal bg-white rounded-3 w-50 shadow border-black fw-bold d-flex align-items-center justify-content-center">
+                                Retour
+                            </a>
+
+                            <button type="submit" class="btn btn-normal bg-white rounded-3 w-50 shadow border-black fw-bold">
+                                Enregistrer le cours
+                            </button>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const dDeb = document.getElementById('date_deb');
+        const dFin = document.getElementById('date_fin');
+        const hDeb = document.getElementById('heure_deb');
+        const hFin = document.getElementById('heure_fin');
+        const txt = document.getElementById('contenu');
+        const cnt = document.getElementById('char-count');
+        const form = document.getElementById('formCreer');
+
+        // 1. Initialisation des dates
+        const today = new Date().toISOString().split('T')[0];
+        dDeb.value = today;
+        dFin.value = today;
+        dDeb.min = today;
+        dFin.min = today;
+
+        // 2. Synchronisation des dates
+        dDeb.addEventListener('change', () => {
+            dFin.min = dDeb.value;
+            if (dFin.value < dDeb.value) {
+                dFin.value = dDeb.value;
+            }
+        });
+
+        // 3. Compteur de caractères
+        txt.addEventListener('input', () => {
+            const len = txt.value.length;
+            cnt.textContent = `${len} / 1000`;
+            cnt.classList.toggle('text-danger', len >= 950);
+        });
+
+        // 4. VALIDATION UNIQUE AU SUBMIT (Fusionnée)
+        form.addEventListener('submit', (e) => {
+            const valHD = hDeb.value;
+            const valHF = hFin.value;
+            const HEURE_MIN = "08:00";
+            const HEURE_MAX = "18:30";
+
+            // A. Vérification des bornes Min/Max
+            if (valHD < HEURE_MIN || valHD > HEURE_MAX) {
+                e.preventDefault();
+                alert(`L'heure de début (${valHD}) doit être entre ${HEURE_MIN} et ${HEURE_MAX}`);
+                return; // On arrête tout si c'est faux
+            }
+
+            if (valHF < HEURE_MIN || valHF > HEURE_MAX) {
+                e.preventDefault();
+                alert(`L'heure de fin (${valHF}) doit être entre ${HEURE_MIN} et ${HEURE_MAX}`);
+                return; // On arrête tout si c'est faux
+            }
+
+            // B. Vérification chronologique (Date + Heure)
+            const debutFull = new Date(dDeb.value + 'T' + valHD);
+            const finFull = new Date(dFin.value + 'T' + valHF);
+
+            if (finFull <= debutFull) {
+                e.preventDefault();
+                alert("Erreur : La fin doit être strictement après le début !");
+            }
+        });
+    });
+</script>
+{% endblock %}

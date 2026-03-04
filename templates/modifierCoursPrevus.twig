@@ -1,0 +1,146 @@
+
+{% extends "base.html.twig" %}
+
+{% block title %}AgendSup - Modifier un cours prévus{% endblock %}
+
+{% block body %}
+<style>
+   #contenu {
+        min-height: 120px;
+        resize: none;
+    }
+</style>
+
+<div class="container mt-3"> {# Marges réduites ici pour remonter #}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header text-dark d-flex justify-content-between align-items-center py-2 bg-white">
+                    <h3 class="mb-0 h6"><i class="bi bi-pencil-square"></i> {{ titre }}</h3>
+                </div>
+                
+                <div class="card-body p-4 "> {# Padding ajusté #}
+                    
+                    {# Affichage de l'erreur serveur bien visible en haut #}
+                    {% if error %}
+                        <div class="alert alert-danger py-2 mb-3 shadow-sm">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+                        </div>
+                    {% endif %}
+
+                    <form action="index.php?controleur=coursPrevue&methode=modifier&id={{ coursPrevue.id }}" method="POST" id="formModifier">
+                        
+                        {# Sélection de la matière #}
+                        <div class="mb-3">
+                            <label for="idCour" class="form-label small fw-bold">Ressource</label>
+                            <select name="idCour" id="idCour" class="form-select" required>
+                                <option value="" disabled>-- Sélectionnez une matière --</option>
+                                {% set currentSemestre = "" %}
+                                {% for c in cours %}
+                                    {% if c.semestre != currentSemestre %}
+                                        {% if currentSemestre != "" %}</optgroup>{% endif %}
+                                        <optgroup label="Semestre {{ c.semestre }}">
+                                        {% set currentSemestre = c.semestre %}
+                                    {% endif %}
+                                    <option value="{{ c.id }}" {% if c.id == coursPrevue.idCours %}selected{% endif %}>
+                                        {{ coursPrevue.libelle }}
+                                    </option>
+                                {% endfor %}
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="date_deb" class="form-label small fw-bold text-primary">Date de début</label>
+                                <input type="date" class="form-control" id="date_deb" name="date_deb" 
+                                       value="{{ coursPrevue.dateDeb|date('Y-m-d') }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="heure_deb" class="form-label small fw-bold text-primary">Heure de début</label>
+                                <input type="time" class="form-control" id="heure_deb" name="heure_deb" 
+                                       value="{{ coursPrevue.heureDeb }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="date_fin" class="form-label small fw-bold text-danger">Date de rendu (fin)</label>
+                                <input type="date" class="form-control" id="date_fin" name="date_fin" 
+                                       value="{{ coursPrevue.dateFin|date('Y-m-d') }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="heure_fin" class="form-label small fw-bold text-danger">Heure de fin</label>
+                                <input type="time" class="form-control" id="heure_fin" name="heure_fin" 
+                                       value="{{ coursPrevue.heureFin }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contenu" class="form-label small fw-bold">Description du travail</label>
+                            <textarea class="form-control" id="contenu" name="contenu" rows="3" maxlength="1000">{{ coursPrevue.description }}</textarea>
+                            <small id="char-count" class="text-muted">0 / 1000</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="Couleur" class="form-label small fw-bold ">Couleur</label>
+                            <input type="color" class="form-control form-control-color w-100 " id="Couleur" name="Couleur" 
+                                   value="{{coursPrevue.couleur|default('#4e73df') }}">
+                        </div>
+
+                        <div class="d-flex gap-3"> 
+                            <a href="index.php?controleur=coursPrevue&methode=lister" class="btn btn-normal bg-white rounded-3 w-50 shadow border-black fw-bold d-flex align-items-center justify-content-center">
+                                Retour
+                            </a>
+
+                            <button type="submit" class="btn btn-normal bg-white rounded-3 w-50 shadow border-black fw-bold">
+                                Sauvegarder les modifications
+                            </button>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        const txt = document.getElementById('contenu');
+        const cnt = document.getElementById('char-count');
+
+    // Initialisation au chargement de la page (pour afficher le compte existant)
+        const initLen = txt.value.length;
+        cnt.textContent = `${initLen} / 1000`;
+
+     // 3. Compteur de caractères
+        txt.addEventListener('input', () => {
+            const len = txt.value.length;
+            cnt.textContent = `${len} / 1000`;
+            cnt.classList.toggle('text-danger', len >= 950);
+        });
+
+    // Sécurité JS pour bloquer les dates incohérentes sans recharger
+    const dDeb = document.getElementById('date_deb');
+    const dFin = document.getElementById('date_fin');
+
+    dDeb.addEventListener('change', () => {
+        dFin.min = dDeb.value;
+        if (dFin.value < dDeb.value) {
+            dFin.value = dDeb.value;
+        }
+    });
+
+    document.getElementById('formModifier').addEventListener('submit', function(e) {
+        const hDeb = document.getElementById('heure_deb').value;
+        const hFin = document.getElementById('heure_fin').value;
+        
+        const debut = new Date(dDeb.value + 'T' + hDeb);
+        const fin = new Date(dFin.value + 'T' + hFin);
+
+        if (fin <= debut) {
+            e.preventDefault();
+            alert("L'heure/date de fin doit être après le début.");
+        }
+    });
+
+
+</script>
+{% endblock %}

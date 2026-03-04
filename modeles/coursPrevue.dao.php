@@ -1,11 +1,6 @@
 <?php
-/**
- * @file coursprevue.dao.php
- * @brief Définit la classe CoursPrevueDAO pour l'accès aux données des cours prévus.
- */
 class CoursPrevueDAO
 {
-    /** @brief Instance de PDO pour la connexion à la base de données */
     private ?PDO $pdo;
     
     public function __construct(?PDO $pdo = null)
@@ -15,83 +10,153 @@ class CoursPrevueDAO
 
     /**
      * @brief Récupère tous les cours prévus.
-     * @return Cours[]
      */
     public function findAll(): array
     {
-        // On trie par date de début par défaut
-        $stmt = $this->pdo->prepare("SELECT * FROM coursprevue ORDER BY date_deb ASC, libelle ASC");
+        $stmt = $this->pdo->prepare("SELECT * FROM coursprevue ORDER BY date_deb ASC, heure_deb ASC");
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $coursListe = [];
         foreach ($results as $row) {
-            $coursListe[] = new Cours(
-                $row['id'],
-                $row['date_deb'],
-                $row['date_fin'],
-                $row['libelle'],
-                $row['description']
+            $coursListe[] = new CoursPrevue(
+                $row['id'], $row['date_deb'], $row['date_fin'], $row['heure_deb'], 
+                $row['heure_fin'], $row['libelle'], $row['description'], 
+                $row['Couleur'], $row['idEtudiant'], $row['idClasseVirtuel'], $row['idCours']
             );
         }
-
         return $coursListe;
     }
 
     /**
-     * @brief Récupère un cours prévu par son ID.
-     * @param int $id
-     * @return Cours|null
+     * @brief Récupère les cours pour une classe virtuelle spécifique.
      */
-    public function findById(int $id): ?Cours
+    public function findByClasse(int $idClasse): array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM coursprevue join ETUDIANT on coursprevue.idEtudiant = ETUDIANT.id WHERE Etudiant.idClasse = :idClasse");
+        $stmt->execute([':idClasse' => $idClasse]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $events = [];
+        foreach ($results as $row) {
+            $events[] = new CoursPrevue(
+            $row['id'],
+            $row['date_deb'],
+            $row['date_fin'],
+            $row['heure_deb'],
+            $row['heure_fin'],
+            $row['libelle'],
+            $row['description'],
+            $row['Couleur']
+            );
+        }
+        return $events;
+    }
+
+ public function findByEtudiant(int $idEtudiant): array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM coursprevue WHERE idEtudiant = :idEtudiant");
+        $stmt->execute([':idEtudiant' => $idEtudiant]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $events = [];
+        foreach ($results as $row) {
+            $events[] = new CoursPrevue(
+            $row['id'],
+            $row['date_deb'],
+            $row['date_fin'],
+            $row['heure_deb'],
+            $row['heure_fin'],
+            $row['libelle'],
+            $row['description'],
+            $row['Couleur']
+        );
+        }
+        return $events;
+    }
+
+    public function findByID(int $id): ?CoursPrevue
     {
         $stmt = $this->pdo->prepare("SELECT * FROM coursprevue WHERE id = :id");
         $stmt->execute([':id' => $id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($row) {
-            return new Cours(
-                $row['id'],
-                $row['date_deb'],
-                $row['date_fin'],
-                $row['libelle'],
-                $row['description']
-            );
+        if (!$row) {
+        return null;
         }
 
-        return null;
+        return new CoursPrevue(
+            $row['id'],
+            $row['date_deb'],
+            $row['date_fin'],
+            $row['heure_deb'],
+            $row['heure_fin'],
+            $row['libelle'],
+            $row['description'],
+            $row['Couleur'],
+            $row['idEtudiant'],
+            $row['idClasseVirtuel'],
+            $row['idCours']
+            );
+    }
+
+
+    /**
+     * @brief Crée un nouveau cours prévu.
+     */
+    public function create(CoursPrevue $cours): bool
+    {
+        $sql = "INSERT INTO coursprevue (date_deb, date_fin, heure_deb, heure_fin, libelle, description, Couleur, idEtudiant, idClasseVirtuel, idCours) 
+                VALUES (:date_deb, :date_fin, :heure_deb, :heure_fin, :libelle, :description, :couleur, :idEtudiant, :idClasseVirtuel, :idCours)";
+        
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':date_deb'         => $cours->getDateDeb(),
+            ':date_fin'         => $cours->getDateFin(),
+            ':heure_deb'        => $cours->getHeureDeb(),
+            ':heure_fin'        => $cours->getHeureFin(),
+            ':libelle'          => $cours->getLibelle(),
+            ':description'      => $cours->getDescription(),
+            ':couleur'          => $cours->getCouleur(),
+            ':idEtudiant'       => $cours->getIdEtudiant(),
+            ':idClasseVirtuel'  => $cours->getIdClasseVirtuel(),
+            ':idCours'          => $cours->getIdCours()
+        ]);
     }
 
     /**
-     * @brief Récupère les cours compris entre deux dates.
-     * @param string $dateDebut Format YYYY-MM-DD
-     * @param string $dateFin Format YYYY-MM-DD
-     * @return Cours[]
+     * @brief Met à jour un cours prévu.
      */
-    public function findByPeriode(string $dateDebut, string $dateFin): array
+    public function update(CoursPrevue $cours): bool
     {
-        $sql = "SELECT * FROM coursprevue 
-                WHERE date_deb >= :dateDebut 
-                AND date_fin <= :dateFin 
-                ORDER BY date_deb ASC";
+        $sql = "UPDATE coursprevue SET 
+                date_deb = :date_deb, date_fin = :date_fin, heure_deb = :heure_deb, 
+                heure_fin = :heure_fin, libelle = :libelle, description = :description, 
+                Couleur = :couleur, idEtudiant = :idEtudiant, idClasseVirtuel = :idClasseVirtuel, 
+                idCours = :idCours WHERE id = :id";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':dateDebut', $dateDebut);
-        $stmt->bindValue(':dateFin', $dateFin);
-        $stmt->execute();
-        
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $listeCours = [];
-        foreach ($results as $row) {
-            $listeCours[] = new Cours(
-                $row['id'],
-                $row['date_deb'],
-                $row['date_fin'],
-                $row['libelle'],
-                $row['description']
-            );
-        }
-        return $listeCours; 
+        return $stmt->execute([
+            ':date_deb'         => $cours->getDateDeb(),
+            ':date_fin'         => $cours->getDateFin(),
+            ':heure_deb'        => $cours->getHeureDeb(),
+            ':heure_fin'        => $cours->getHeureFin(),
+            ':libelle'          => $cours->getLibelle(),
+            ':description'      => $cours->getDescription(),
+            ':couleur'          => $cours->getCouleur(),
+            ':idEtudiant'       => $cours->getIdEtudiant(),
+            ':idClasseVirtuel'  => $cours->getIdClasseVirtuel(),
+            ':idCours'          => $cours->getIdCours(),
+            ':id'               => $cours->getId()
+        ]);
+    }
+
+    /**
+     * @brief Supprime un cours prévu.
+     */
+    public function delete(int $id): bool
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM coursprevue WHERE id = :id");
+        return $stmt->execute([':id' => $id]);
     }
 }
