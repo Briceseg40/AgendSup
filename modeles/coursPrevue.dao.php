@@ -33,7 +33,7 @@ class CoursPrevueDAO
      */
     public function findByClasse(int $idClasse): array
     {
-        $stmt = $this->pdo->prepare("SELECT * FROM coursprevue join ETUDIANT on coursprevue.idEtudiant = ETUDIANT.id WHERE Etudiant.idClasse = :idClasse");
+        $stmt = $this->pdo->prepare("SELECT * FROM coursprevue join etudiant on coursprevue.idEtudiant = etudiant.id WHERE etudiant.idClasse = :idClasse");
         $stmt->execute([':idClasse' => $idClasse]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
